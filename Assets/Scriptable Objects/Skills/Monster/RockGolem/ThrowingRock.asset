@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6519819d50f36e74bafaea176db625c5, type: 3}
+  m_Name: ThrowingRock
+  m_EditorClassIdentifier: 
+  _skillName: Throwing Rock
+  _skillDesc: "\uD070 \uBC14\uC704\uB97C \uC9D1\uC5B4 \uC138\uAC8C \uB358\uC9C4\uB2E4"
+  _skillTrigger: ThrowingRock
+  _skillNumberOfAttack: 5
+  _skillDamageMultiplier: 2
+  _skillRange: 10
+  _skillDelay: 5
+  _skillCoolTime: 10

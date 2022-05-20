@@ -42,10 +42,16 @@ public class SkillManager : MonoBehaviour
         }
     }
 
+    public Skill GetSkill(string _key)
+    {
+        int _skillKey = (int)Enum.Parse<SkillKey>(_key);
+        return _skill[_skillKey];
+    }
+
     public bool IsReady(string _key)
     {
         int _skillKey = (int)Enum.Parse<SkillKey>(_key);
-        if (_currentCoolTime[(int)_skillKey] >= _skill[(int)_skillKey]._skillCoolTime)
+        if (_currentCoolTime[_skillKey] >= _skill[(int)_skillKey]._skillCoolTime)
             return true;
 
         return false;
@@ -54,13 +60,13 @@ public class SkillManager : MonoBehaviour
     public void Use(string _key)
     {
         int _skillKey = (int)Enum.Parse<SkillKey>(_key);
-        _currentCoolTime[(int)_skillKey] = 0;
+        _currentCoolTime[_skillKey] = 0;
     }
 
     public void Instantiate(string _key)
     {
         int _skillKey = (int)Enum.Parse<SkillKey>(_key);
-        Instantiate(_skillPrefab[(int)_skillKey], _skillTransform[_skillKey].position, Quaternion.identity);
+        Instantiate(_skillPrefab[_skillKey], _skillTransform[_skillKey].position, Quaternion.identity);
     }
 
     public bool IsEnemyInRange(string _key)

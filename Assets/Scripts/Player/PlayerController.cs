@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 LookMousePosition();
-                StartCoroutine(OnSwordAttack());
+                StartCoroutine(OnAttack(_attackDelay, "OnSwordAttack"));
             }
             else if (Input.GetMouseButton(1))
             {
@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
                     if (SkillManager.instance.IsEnemyInRange("Q"))
                     {
                         LookMousePosition();
-                        _animator.SetTrigger("ThrowingShield");
+                        StartCoroutine(OnAttack(SkillManager.instance.GetSkill("Q")._skillDelay, SkillManager.instance.GetSkill("Q")._skillTrigger));
                         SkillManager.instance.Use("Q");
                     }
                 }
@@ -113,13 +113,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator OnSwordAttack()
+    IEnumerator OnAttack(float attackDelay, string trigger)
     {
         _navMeshAgent.isStopped = true;
         _navMeshAgent.SetDestination(transform.position);
         _isMove = false;
         _isAttacking = true;
-        _animator.SetTrigger("OnSwordAttack");
+        _animator.SetTrigger(trigger);
 
         yield return new WaitForSeconds(_attackDelay);
 

@@ -145,13 +145,20 @@ public class MonsterAI : MonoBehaviour
         _navMesh.isStopped = false;
     }
 
-    public void Damaged(int damage)
+    public void Damaged(int minDamage, int maxDamage, int numberOfAttack, Transform target)
     {
-        _monsterHP -= damage;
-        _hpBarImage.fillAmount = (float)_monsterHP / (float)_monster._monsterHP;
-        GameObject damageText = Instantiate(_damageText, transform.position, Quaternion.identity);
-        damageText.GetComponent<DamageText>()._damage = damage;
-        Object effect = Instantiate(_hitEffect, transform.position, Quaternion.identity);
+        if (target == null)
+            target = GameObject.FindGameObjectWithTag("Player").transform;
+        SetTarget(target);
+        for (int i = 0; i < numberOfAttack; i++)
+        {
+            int damage = Random.Range(minDamage, maxDamage + 1);
+            _monsterHP -= damage;
+            _hpBarImage.fillAmount = (float)_monsterHP / (float)_monster._monsterHP;
+            GameObject damageText = Instantiate(_damageText, transform.position, Quaternion.identity);
+            damageText.GetComponent<DamageText>()._damage = damage;
+            Object effect = Instantiate(_hitEffect, transform.position, Quaternion.identity);
+        }
         _animator.StopPlayback();
         if (_monsterHP <= 0)
         {
@@ -163,12 +170,6 @@ public class MonsterAI : MonoBehaviour
         }
         _animator.SetTrigger("OnHit");
         StartCoroutine(OnHitColor());
-    }
-
-    public void Damaged(int damage, Transform target)
-    {
-        SetTarget(target);
-        this.Damaged(damage);
     }
 
     IEnumerator OnHitColor() {
@@ -204,7 +205,7 @@ public class MonsterAI : MonoBehaviour
         {
             PlayerController _playerController = other.GetComponentInParent<PlayerController>();
             _playerController.TryGetComponent<PlayerManager>(out PlayerManager _playerManager);
-            Damaged(Random.Range(_playerManager._playerMinPower, _playerManager._playerMaxPower + 1), other.transform);
+            Damaged(_playerManager._playerMinPower, _playerManager._playerMaxPower, 1, other.transform);
         }
     }
 }

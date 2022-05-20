@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 837360da02da9904c98f9224cae87ef2, type: 3}
+  m_Script: {fileID: 11500000, guid: bb83a0105eb765f448ea8bd99d475148, type: 3}
   m_Name: RockGolem
   m_EditorClassIdentifier: 
-  _monsterName: RockGolem
   _monsterType: 1
+  _monsterName: Rock Golem
   _monsterLevel: 5
   _monsterHP: 500
   _monsterDamage: 15
@@ -21,5 +21,5 @@ MonoBehaviour:
   _monsterMoveSpeed: 3
   _monsterAttackDelay: 5
   _monsterRange: 0
-  _cognizance: 0
-  _isPreempt: 1
+  stiffness: 150
+  sitffnessCount: 3

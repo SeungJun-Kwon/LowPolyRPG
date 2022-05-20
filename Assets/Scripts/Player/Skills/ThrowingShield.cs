@@ -13,11 +13,13 @@ public class ThrowingShield : MonoBehaviour
     private List<Collider> _targetArray;
     private float _skillDamageMultiplier;
     private float _skillRange;
+    private int _skillNumberOfAttack;
 
     private void Awake()
     {
         _skillDamageMultiplier = _skill._skillDamageMultiplier;
         _skillRange = _skill._skillRange;
+        _skillNumberOfAttack = _skill._skillNumberOfAttack;
     }
 
     private void OnEnable()
@@ -63,8 +65,9 @@ public class ThrowingShield : MonoBehaviour
         if (other.gameObject.tag == "Enemy")
         {
             other.TryGetComponent<MonsterAI>(out var _monsterAI);
-            int damage = (int)(Random.Range(PlayerManager.instance._playerMinPower, PlayerManager.instance._playerMaxPower) * _skillDamageMultiplier);
-            _monsterAI.Damaged(damage);
+            int minDamage = (int)(PlayerManager.instance._playerMinPower * _skillDamageMultiplier);
+            int maxDamage = (int)(PlayerManager.instance._playerMaxPower * _skillDamageMultiplier);
+            _monsterAI.Damaged(minDamage, maxDamage, _skillNumberOfAttack, null);
         }
     }
 }
