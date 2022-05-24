@@ -1788,7 +1788,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponCollider: {fileID: 8378421798722022725}
   _weaponTrail: {fileID: 8378421798037110094}
-  _attackDelay: 0.75
+  _attackDelay: 1
+  _walkSound: []
+  _attackSound:
+  - {fileID: 8300000, guid: 6d314dd2deabe1348937230e558f2ffe, type: 3}
+  - {fileID: 8300000, guid: 809dd88a3b5367748a25b02a2d72b67b, type: 3}
+  _hitSound: []
+  _dieSound: []
+  _skillSounds:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &1296472258032555062
 MonoBehaviour:
   m_ObjectHideFlags: 0

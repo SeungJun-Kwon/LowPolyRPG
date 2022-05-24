@@ -50459,13 +50459,20 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.2
+    functionName: SwingSoundPlay
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: 6beb6b6da0308b24fa7214f09913638f, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.2
     functionName: SettingAttackInstance
     data: 
     objectReferenceParameter: {fileID: 11500000, guid: 6beb6b6da0308b24fa7214f09913638f, type: 3}
     floatParameter: 0
-    intParameter: 1
+    intParameter: 2
     messageOptions: 0
-  - time: 0.46666667
+  - time: 0.53333336
     functionName: SettingAttackInstance
     data: 
     objectReferenceParameter: {fileID: 11500000, guid: 6beb6b6da0308b24fa7214f09913638f, type: 3}

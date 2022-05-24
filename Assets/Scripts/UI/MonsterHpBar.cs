@@ -25,10 +25,10 @@ public class MonsterHpBar : MonoBehaviour
         // 3D 좌표를 스크린(2D) 좌표로 변경
         var _screenPos = Camera.main.WorldToScreenPoint(_targetTransform.position + _offset);
 
-        if (_screenPos.z < 0.0f)
-            gameObject.SetActive(false);
-        else
-            gameObject.SetActive(true);
+        //if (_screenPos.z < 0.0f)
+        //    _rectHp.gameObject.SetActive(false);
+        //else
+        //    _rectHp.gameObject.SetActive(true);
 
         var _localPos = Vector2.zero;
 

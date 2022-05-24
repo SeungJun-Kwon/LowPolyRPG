@@ -9,6 +9,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TrailRenderer _weaponTrail;
     [SerializeField] float _attackDelay;
 
+    [Header("Sounds Name")]
+    [SerializeField] AudioClip[] _walkSound;
+    [SerializeField] AudioClip[] _attackSound;
+    [SerializeField] AudioClip[] _hitSound;
+    [SerializeField] AudioClip[] _dieSound;
+    [SerializeField] AudioClip[] _skillSounds;
+
     private Camera _camera;
     private Animator _animator;
     private Rigidbody _rigidBody;
@@ -26,6 +33,7 @@ public class PlayerController : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
     }
 
     void Start()
@@ -44,6 +52,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 LookMousePosition();
+                StopAllCoroutines();
                 StartCoroutine(OnAttack(_attackDelay, "OnSwordAttack"));
             }
             else if (Input.GetMouseButton(1))
@@ -113,18 +122,40 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    IEnumerator OnAttack(float startDelay, float endDelay, string trigger)
+    {
+        SettingAttackInstance(1);
+        _navMeshAgent.SetDestination(transform.position);
+        _animator.SetTrigger(trigger);
+        //endDelay = _animator.GetCurrentAnimatorClipInfo(0).Length;   // 현재 애니메이션의 길이
+        endDelay = _animator.GetCurrentAnimatorStateInfo(0).length / 2;
+        Debug.Log(_animator.GetCurrentAnimatorStateInfo(0).length.ToString());
+        yield return new WaitForSeconds(endDelay);
+        SettingAttackInstance(0);
+    }
+
     IEnumerator OnAttack(float attackDelay, string trigger)
     {
-        _navMeshAgent.isStopped = true;
         _navMeshAgent.SetDestination(transform.position);
-        _isMove = false;
-        _isAttacking = true;
         _animator.SetTrigger(trigger);
+        //_animator.GetCurrentAnimatorClipInfo(0).Length;   현재 애니메이션의 길이
 
-        yield return new WaitForSeconds(_attackDelay);
+        yield return new WaitForSeconds(attackDelay);
 
         if (_isAttacking)
             SettingAttackInstance(0);
+    }
+
+    private void WalkSoundPlay()
+    {
+        int num = Random.Range(0, _walkSound.Length);
+        SoundManager.instance.SFXPlay(_walkSound[num]);
+    }
+
+    private void SwingSoundPlay()
+    {
+        int num = Random.Range(0, _attackSound.Length);
+        SoundManager.instance.SFXPlay(_attackSound[num]);
     }
 
     private void SettingAttackInstance(int _value)
@@ -134,6 +165,8 @@ public class PlayerController : MonoBehaviour
             _toggle = true;
         else
             _toggle = false;
+        _isMove = !_toggle;
+        _navMeshAgent.isStopped = _toggle;
         _weaponCollider.enabled = _toggle;
         _isAttacking = _toggle;
         _weaponTrail.enabled = _toggle;

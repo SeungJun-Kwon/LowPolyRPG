@@ -92,6 +92,7 @@ public class MonsterAI : MonoBehaviour
     void SetHpBar()
     {
         _hpBar = Instantiate<GameObject>(_hpBarPrefab, _uiCanvas.transform);
+        _hpBar.SetActive(true);
         _hpBarImage = _hpBar.GetComponentsInChildren<Image>()[1];
 
         var _monsterHpBar = _hpBar.GetComponent<MonsterHpBar>();
@@ -171,15 +172,6 @@ public class MonsterAI : MonoBehaviour
             return;
         }
         _animator.SetTrigger("OnHit");
-        StartCoroutine(OnHitColor());
-    }
-
-    IEnumerator OnHitColor() {
-        _meshRenderer.material.color = Color.white;
-
-        yield return new WaitForSeconds(0.1f);
-
-        _meshRenderer.material.color = _originColor;
     }
 
     IEnumerator Die()
