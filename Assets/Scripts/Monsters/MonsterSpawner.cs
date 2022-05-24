@@ -75,7 +75,7 @@ public class MonsterSpawner : MonoBehaviour
 
     private Quaternion RandomRotation()
     {
-        return Quaternion.Euler(0, Random.Range(0, 180), 0); ;
+        return Quaternion.Euler(0, Random.Range(-180, 180), 0); ;
     }
 
     public GameObject AddMonster()

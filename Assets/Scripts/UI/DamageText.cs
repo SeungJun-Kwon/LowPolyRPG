@@ -10,29 +10,41 @@ public class DamageText : MonoBehaviour
     public Vector3 _offset = new Vector3(0, 1.5f, 0);
     public int _damage;
 
-    private TextMeshPro _text;
-    private float _moveSpeed = 1f;
-    private float _alphaSpeed = 2f;
-    private float _destroyTime = 2f;
-    private Color _alpha, _originColor;
+    [HideInInspector] public Transform _targetTransform;
+
+    private Camera _uiCamera;
+    private Canvas _canvas;
+    private RectTransform _rectParent;
+    private TextMeshProUGUI _text;
+
+    private float _destroyTime = 10f;
+
+    private void Awake()
+    {
+        _canvas = GetComponentInParent<Canvas>();
+        _text = GetComponent<TextMeshProUGUI>();
+        _rectParent = _canvas.GetComponent<RectTransform>();
+    }
 
     private void Start()
     {
-        _text = GetComponent<TextMeshPro>();
-        //_originColor = _text.color;
-        //_text.color = _originColor;
-        _alpha = _text.color;
+        _uiCamera = _canvas.worldCamera;
         _text.text = _damage.ToString();
-        transform.position = transform.position + _offset;
 
         Destroy(gameObject, _destroyTime);
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        transform.Translate(new Vector3(0, _moveSpeed * Time.deltaTime, 0));
-        _alpha.a = Mathf.Lerp(_alpha.a, 0, _alphaSpeed * Time.deltaTime);
+        var _screenPos = Camera.main.WorldToScreenPoint(_targetTransform.position + _offset);
 
-        _text.color = _alpha;
+        if (_screenPos.z < 0.0f)
+            gameObject.SetActive(false);
+        else
+            gameObject.SetActive(true);
+
+        var _localPos = Vector2.zero;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectParent, _screenPos, _uiCamera, out _localPos);
+        transform.localPosition = _localPos;
     }
 }

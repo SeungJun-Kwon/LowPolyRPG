@@ -186,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monster: {fileID: 11400000, guid: 83be6682bda1afb41bcb2c86bab54eb7, type: 2}
   _hitEffect: {fileID: 19800000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
-  _damageText: {fileID: 5058194532403030942, guid: 351d621b5b9e7b441b19185a038b2afd, type: 3}
+  _damageText: {fileID: 4005021116822933497, guid: f8c2fe83beb25de43b2074a32fca9ca6, type: 3}
   _hpBarPrefab: {fileID: 6088810991566962925, guid: 79cca658a8b4af14180f05d28f207a33, type: 3}
   _hpBarOffset: {x: 0, y: 1.2, z: 0}
 --- !u!1 &7208508107640266798

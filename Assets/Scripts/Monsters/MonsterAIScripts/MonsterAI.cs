@@ -48,6 +48,7 @@ public class MonsterAI : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody>();
         _boxColl = GetComponent<BoxCollider>();
         _spawner = GetComponentInParent<MonsterSpawner>();
+        _uiCanvas = GameObject.Find("UI").GetComponent<Canvas>();
     }
 
     private void Start()
@@ -90,7 +91,6 @@ public class MonsterAI : MonoBehaviour
 
     void SetHpBar()
     {
-        _uiCanvas = GameObject.Find("UI").GetComponent<Canvas>();
         _hpBar = Instantiate<GameObject>(_hpBarPrefab, _uiCanvas.transform);
         _hpBarImage = _hpBar.GetComponentsInChildren<Image>()[1];
 
@@ -155,8 +155,10 @@ public class MonsterAI : MonoBehaviour
             int damage = Random.Range(minDamage, maxDamage + 1);
             _monsterHP -= damage;
             _hpBarImage.fillAmount = (float)_monsterHP / (float)_monster._monsterHP;
-            GameObject damageText = Instantiate(_damageText, transform.position, Quaternion.identity);
-            damageText.GetComponent<DamageText>()._damage = damage;
+            GameObject damageObject = Instantiate(_damageText, _uiCanvas.transform);
+            var damageText = damageObject.GetComponent<DamageText>();
+            damageText._damage = damage;
+            damageText._targetTransform = transform;
             Object effect = Instantiate(_hitEffect, transform.position, Quaternion.identity);
         }
         _animator.StopPlayback();
