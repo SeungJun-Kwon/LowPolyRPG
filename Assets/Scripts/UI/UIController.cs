@@ -16,16 +16,11 @@ public class UIController : MonoBehaviour
     [Header("Skills")]
     [SerializeField] public Image[] _skillIcon = new Image[4];
 
-    [Header("Inventory")]
-    public GameObject _inventoryPanel;
-
     [Header("Player Info")]
     [SerializeField] GameObject _playerInfoPanel;
 
-    KeyCode _inventoryOpen = KeyCode.I;
     KeyCode _playerInfo;
 
-    private bool _isInventoryOpen = false;
     private bool _isPlayerInfoOpen = false;
 
     private void Awake()
@@ -36,9 +31,7 @@ public class UIController : MonoBehaviour
             instance = this; //내자신을 instance로 넣어줍니다.
             DontDestroyOnLoad(gameObject); //OnLoad(씬이 로드 되었을때) 자신을 파괴하지 않고 유지
         }
-        else
-        {
-            if (instance != this) //instance가 내가 아니라면 이미 instance가 하나 존재하고 있다는 의미
+        else if (instance != this) { //instance가 내가 아니라면 이미 instance가 하나 존재하고 있다는 의미
                 Destroy(this.gameObject); //둘 이상 존재하면 안되는 객체이니 방금 AWake된 자신을 삭제
         }
         #endregion
@@ -61,22 +54,6 @@ public class UIController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(Input.GetKeyDown(_inventoryOpen))
-        {
-            TryGetComponent<SaveSystem>(out var _saveSystem);
-            if (_isInventoryOpen)
-            {
-                _isInventoryOpen = false;
-                _saveSystem.SaveInventory();
-                _inventoryPanel.SetActive(_isInventoryOpen);
-            }
-            else
-            {
-                _isInventoryOpen = true;
-                _saveSystem.LoadInventory();
-                _inventoryPanel.SetActive(_isInventoryOpen);
-            }
-        }
         if(Input.GetKeyDown(_playerInfo))
         {
             if (!_isPlayerInfoOpen)

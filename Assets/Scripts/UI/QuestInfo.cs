@@ -7,53 +7,77 @@ using TMPro;
 
 public class QuestInfo : MonoBehaviour
 {
-    [SerializeField] GameObject _content;
-    [SerializeField] TextMeshProUGUI _detailText;
-    [SerializeField] GameObject _questPrefab;
+    public static QuestInfo instance;
 
-    List<GameObject> _questList = new List<GameObject>();
+    [SerializeField] GameObject _content;
+    [SerializeField] QuestSlot _questPrefab;
+
+    public TextMeshProUGUI _detailText;
+    public TextMeshProUGUI _expText;
+    public TextMeshProUGUI _goldText;
+
     QuestNPC _npc;
-    Quest[] _quest;
+
+    private void Awake()
+    {
+        if (!instance)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
 
     private void OnEnable()
     {
-        _detailText.text = "";
-        _quest = _npc._quest;
+        //_detailText.text = "";
+        Quest[] quest = _npc._quest;
 
-        Transform[] allChild = _content.GetComponentsInChildren<Transform>();
-        foreach(Transform child in allChild)
-            if (child.name != _content.transform.name)
-                _questList.Add(child.gameObject);
+        List<QuestSlot> questList = new List<QuestSlot>();
+        foreach(QuestSlot child in _content.GetComponentsInChildren<QuestSlot>())
+            questList.Add(child);
 
-        if (_questList.Count < _quest.Length)
+        if (questList.Count < quest.Length)
         {
-            int cnt = _quest.Length - _questList.Count;
+            int cnt = quest.Length - questList.Count;
             for (int i = 0; i < cnt; i++)
             {
-                var quest = Instantiate<GameObject>(_questPrefab, _content.transform);
-                _questList.Add(quest);
+                var questObject = Instantiate(_questPrefab, _content.transform);
+                questObject.gameObject.SetActive(false);
+                questList.Add(questObject);
+            }
+        }
+        else if (questList.Count > quest.Length)
+        {
+            for(int i = quest.Length; i < questList.Count; i++)
+            {
+                questList[i].gameObject.SetActive(false);
             }
         }
 
-        else if (_questList.Count > _quest.Length)
+        for (int i = 0; i < questList.Count; i++)
         {
-            int cnt = _questList.Count - _quest.Length;
-            for (int i = 0; i < cnt; i++)
-            {
-                Destroy(_content.GetComponentInChildren<GameObject>());
-                _questList.RemoveAt(0);
-            }
+            questList[i].SetQuest(quest[i]);
+            questList[i].SetTitle();
+            questList[i].gameObject.SetActive(true);
         }
-        for (int i = 0; i < _questList.Count; i++)
-            _questList[i].GetComponent<TextMeshProUGUI>().text = _quest[i]._title;
     }
 
-    public void SetNPC(QuestNPC npc) => _npc = npc;
-
-    public void GetQuest()
+    private void Update()
     {
-        GameObject currentQuest = EventSystem.current.currentSelectedGameObject;
-        int index = currentQuest.transform.GetSiblingIndex();
-        _detailText.text = _quest[index]._desc;
+        if(Input.GetKeyDown(PlayerKeySetting.instance._esc))
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void SetNPC(QuestNPC npc)
+    {
+        _npc = npc;
+    }
+
+    public void UpdateDetail(Quest currentQuest)
+    {
+        _detailText.text = currentQuest._desc;
+        _expText.text = currentQuest._reward._exp.ToString();
+        _goldText.text = currentQuest._reward._gold.ToString();
     }
 }
