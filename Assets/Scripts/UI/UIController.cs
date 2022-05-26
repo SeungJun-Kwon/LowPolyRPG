@@ -7,10 +7,6 @@ public class UIController : MonoBehaviour
 {
     public static UIController instance;
 
-    [Header("Key Setting")]
-    public KeyCode _inventoryOpen = KeyCode.I;
-    public KeyCode _playerInfoOpen = KeyCode.P;
-
     [Header("HP, MP")]
     [SerializeField] private Image _hpOrb;
     [SerializeField] private Image _mpOrb;
@@ -25,6 +21,9 @@ public class UIController : MonoBehaviour
 
     [Header("Player Info")]
     [SerializeField] GameObject _playerInfoPanel;
+
+    KeyCode _inventoryOpen = KeyCode.I;
+    KeyCode _playerInfo;
 
     private bool _isInventoryOpen = false;
     private bool _isPlayerInfoOpen = false;
@@ -55,6 +54,11 @@ public class UIController : MonoBehaviour
         _currentPlayerMP = _playerMP;
     }
 
+    private void Start()
+    {
+        _playerInfo = PlayerKeySetting.instance._playerInfo;
+    }
+
     private void LateUpdate()
     {
         if(Input.GetKeyDown(_inventoryOpen))
@@ -64,16 +68,16 @@ public class UIController : MonoBehaviour
             {
                 _isInventoryOpen = false;
                 _saveSystem.SaveInventory();
-                _inventoryPanel.SetActive(false);
+                _inventoryPanel.SetActive(_isInventoryOpen);
             }
             else
             {
                 _isInventoryOpen = true;
                 _saveSystem.LoadInventory();
-                _inventoryPanel.SetActive(true);
+                _inventoryPanel.SetActive(_isInventoryOpen);
             }
         }
-        if(Input.GetKeyDown(_playerInfoOpen))
+        if(Input.GetKeyDown(_playerInfo))
         {
             if (!_isPlayerInfoOpen)
             {

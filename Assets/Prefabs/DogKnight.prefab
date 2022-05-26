@@ -1651,6 +1651,8 @@ GameObject:
   - component: {fileID: 8378421799570214865}
   - component: {fileID: 8378421799570214870}
   - component: {fileID: 1296472258032555062}
+  - component: {fileID: -7638486519748481227}
+  - component: {fileID: -4404864178972685456}
   m_Layer: 6
   m_Name: DogKnight
   m_TagString: Player
@@ -1788,7 +1790,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponCollider: {fileID: 8378421798722022725}
   _weaponTrail: {fileID: 8378421798037110094}
-  _attackDelay: 1
+  _attackDelay: 0.6
   _walkSound: []
   _attackSound:
   - {fileID: 8300000, guid: 6d314dd2deabe1348937230e558f2ffe, type: 3}
@@ -1821,6 +1823,36 @@ MonoBehaviour:
   - {fileID: 4376164929660508226, guid: f9ec353de06044345bb0d3b34f057728, type: 3}
   _skillTransform:
   - {fileID: 8378421799939576987}
+--- !u!114 &-7638486519748481227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8378421799746099010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f9528afa4ee3b43bfefe09cd75103d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attack: 323
+  _move: 324
+  _action: 102
+  _playerInfo: 112
+  _skill: 71000000770000006500000072000000
+  _pause: 27
+--- !u!114 &-4404864178972685456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8378421799746099010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d650277018dd7428798fb08444bd48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8378421799746099012
 GameObject:
   m_ObjectHideFlags: 0
