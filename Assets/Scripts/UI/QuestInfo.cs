@@ -7,8 +7,6 @@ using TMPro;
 
 public class QuestInfo : MonoBehaviour
 {
-    public static QuestInfo instance;
-
     [SerializeField] GameObject _content;
     [SerializeField] QuestSlot _questPrefab;
 
@@ -17,14 +15,6 @@ public class QuestInfo : MonoBehaviour
     public TextMeshProUGUI _goldText;
 
     QuestNPC _npc;
-
-    private void Awake()
-    {
-        if (!instance)
-            instance = this;
-        else if (instance != this)
-            Destroy(gameObject);
-    }
 
     private void OnEnable()
     {

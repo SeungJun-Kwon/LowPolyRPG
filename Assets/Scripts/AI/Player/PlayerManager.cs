@@ -54,8 +54,9 @@ public class PlayerManager : MonoBehaviour
         _playerExp += _value;
         if (_playerExp >= _totalExp)
             LevelUp();
-        if(PlayerInfo.instance && PlayerInfo.instance.gameObject.activeSelf)
-            PlayerInfo.instance.UpdatePlayerStatus();
+        PlayerInfo playerInfo = UIController.instance._playerInfo;
+        if (playerInfo.gameObject.activeSelf)
+            playerInfo.UpdatePlayerStatus();
     }
 
     public void LevelUp()

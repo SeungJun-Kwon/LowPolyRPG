@@ -18,8 +18,12 @@ public class UIController : MonoBehaviour
 
     [Header("Player Info")]
     [SerializeField] GameObject _playerInfoPanel;
+    [HideInInspector] public PlayerInfo _playerInfo;
+    KeyCode _playerInfoOpen;
 
-    KeyCode _playerInfo;
+    [Header("Quest Info")]
+    [SerializeField] GameObject _questInfoPanel;
+    [HideInInspector] public QuestInfo _questInfo;
 
     private bool _isPlayerInfoOpen = false;
 
@@ -41,6 +45,8 @@ public class UIController : MonoBehaviour
             PlayerManager.instance = FindObjectOfType<PlayerManager>();
         }
 
+        _playerInfoPanel.TryGetComponent<PlayerInfo>(out _playerInfo);
+        _questInfoPanel.TryGetComponent<QuestInfo>(out _questInfo);
         _playerHP = PlayerManager.instance._playerHP;
         _playerMP = PlayerManager.instance._playerMP;
         _currentPlayerHP = _playerHP;
@@ -49,12 +55,12 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        _playerInfo = PlayerKeySetting.instance._playerInfo;
+        _playerInfoOpen = PlayerKeySetting.instance._playerInfoOpen;
     }
 
     private void LateUpdate()
     {
-        if(Input.GetKeyDown(_playerInfo))
+        if(Input.GetKeyDown(_playerInfoOpen))
         {
             if (!_isPlayerInfoOpen)
             {

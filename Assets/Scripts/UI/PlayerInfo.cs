@@ -18,16 +18,6 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] Text _expPercent;
     [SerializeField] Image _expBar;
 
-    public static PlayerInfo instance;
-
-    private void Awake()
-    {
-        if(!instance)
-        {
-            instance = this;
-        }
-    }
-
     private void OnEnable()
     {
         UpdatePlayerStatus();

@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 8266793135067588168}
   - component: {fileID: 8266793135067588171}
   - component: {fileID: 8266793135067588170}
-  - component: {fileID: 8266793135067588174}
-  - component: {fileID: -707022021790923337}
   - component: {fileID: 4369321227573963928}
   m_Layer: 5
   m_Name: UI
@@ -108,135 +106,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8266793135067588174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8266793135067588165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f50323c91151884693a0c994f3590a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemList: []
-  _quantityList: 
-  _inventoryPanel: {fileID: 0}
---- !u!114 &-707022021790923337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8266793135067588165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22236137b054c094180466b128cff297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemLibrary:
-  - {fileID: 11400000, guid: 252db6b369219d542bcaee2375d743a3, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 11400000, guid: 1a8f46a895e677144896ba48ab78620a, type: 2}
 --- !u!114 &4369321227573963928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,6 +126,9 @@ MonoBehaviour:
   - {fileID: 3047741142006733519}
   - {fileID: 3080734932822313048}
   _playerInfoPanel: {fileID: 4097094775422305781}
+  _playerInfo: {fileID: 0}
+  _questInfoPanel: {fileID: 5794340703493846293}
+  _questInfo: {fileID: 0}
 --- !u!1001 &1976367555314291340
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -390,6 +262,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfeaf56ba814c404d8b0dbfde0baefbf, type: 3}
+--- !u!1 &5794340703493846293 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5405680720512018329, guid: cfeaf56ba814c404d8b0dbfde0baefbf, type: 3}
+  m_PrefabInstance: {fileID: 1976367555314291340}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7667242345876094590 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8145590712106970354, guid: cfeaf56ba814c404d8b0dbfde0baefbf, type: 3}

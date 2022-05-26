@@ -26,6 +26,6 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        QuestInfo.instance.UpdateDetail(_quest);
+        UIController.instance._questInfo.UpdateDetail(_quest);
     }
 }
