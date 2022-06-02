@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     [SerializeField] CapsuleCollider _weaponCollider;
     [SerializeField] TrailRenderer _weaponTrail;
     [SerializeField] float _attackDelay;
@@ -16,11 +18,33 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip[] _dieSound;
     [SerializeField] AudioClip[] _skillSounds;
 
+    PlayerManager _playerManager;
+    public PlayerManager PlayerManager
+    {
+        get
+        {
+            if(_playerManager == null)
+                TryGetComponent<PlayerManager>(out _playerManager);
+            return _playerManager;
+        }
+    }
+
+    SkillManager _skillManager;
+    public SkillManager SkillManager
+    {
+        get
+        {
+            if(_skillManager == null)
+                TryGetComponent<SkillManager>(out _skillManager);
+            return _skillManager;
+        }
+    }
+
     private StateManager _stateManager;
     private Camera _camera;
     private Animator _animator;
     private Rigidbody _rigidBody;
-    private NavMeshAgent _navMeshAgent;
+    [HideInInspector] public NavMeshAgent _navMeshAgent;
     private SkinnedMeshRenderer _meshRenderer;
     private Color _onHitColor;
 
@@ -34,10 +58,21 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        _stateManager = GetComponent<StateManager>();
-        _animator = GetComponent<Animator>();
-        _rigidBody = GetComponent<Rigidbody>();
-        _navMeshAgent = GetComponent<NavMeshAgent>();
+        if (!instance)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else if (instance != this)
+            Destroy(this.gameObject);
+
+        TryGetComponent<StateManager>(out _stateManager);
+        TryGetComponent<Animator>(out _animator);
+        TryGetComponent<Rigidbody>(out _rigidBody);
+        TryGetComponent<NavMeshAgent>(out _navMeshAgent);
+        TryGetComponent<PlayerManager>(out _playerManager);
+        TryGetComponent<SkillManager>(out _skillManager);
+
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
     }
@@ -49,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
         _camera = Camera.main;
         _navMeshAgent.updateRotation = false;
-        _maxSpeed = PlayerManager.instance._playerSpeed;
+        _maxSpeed = _playerManager._playerSpeed;
         _onHitColor = _meshRenderer.material.color;
 
         PlayerKeySetting _keySet = PlayerKeySetting.instance;
@@ -87,17 +122,47 @@ public class PlayerController : MonoBehaviour
 
                 if (Input.GetKeyDown(_skill[0]))
                 {
-                    if (SkillManager.instance.IsReady("Q"))
+                    if (_skillManager.IsReady("Q"))
                     {
-                        if (SkillManager.instance.IsEnemyInRange("Q"))
+                        if (_skillManager.IsEnemyInRange("Q"))
                         {
                             LookMousePosition();
-                            StartCoroutine(OnAttack(SkillManager.instance.GetSkill("Q")._skillDelay, SkillManager.instance.GetSkill("Q")._skillTrigger));
-                            SkillManager.instance.Use("Q");
+                            StartCoroutine(OnAttack(_skillManager.GetSkill("Q")._skillDelay, _skillManager.GetSkill("Q")._skillTrigger));
+                            _skillManager.Use("Q");
                         }
                     }
                 }
+                if(Input.GetKeyDown(_skill[1]))
+                {
+                    if(_skillManager.IsReady("W"))
+                    {
+                        LookMousePosition();
+                        StartCoroutine(OnAttack(_skillManager.GetSkill("W")._skillDelay, _skillManager.GetSkill("W")._skillTrigger));
+                        _skillManager.Use("W");
+                    }
+                }
+                if (Input.GetKeyDown(_skill[2]))
+                {
+                    if (_skillManager.IsReady("E"))
+                    {
+                        LookMousePosition();
+                        StartCoroutine(OnAttack(_skillManager.GetSkill("E")._skillDelay, _skillManager.GetSkill("E")._skillTrigger));
+                        _skillManager.Use("E");
+                    }
+                }
+                if(Input.GetKeyDown(_skill[3]))
+                {
+                    if(_skillManager.IsReady("R")) {
+                        StartCoroutine(OnAttack(_skillManager.GetSkill("R")._skillDelay, _skillManager.GetSkill("R")._skillTrigger));
+                        _skillManager.Use("R");
+                    }
+                }
             }
+        }
+        else
+        {
+            //_navMeshAgent.SetDestination(transform.position);
+            //_navMeshAgent.isStopped = true;
         }
     }
 
@@ -106,7 +171,7 @@ public class PlayerController : MonoBehaviour
         LookMoveDirection();
     }
 
-    void SetDestination(Vector3 _dest)
+    public void SetDestination(Vector3 _dest)
     {
         _navMeshAgent.isStopped = false;
         _navMeshAgent.SetDestination(_dest);
@@ -143,20 +208,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator OnAttack(float startDelay, float endDelay, string trigger)
+    IEnumerator OnCasting(float attackDelay, string trigger)
     {
-        SettingAttackInstance(1);
         _navMeshAgent.SetDestination(transform.position);
-        _animator.SetTrigger(trigger);
-        //endDelay = _animator.GetCurrentAnimatorClipInfo(0).Length;   // 현재 애니메이션의 길이
-        endDelay = _animator.GetCurrentAnimatorStateInfo(0).length / 2;
-        Debug.Log(_animator.GetCurrentAnimatorStateInfo(0).length.ToString());
-        yield return new WaitForSeconds(endDelay);
+        _animator.SetBool(trigger, true);
+        //_animator.GetCurrentAnimatorClipInfo(0).Length;   현재 애니메이션의 길이
+
+        yield return new WaitForSeconds(attackDelay);
+
+        _animator.SetBool(trigger, false);
+        _myState = State.IDLE;
         SettingAttackInstance(0);
     }
 
     IEnumerator OnAttack(float attackDelay, string trigger)
     {
+        _myState = State.ATTACK;
         _navMeshAgent.SetDestination(transform.position);
         _animator.SetTrigger(trigger);
         //_animator.GetCurrentAnimatorClipInfo(0).Length;   현재 애니메이션의 길이

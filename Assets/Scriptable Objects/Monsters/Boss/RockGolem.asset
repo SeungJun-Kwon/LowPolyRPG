@@ -20,6 +20,7 @@ MonoBehaviour:
   _monsterGiveExp: 100
   _monsterMoveSpeed: 3
   _monsterAttackDelay: 5
-  _monsterRange: 0
-  stiffness: 150
-  sitffnessCount: 3
+  _monsterRange: 5
+  _stiffness: 150
+  _stiffnessCount: 3
+  _stiffnessDuration: 5

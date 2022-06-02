@@ -63,6 +63,12 @@ public class SkillManager : MonoBehaviour
         _currentCoolTime[_skillKey] = 0;
     }
 
+    public void Activation(string _key)
+    {
+        int _skillKey = (int)Enum.Parse<SkillKey>(_key);
+        _skillPrefab[_skillKey].SetActive(true);
+    }
+
     public void Instantiate(string _key)
     {
         int _skillKey = (int)Enum.Parse<SkillKey>(_key);

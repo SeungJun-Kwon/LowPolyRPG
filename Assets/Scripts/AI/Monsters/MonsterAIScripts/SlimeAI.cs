@@ -12,14 +12,8 @@ public class SlimeAI : MonsterAI
     private void TryAttack()
     {
         Transform _attackPosition = transform.Find("Center");
-        RaycastHit hit;
-        if(Physics.Raycast(_attackPosition.position, _attackPosition.forward, out hit, _monsterRange))
-        {
-            if(hit.transform.root.tag == "Player")
-            {
-                hit.transform.TryGetComponent<PlayerController>(out var _thePC);
-                _thePC.Damaged(_monsterDamage);
-            }
-        }
+        RaycastHit[] hits = Physics.SphereCastAll(_attackPosition.position, _monsterRange, _attackPosition.up, 0f, LayerMask.GetMask("Player"));
+        if (hits.Length > 0)
+            PlayerController.instance.Damaged(_monsterDamage);
     }
 }

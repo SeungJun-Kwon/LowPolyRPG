@@ -7,8 +7,10 @@ public class Skill : ScriptableObject
     public string _skillDesc;
     public string _skillTrigger;
     public int _skillNumberOfAttack = 1;
+    public int _skillNumberOfEnemy = 1;
     public float _skillDamageMultiplier = 1;
     public float _skillRange = 1;
+    public float _skillDuration = 1;
     public float _skillDelay = 1;
     public float _skillCoolTime = 1;
 }

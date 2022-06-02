@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public static PlayerManager instance;
-
     public string _playerName = "Default";
     public float _playerSpeed = 5;
     public int _playerHP = 100;
     public int _playerMP = 50;
     public int _playerSTR = 5;
-    public int _playerINT = 5;
     public int _playerDEX = 5;
+    public int _playerINT = 5;
     public int _playerLUK = 5;
     public int _playerStatPoint = 0;
     public int _playerPower = 0;
@@ -20,16 +18,11 @@ public class PlayerManager : MonoBehaviour
     public int _playerLv = 1;
     public int _playerExp = 0, _totalExp = 50;
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (instance != this)
-            Destroy(this.gameObject);
-    }
+    int _addedSTR = 0;
+    int _addedDEX = 0;
+    int _addedINT = 0;
+    int _addedLUK = 0;
+    int _addedPower = 0;
 
     private void Start()
     {
@@ -38,25 +31,35 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-            GainExp(_totalExp);
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            LevelUp();
+        }
     }
 
     public void SetPower()
     {
-        _playerPower = (int)(_playerSTR * 2 + _playerDEX * 1 + _playerLUK * 0.5 + _playerINT * 0.1);
-        _playerMinPower = (int)(_playerPower * 0.8);
-        _playerMaxPower = (int)(_playerPower * 1.1);
+        _playerPower = (int)((_playerSTR + _addedSTR) * 2 + (_playerDEX + _addedDEX) * 1 + (_playerLUK + _addedLUK) * 0.5 + (_playerINT + _addedINT) * 0.1);
+        _playerMinPower = (int)((_playerPower + _addedPower) * 0.8);
+        _playerMaxPower = (int)((_playerPower + _addedPower) * 1.1);
+    }
+
+    public void BuffPower(float value)
+    {
+        _addedSTR = (int)(_playerSTR * value);
+        _addedDEX = (int)(_playerDEX * value);
+        _addedLUK = (int)(_playerLUK * value);
+        _addedINT = (int)(_playerINT * value);
     }
 
     public void GainExp(int _value)
     {
         _playerExp += _value;
-        if (_playerExp >= _totalExp)
-            LevelUp();
-        PlayerInfo playerInfo = UIController.instance._playerInfo;
+        PlayerInfo playerInfo = UIController.instance.PlayerInfo;
         if (playerInfo.gameObject.activeSelf)
             playerInfo.UpdatePlayerStatus();
+        if (_playerExp >= _totalExp)
+            LevelUp();
     }
 
     public void LevelUp()
@@ -79,5 +82,8 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
         _playerExp = 0;
+        PlayerInfo playerInfo = UIController.instance.PlayerInfo;
+        if (playerInfo.gameObject.activeSelf)
+            playerInfo.UpdatePlayerStatus();
     }
 }

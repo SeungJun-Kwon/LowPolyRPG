@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum State { IDLE, MOVE, ATTACK, CANMOVE, CANTMOVE, DEAD, };
+public enum State { IDLE, MOVE, ATTACK, CANMOVE, CANTMOVE, DEAD, STUNNED };
 public class StateManager : MonoBehaviour
 {
     bool _canMove;
@@ -10,6 +10,7 @@ public class StateManager : MonoBehaviour
     bool _isAttack;
     bool _isRigidImmuntity;
     bool _isDead;
+    bool _isStunned;
 
     public void SetInitState()
     {
@@ -18,6 +19,7 @@ public class StateManager : MonoBehaviour
         _isAttack = false;
         _isRigidImmuntity = false;
         _isDead = false;
+        _isStunned = false;
     }
 
     public void SetState(State state)
@@ -47,6 +49,11 @@ public class StateManager : MonoBehaviour
             case State.DEAD:
                 _canMove = false;
                 _isDead = true;
+                break;
+            case State.STUNNED:
+                _canMove = false;
+                _isMove = false;
+                _isStunned = true;
                 break;
         }
     }

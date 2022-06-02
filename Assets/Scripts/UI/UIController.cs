@@ -18,7 +18,16 @@ public class UIController : MonoBehaviour
 
     [Header("Player Info")]
     [SerializeField] GameObject _playerInfoPanel;
-    [HideInInspector] public PlayerInfo _playerInfo;
+    PlayerInfo _playerInfo;
+    [HideInInspector] public PlayerInfo PlayerInfo
+    {
+        get
+        {
+            if (!_playerInfo)
+                TryGetComponent<PlayerInfo>(out _playerInfo);
+            return _playerInfo;
+        }
+    }
     KeyCode _playerInfoOpen;
 
     [Header("Quest Info")]
@@ -40,22 +49,23 @@ public class UIController : MonoBehaviour
         }
         #endregion
 
-        if(PlayerManager.instance == null)
-        {
-            PlayerManager.instance = FindObjectOfType<PlayerManager>();
-        }
-
         _playerInfoPanel.TryGetComponent<PlayerInfo>(out _playerInfo);
         _questInfoPanel.TryGetComponent<QuestInfo>(out _questInfo);
-        _playerHP = PlayerManager.instance._playerHP;
-        _playerMP = PlayerManager.instance._playerMP;
-        _currentPlayerHP = _playerHP;
-        _currentPlayerMP = _playerMP;
     }
 
     private void Start()
     {
         _playerInfoOpen = PlayerKeySetting.instance._playerInfoOpen;
+
+        PlayerManager playerManager = PlayerController.instance.PlayerManager;
+        if (playerManager == null)
+        {
+            playerManager = FindObjectOfType<PlayerManager>();
+        }
+        _playerHP = playerManager._playerHP;
+        _playerMP = playerManager._playerMP;
+        _currentPlayerHP = _playerHP;
+        _currentPlayerMP = _playerMP;
     }
 
     private void LateUpdate()

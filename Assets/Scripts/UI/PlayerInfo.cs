@@ -25,7 +25,8 @@ public class PlayerInfo : MonoBehaviour
 
     public void UpdatePlayerStatus()
     {
-        PlayerManager playerManager = PlayerManager.instance;
+        PlayerManager playerManager = PlayerController.instance.PlayerManager;
+        playerManager.SetPower();
         _playerName.text = playerManager._playerName;
         _playerLv.text = playerManager._playerLv.ToString();
         _playerStr.text = playerManager._playerSTR.ToString();
@@ -37,7 +38,6 @@ public class PlayerInfo : MonoBehaviour
         _playerPower[1].text = playerManager._playerMaxPower.ToString();
         _expPercent.text = string.Format("{0:F2}%", ((float)playerManager._playerExp * 100 / (float)playerManager._totalExp).ToString());
         _expBar.fillAmount = (float)playerManager._playerExp / (float)playerManager._totalExp;
-        playerManager.SetPower();
 
         if(playerManager._playerStatPoint <= 0)
         {
@@ -59,7 +59,7 @@ public class PlayerInfo : MonoBehaviour
 
     public void StatUp(int _value)
     {
-        PlayerManager playerManager = PlayerManager.instance;
+        PlayerManager playerManager = PlayerController.instance.PlayerManager;
         if (playerManager._playerStatPoint > 0)
         {
             playerManager._playerStatPoint--;

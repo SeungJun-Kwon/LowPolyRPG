@@ -25,7 +25,6 @@ public class MonsterAI : MonoBehaviour
     protected Rigidbody _rigidBody;
     protected BoxCollider _boxColl;
     protected MonsterSpawner _spawner;
-    protected Vector3 _distanceFromTarget;
     protected Vector3 _originPos;
     protected Color _originColor;
     protected float _moveSpeed;
@@ -82,6 +81,7 @@ public class MonsterAI : MonoBehaviour
         SetHpBar();
         _monsterHP = _monster._monsterHP;
         _originPos = transform.position;
+        _navMesh.SetDestination(_originPos);
         SetTarget(null);
         gameObject.layer = LayerMask.NameToLayer("Monster");
         gameObject.tag = "Enemy";
@@ -109,19 +109,14 @@ public class MonsterAI : MonoBehaviour
             {
                 _navMesh.SetDestination(_originPos);
             }
-            else
+            else if (!_isAttack)
             {
-                _distanceFromTarget = transform.position - _target.position;
-                if (_distanceFromTarget.magnitude > _monsterRange)
-                {
-                    _navMesh.SetDestination(_target.position);
-                    _rigidBody.velocity = Vector3.zero;
-                    _rigidBody.angularVelocity = Vector3.zero;
-                }
-                else if (_distanceFromTarget.magnitude <= _monsterRange && !_isAttack)
-                {
+                _navMesh.SetDestination(_target.position);
+                _rigidBody.velocity = Vector3.zero;
+                _rigidBody.angularVelocity = Vector3.zero;
+                RaycastHit[] hits = Physics.SphereCastAll(transform.position, _monsterRange, transform.up, 0f, LayerMask.GetMask("Player"));
+                if (hits.Length > 0)
                     StartCoroutine(Attack());
-                }
             }
         }
     }
@@ -156,7 +151,7 @@ public class MonsterAI : MonoBehaviour
             int damage = Random.Range(minDamage, maxDamage + 1);
             _monsterHP -= damage;
             _hpBarImage.fillAmount = (float)_monsterHP / (float)_monster._monsterHP;
-            GameObject damageObject = Instantiate(_damageText, _uiCanvas.transform);
+            GameObject damageObject = Instantiate(_damageText);
             var damageText = damageObject.GetComponent<DamageText>();
             damageText._damage = damage;
             damageText._targetTransform = transform;
@@ -179,7 +174,7 @@ public class MonsterAI : MonoBehaviour
         _animator.SetTrigger("Dead");
         _isDead = true;
         _navMesh.enabled = false;
-        PlayerManager.instance.GainExp(_monster._monsterGiveExp);
+        PlayerController.instance.PlayerManager.GainExp(_monster._monsterGiveExp);
         yield return new WaitForSeconds(3f);
 
         gameObject.SetActive(false);
@@ -197,8 +192,7 @@ public class MonsterAI : MonoBehaviour
     {
         if(other.gameObject.tag == "Melee" && !_isDead)
         {
-            PlayerController _playerController = other.GetComponentInParent<PlayerController>();
-            _playerController.TryGetComponent<PlayerManager>(out PlayerManager _playerManager);
+            PlayerManager _playerManager = PlayerController.instance.PlayerManager;
             Damaged(_playerManager._playerMinPower, _playerManager._playerMaxPower, 1, other.transform);
         }
     }

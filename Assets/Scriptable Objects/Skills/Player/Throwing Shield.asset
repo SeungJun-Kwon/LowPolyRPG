@@ -16,7 +16,9 @@ MonoBehaviour:
   _skillDesc: "\uBC29\uD328\uB97C \uB358\uC838 \uC801\uC744 \uACF5\uACA9\uD55C\uB2E4"
   _skillTrigger: ThrowingShield
   _skillNumberOfAttack: 3
-  _skillDamageMultiplier: 1.5
+  _skillNumberOfEnemy: 4
+  _skillDamageMultiplier: 0.5
   _skillRange: 10
+  _skillDuration: 0.1
   _skillDelay: 1
   _skillCoolTime: 5
