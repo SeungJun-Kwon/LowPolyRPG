@@ -101,7 +101,7 @@ public class ThrowingShield : MonoBehaviour
         }
     }
 
-    IEnumerator MoveToDirection()
+    IEnumerator Delay()
     {
         _boxCollider.enabled = false;
 
@@ -118,21 +118,22 @@ public class ThrowingShield : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.transform == _nextTarget)
+        if(other.gameObject.transform == _nextTarget)
         {
-            other.TryGetComponent<MonsterAI>(out var _monsterAI);
             PlayerManager _playerManager = PlayerController.instance.PlayerManager;
             int minDamage = (int)(_playerManager._playerMinPower * _skillDamageMultiplier);
             int maxDamage = (int)(_playerManager._playerMaxPower * _skillDamageMultiplier);
-            if(_nextTarget.gameObject.layer == LayerMask.NameToLayer("Boss")) {
-                _skillNumberOfEnemy = _skill._skillNumberOfEnemy;
-                minDamage *= _skillNumberOfEnemy;
-                maxDamage *= _skillNumberOfEnemy;
+            if(other.gameObject.layer == LayerMask.NameToLayer("Boss"))
+            {
+                other.transform.root.TryGetComponent<BossAI>(out var bossAI);
+                bossAI.Damaged(minDamage, maxDamage, _skillNumberOfAttack);
             }
-            if(_monsterAI)
+            else
+            {
+                other.TryGetComponent<MonsterAI>(out var _monsterAI);
                 _monsterAI.Damaged(minDamage, maxDamage, _skillNumberOfAttack, PlayerController.instance.transform);
-
-            StartCoroutine(MoveToDirection());
+            }
+            StartCoroutine(Delay());
         }
     }
 }

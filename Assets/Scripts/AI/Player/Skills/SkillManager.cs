@@ -79,6 +79,11 @@ public class SkillManager : MonoBehaviour
     {
         int _skillKey = (int)Enum.Parse<SkillKey>(_key);
         float _range = _skill[_skillKey]._skillRange;
+        Collider[] coll = Physics.OverlapSphere(transform.position, _range, LayerMask.GetMask("Boss", "Monster"));
+        for(int i = 0; i < coll.Length; i++)
+        {
+            Debug.Log(coll[i].transform.name);
+        }
         if (Physics.OverlapSphere(transform.position, _range, LayerMask.GetMask("Boss", "Monster")).Length > 0)
         {
             return true;

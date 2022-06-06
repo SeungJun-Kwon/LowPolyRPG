@@ -88,9 +88,6 @@ public class BossAI : MonoBehaviour
                     _isPlayerInRange = true;
                 else
                     _isPlayerInRange = false;
-
-                if (_isPlayerInRange)
-                    StartCoroutine(Attack());
             }
         }
         else
@@ -99,23 +96,8 @@ public class BossAI : MonoBehaviour
         }
     }
 
-    IEnumerator Attack()
-    {
-        _state = State.ATTACK;
-        _navMesh.isStopped = true;
-        _animator.SetFloat("Speed", 0);
-        transform.LookAt(_target);
-        _animator.SetTrigger("StrongPunch");
-
-        yield return new WaitForSeconds(_bossAttackDelay);
-
-        _state = State.IDLE;
-        _navMesh.isStopped = false;
-    }
-
     public void Damaged(int minDamage, int maxDamage, int numberOfAttack)
     {
-        Debug.Log("123");
         for(int i = 0; i < numberOfAttack; i++)
         {
             int damage = Random.Range(minDamage, maxDamage + 1);
@@ -132,7 +114,6 @@ public class BossAI : MonoBehaviour
         {
             StopAllCoroutines();
             _state = State.IDLE;
-            _navMesh.isStopped = true;
             _animator.SetTrigger("OnHit");
             _stiffness = _bossMonster._stiffness;
             _stiffnessCount--;
