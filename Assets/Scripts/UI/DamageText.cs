@@ -17,7 +17,7 @@ public class DamageText : MonoBehaviour
     private RectTransform _rectParent;
     private TextMeshProUGUI _text;
 
-    private float _destroyTime = 10f;
+    private float _destroyTime = 2f;
 
     private void Awake()
     {

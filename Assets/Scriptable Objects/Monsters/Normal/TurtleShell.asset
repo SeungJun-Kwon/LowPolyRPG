@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 833e2293fd3940943adf09e7f7a59826, type: 3}
+  m_Name: TurtleShell
+  m_EditorClassIdentifier: 
+  _monsterType: 0
+  _monsterName: Turtle Shell
+  _monsterLevel: 3
+  _monsterHP: 20
+  _monsterDamage: 7
+  _monsterGiveExp: 10
+  _monsterMoveSpeed: 2
+  _monsterAttackDelay: 2
+  _monsterRange: 2
+  _cognizance: 10
+  _radiusOfAction: 15
+  _isPreempt: 1

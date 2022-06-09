@@ -28,7 +28,7 @@ public class MonsterAI : MonoBehaviour
     protected Vector3 _originPos;
     protected Color _originColor;
     protected float _moveSpeed;
-    protected bool _isDead, _isAttack;
+    protected bool _isDead, _isChase, _isAttack;
 
     protected string _monsterName;
     protected int _monsterLevel;
@@ -86,7 +86,7 @@ public class MonsterAI : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Monster");
         gameObject.tag = "Enemy";
         _isDead = false;
-        _isAttack = false;
+        _isChase = false;
     }
 
     void SetHpBar()
@@ -108,15 +108,23 @@ public class MonsterAI : MonoBehaviour
             if (_target == null)
             {
                 _navMesh.SetDestination(_originPos);
+                return;
             }
-            else if (!_isAttack)
+
+            if (_isChase)
             {
                 _navMesh.SetDestination(_target.position);
                 _rigidBody.velocity = Vector3.zero;
                 _rigidBody.angularVelocity = Vector3.zero;
                 RaycastHit[] hits = Physics.SphereCastAll(transform.position, _monsterRange, transform.up, 0f, LayerMask.GetMask("Player"));
                 if (hits.Length > 0)
-                    StartCoroutine(Attack());
+                    _isChase = false;
+            }
+            else
+            {
+                _navMesh.isStopped = true;
+                _rigidBody.velocity = Vector3.zero;
+                _rigidBody.angularVelocity = Vector3.zero;
             }
         }
     }
@@ -124,21 +132,6 @@ public class MonsterAI : MonoBehaviour
     public void SetTarget(Transform _targetTf)
     {
         _target = _targetTf;
-    }
-
-    IEnumerator Attack()
-    {
-        _isAttack = true;
-        _navMesh.isStopped = true;
-        transform.LookAt(_target);
-        _rigidBody.velocity = Vector3.zero;
-        _rigidBody.angularVelocity = Vector3.zero;
-        _animator.SetTrigger("Attack");
-
-        yield return new WaitForSeconds(_monsterAttackDelay);
-
-        _isAttack = false;
-        _navMesh.isStopped = false;
     }
 
     public void Damaged(int minDamage, int maxDamage, int numberOfAttack, Transform target)
@@ -190,7 +183,7 @@ public class MonsterAI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Melee" && !_isDead)
+        if (other.gameObject.tag == "Melee" && !_isDead)
         {
             PlayerManager _playerManager = PlayerController.instance.PlayerManager;
             Damaged(_playerManager._playerMinPower, _playerManager._playerMaxPower, 1, other.transform);
