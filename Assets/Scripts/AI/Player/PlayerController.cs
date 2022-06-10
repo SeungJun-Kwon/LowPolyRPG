@@ -74,6 +74,9 @@ public class PlayerController : MonoBehaviour
         TryGetComponent<SkillManager>(out _skillManager);
 
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
+        _camera = Camera.main;
+
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
     }
 
@@ -82,7 +85,6 @@ public class PlayerController : MonoBehaviour
         _myState = State.IDLE;
         _stateManager.SetState(_myState);
 
-        _camera = Camera.main;
         _navMeshAgent.updateRotation = false;
         _maxSpeed = _playerManager._playerSpeed;
         _onHitColor = _meshRenderer.material.color;
