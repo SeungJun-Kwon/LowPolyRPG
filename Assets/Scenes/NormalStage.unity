@@ -37257,18 +37257,6 @@ PrefabInstance:
       propertyPath: _attackSound
       value: PlayerSwordSwing0
       objectReference: {fileID: 0}
-    - target: {fileID: 8378421799570214871, guid: 63bbce4e9d9b9ab438c914e66e4acca3, type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8378421799570214871, guid: 63bbce4e9d9b9ab438c914e66e4acca3, type: 3}
-      propertyPath: m_Constraints
-      value: 116
-      objectReference: {fileID: 0}
-    - target: {fileID: 8378421799570214871, guid: 63bbce4e9d9b9ab438c914e66e4acca3, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8378421799746098816, guid: 63bbce4e9d9b9ab438c914e66e4acca3, type: 3}
       propertyPath: m_Layer
       value: 6

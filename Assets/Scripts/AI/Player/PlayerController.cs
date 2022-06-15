@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            if(_playerManager == null)
+            if (_playerManager == null)
                 TryGetComponent<PlayerManager>(out _playerManager);
             return _playerManager;
         }
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            if(_skillManager == null)
+            if (_skillManager == null)
                 TryGetComponent<SkillManager>(out _skillManager);
             return _skillManager;
         }
@@ -78,13 +78,12 @@ public class PlayerController : MonoBehaviour
         _camera = Camera.main;
 
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+        _myState = State.IDLE;
+        _stateManager.SetState(_myState);
     }
 
     void Start()
     {
-        _myState = State.IDLE;
-        _stateManager.SetState(_myState);
-
         _navMeshAgent.updateRotation = false;
         _maxSpeed = _playerManager._playerSpeed;
         _onHitColor = _meshRenderer.material.color;
@@ -114,8 +113,9 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (Input.GetKey(_move))
                 {
+                    int layer = 1 << LayerMask.NameToLayer("Ground");
                     RaycastHit hit;
-                    if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit))
+                    if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit, 100f, layer))
                     {
                         _myState = State.MOVE;
                         SetDestination(hit.point);
@@ -134,9 +134,9 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-                if(Input.GetKeyDown(_skill[1]))
+                if (Input.GetKeyDown(_skill[1]))
                 {
-                    if(_skillManager.IsReady("W"))
+                    if (_skillManager.IsReady("W"))
                     {
                         LookMousePosition();
                         StartCoroutine(OnAttack(_skillManager.GetSkill("W")._skillDelay, _skillManager.GetSkill("W")._skillTrigger));
@@ -152,9 +152,10 @@ public class PlayerController : MonoBehaviour
                         _skillManager.Use("E");
                     }
                 }
-                if(Input.GetKeyDown(_skill[3]))
+                if (Input.GetKeyDown(_skill[3]))
                 {
-                    if(_skillManager.IsReady("R")) {
+                    if (_skillManager.IsReady("R"))
+                    {
                         StartCoroutine(OnAttack(_skillManager.GetSkill("R")._skillDelay, _skillManager.GetSkill("R")._skillTrigger));
                         _skillManager.Use("R");
                     }
@@ -200,8 +201,9 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         Ray _inputRay = _camera.ScreenPointToRay(Input.mousePosition);
         float _rayLength = 100f;
+        int layer = 1 << LayerMask.NameToLayer("Ground");
         Quaternion _attackRotation;
-        if (Physics.Raycast(_inputRay, out hit, _rayLength))
+        if (Physics.Raycast(_inputRay, out hit, _rayLength, layer))
         {
             Vector3 _playerToMouse = hit.point - transform.position;
             _playerToMouse.y = 0f;

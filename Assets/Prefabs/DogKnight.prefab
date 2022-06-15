@@ -826,7 +826,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8378421799746456208}
   - component: {fileID: 8378421799751375418}
-  - component: {fileID: 6623934490949701124}
   m_Layer: 6
   m_Name: polySurface1
   m_TagString: Player
@@ -970,20 +969,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00000008940697, y: 0.17928879, z: 0.7022597}
     m_Extent: {x: 0.87674475, y: 0.61002564, z: 0.75376505}
   m_DirtyAABB: 0
---- !u!64 &6623934490949701124
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8378421799746098864}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300004, guid: a58d63122b09e9144938cd6a1ece4824, type: 3}
 --- !u!1 &8378421799746098868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1699,12 +1684,12 @@ GameObject:
   - component: {fileID: 8378421799755457790}
   - component: {fileID: 8378421799570214871}
   - component: {fileID: 8378421799570214869}
+  - component: {fileID: 4913511163074914613}
   - component: {fileID: 8378421799570214865}
   - component: {fileID: 8378421799570214870}
   - component: {fileID: 1296472258032555062}
   - component: {fileID: -7638486519748481227}
   - component: {fileID: -4404864178972685456}
-  - component: {fileID: 6584884466796707432}
   m_Layer: 6
   m_Name: DogKnight
   m_TagString: Player
@@ -1763,7 +1748,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!195 &8378421799570214869
 NavMeshAgent:
@@ -1783,10 +1768,24 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 1.5
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &4913511163074914613
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8378421799746099010}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!114 &8378421799570214865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1898,20 +1897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d650277018dd7428798fb08444bd48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!64 &6584884466796707432
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8378421799746099010}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!1 &8378421799746099012
 GameObject:
   m_ObjectHideFlags: 0
