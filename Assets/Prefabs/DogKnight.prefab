@@ -1798,6 +1798,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d47d08bf07ac84f9ea7d97a18b5b15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentQuest: []
+  _completedQuest: []
   _playerName: 
   _playerSpeed: 5
   _playerHP: 100
@@ -1810,7 +1812,7 @@ MonoBehaviour:
   _playerPower: 0
   _playerMinPower: 0
   _playerMaxPower: 0
-  _playerLv: 0
+  _playerLv: 1
   _playerExp: 0
   _totalExp: 50
 --- !u!114 &8378421799570214870
@@ -1883,6 +1885,7 @@ MonoBehaviour:
   _move: 324
   _action: 102
   _playerInfoOpen: 112
+  _questInfoOpen: 108
   _skill: 71000000770000006500000072000000
   _esc: 27
 --- !u!114 &-4404864178972685456

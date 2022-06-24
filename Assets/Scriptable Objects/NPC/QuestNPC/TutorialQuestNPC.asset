@@ -15,4 +15,5 @@ MonoBehaviour:
   _name: "\uD29C\uD1A0\uB9AC\uC5BC"
   _type: 0
   _quest:
-  - {fileID: 11400000, guid: a6974cb0abd7eba4880d2ebf58392007, type: 2}
+  - {fileID: 11400000, guid: fcfef4eb83348eb4383e81d2ba101493, type: 2}
+  - {fileID: 11400000, guid: b8aad5c842e794a47a90eb6447a06fc3, type: 2}

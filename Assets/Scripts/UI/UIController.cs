@@ -24,7 +24,7 @@ public class UIController : MonoBehaviour
         get
         {
             if (!_playerInfo)
-                TryGetComponent<PlayerInfo>(out _playerInfo);
+                _playerInfoPanel.TryGetComponent<PlayerInfo>(out _playerInfo);
             return _playerInfo;
         }
     }
@@ -32,9 +32,20 @@ public class UIController : MonoBehaviour
 
     [Header("Quest Info")]
     [SerializeField] GameObject _questInfoPanel;
-    [HideInInspector] public QuestInfo _questInfo;
+    QuestInfo _questInfo;
+    [HideInInspector] public QuestInfo QuestInfo
+    {
+        get
+        {
+            if (!_questInfo)
+                _questInfoPanel.TryGetComponent<QuestInfo>(out _questInfo);
+            return _questInfo;
+        }
+    }
+    KeyCode _questInfoOpen;
 
-    private bool _isPlayerInfoOpen = false;
+    bool _isPlayerInfoOpen = false;
+    bool _isQuestInfoOpen = false;
 
     private void Awake()
     {
@@ -55,7 +66,9 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        _playerInfoOpen = PlayerKeySetting.instance._playerInfoOpen;
+        PlayerKeySetting playerKeySetting = PlayerController.instance.PlayerKeySetting;
+        _playerInfoOpen = playerKeySetting._playerInfoOpen;
+        _questInfoOpen = playerKeySetting._questInfoOpen;
 
         PlayerManager playerManager = PlayerController.instance.PlayerManager;
         if (playerManager == null)
@@ -72,16 +85,25 @@ public class UIController : MonoBehaviour
     {
         if(Input.GetKeyDown(_playerInfoOpen))
         {
+            _isPlayerInfoOpen = _playerInfo.gameObject.activeSelf;
+
             if (!_isPlayerInfoOpen)
-            {
                 _playerInfoPanel.SetActive(true);
-                _isPlayerInfoOpen = true;
+            else
+                _playerInfoPanel.SetActive(false);
+        }
+
+        if(Input.GetKeyDown(_questInfoOpen))
+        {
+            _isQuestInfoOpen = _questInfo.gameObject.activeSelf;
+            if (!_isQuestInfoOpen)
+            {
+                List<Quest> currentQuest = PlayerController.instance.PlayerManager.GetCurrentQuests();
+                _questInfo.SetQuest(currentQuest);
+                _questInfoPanel.SetActive(true);
             }
             else
-            {
-                _playerInfoPanel.SetActive(false);
-                _isPlayerInfoOpen = false;
-            }
+                _questInfoPanel.SetActive(false);
         }
 
         _hpOrb.fillAmount = Mathf.Lerp(_hpOrb.fillAmount, (float)_currentPlayerHP / (float)_playerHP, Time.deltaTime * 5f);

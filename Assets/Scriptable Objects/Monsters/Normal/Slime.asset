@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833e2293fd3940943adf09e7f7a59826, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: 
+  _monsterType: 0
   _monsterName: Slime
   _monsterLevel: 2
   _monsterHP: 15
@@ -20,6 +21,6 @@ MonoBehaviour:
   _monsterMoveSpeed: 2
   _monsterAttackDelay: 2
   _monsterRange: 2
-  _cognizance: 10
-  _radiusOfAction: 15
+  _cognizance: 5
+  _radiusOfAction: 10
   _isPreempt: 0

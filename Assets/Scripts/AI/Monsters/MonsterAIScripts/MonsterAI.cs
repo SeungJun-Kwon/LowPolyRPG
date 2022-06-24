@@ -167,7 +167,21 @@ public class MonsterAI : MonoBehaviour
         _animator.SetTrigger("Dead");
         _isDead = true;
         _navMesh.enabled = false;
-        PlayerController.instance.PlayerManager.GainExp(_monster._monsterGiveExp);
+
+        PlayerManager playerManager = PlayerController.instance.PlayerManager;
+        playerManager.GainExp(_monster._monsterGiveExp);
+
+        List<HuntingQuest> playerQuest = new List<HuntingQuest>();
+        foreach(Quest quest in playerManager.GetCurrentQuests())
+            if(quest._type == Quest.Type.HUNTING)
+                playerQuest.Add((HuntingQuest)quest);
+
+        foreach(HuntingQuest quest in playerQuest)
+        {
+            if (quest._targetMonster == _monster)
+                quest.HuntMonster();
+        }
+
         yield return new WaitForSeconds(3f);
 
         gameObject.SetActive(false);
@@ -178,7 +192,8 @@ public class MonsterAI : MonoBehaviour
         Destroy(_hpBar);
         if (!_spawner)
             _spawner = GetComponentInParent<MonsterSpawner>();
-        _spawner.RemoveMonster(gameObject);
+        if(_spawner)
+            _spawner.RemoveMonster(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)

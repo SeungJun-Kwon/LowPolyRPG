@@ -7,13 +7,15 @@ public class Reward
     public int _gold;
 }
 
-[CreateAssetMenu(fileName = "Quest", menuName = "NPC/Quest")]
 public class Quest : ScriptableObject
 {
-    public enum Type { MAIN, SUB, }
+    public enum Type { DIALOGUE, HUNTING }
 
     public string _title;
     public Type _type;
+    public NPC _startNPC;
     public string _desc;
     public Reward _reward;
+    public bool _canComplete = false;
+    public int _requiredLevel = 1;
 }

@@ -21,7 +21,7 @@ public class NPCAI : MonoBehaviour
 
     private void Start()
     {
-        _action = PlayerKeySetting.instance._action;
+        _action = PlayerController.instance.PlayerKeySetting._action;
     }
 
     private void Update()

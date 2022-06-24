@@ -21,7 +21,7 @@ public class Dialogue : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(PlayerKeySetting.instance._action))
+        if(Input.GetKeyDown(PlayerController.instance.PlayerKeySetting._action))
         {
             _cnt++;
             if(_cnt >= _npc._dialogue.Length)
@@ -29,7 +29,7 @@ public class Dialogue : MonoBehaviour
             else
                 _dialogue.text = _npc._dialogue[_cnt];
         }
-        else if(Input.GetKeyDown(PlayerKeySetting.instance._esc))
+        else if(Input.GetKeyDown(PlayerController.instance.PlayerKeySetting._esc))
         {
             gameObject.SetActive(false);
         }

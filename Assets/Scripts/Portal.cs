@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneTest : MonoBehaviour
+public class Portal : MonoBehaviour
 {
     [SerializeField] string _currentScene;
     [SerializeField] string _nextScene;
@@ -12,7 +12,6 @@ public class SceneTest : MonoBehaviour
     {
         if(other.transform.tag == "Player")
         {
-            Debug.Log("123");
             SceneManager.LoadScene(_nextScene);
         }
     }

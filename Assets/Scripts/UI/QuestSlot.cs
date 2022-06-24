@@ -26,6 +26,18 @@ public class QuestSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        UIController.instance._questInfo.UpdateDetail(_quest);
+        int index = 0;
+        PlayerManager playerManager = PlayerController.instance.PlayerManager;
+        List<Quest> currentQuests, completedQuests;
+        currentQuests = playerManager.GetCurrentQuests();
+        completedQuests = playerManager.GetCompletedQuests();
+        if (completedQuests.Contains(_quest))
+            index = 2;
+        else if (currentQuests.Contains(_quest))
+            index = 1;
+        else
+            index = 0;
+
+        UIController.instance.QuestInfo.UpdateDetail(_quest, index);
     }
 }

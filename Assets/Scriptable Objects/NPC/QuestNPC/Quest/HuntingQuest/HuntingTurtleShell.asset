@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a8df3718a9142343b027c8d25f04796, type: 3}
+  m_Name: HuntingTurtleShell
+  m_EditorClassIdentifier: 
+  _title: "\uD130\uD2C0\uC258 \uC0AC\uB0E5"
+  _type: 1
+  _startNPC: {fileID: 11400000, guid: 576b40006af4f37499fe40e6d9d3e59d, type: 2}
+  _desc: "\uC774\uBC88\uC5D4 \uD130\uD2C0\uC258 3\uB9C8\uB9AC\uB97C \uC0AC\uB0E5\uD574\uBCF4\uAC8C.
+    \uC2AC\uB77C\uC784\uBCF4\uB2E4 \uAC15\uD55C \uBAAC\uC2A4\uD130\uC774\uB2C8 \uC8FC\uC758\uD558\uB3C4\uB85D"
+  _reward:
+    _exp: 30
+    _gold: 10
+  _canComplete: 1
+  _requiredLevel: 3
+  _targetMonster: {fileID: 11400000, guid: 75d7c7281db7a934caca57aa9a4cfc63, type: 2}
+  _numberOfHunts: 3

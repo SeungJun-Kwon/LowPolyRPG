@@ -40,6 +40,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    PlayerKeySetting _playerKeySetting;
+    public PlayerKeySetting PlayerKeySetting
+    {
+        get
+        {
+            if (_playerKeySetting == null)
+                TryGetComponent<PlayerKeySetting>(out _playerKeySetting);
+            return _playerKeySetting;
+        }
+    }
+
     private StateManager _stateManager;
     private Camera _camera;
     private Animator _animator;
@@ -72,6 +83,7 @@ public class PlayerController : MonoBehaviour
         TryGetComponent<NavMeshAgent>(out _navMeshAgent);
         TryGetComponent<PlayerManager>(out _playerManager);
         TryGetComponent<SkillManager>(out _skillManager);
+        TryGetComponent<PlayerKeySetting>(out _playerKeySetting);
 
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -88,7 +100,7 @@ public class PlayerController : MonoBehaviour
         _maxSpeed = _playerManager._playerSpeed;
         _onHitColor = _meshRenderer.material.color;
 
-        PlayerKeySetting _keySet = PlayerKeySetting.instance;
+        PlayerKeySetting _keySet = PlayerController.instance.PlayerKeySetting;
         _attack = _keySet._attack;
         _move = _keySet._move;
         _action = _keySet._action;

@@ -1,9 +1,10 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "QuestNPC", menuName = "NPC/QuestNPC")]
 public class QuestNPC : NPC
 {
-    public Quest[] _quest;
+    public List<Quest> _quest;
 
     private void Awake()
     {

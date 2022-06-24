@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    [SerializeField] List<Quest> _currentQuest;
+    [SerializeField] List<Quest> _completedQuest;
+
     public string _playerName = "Default";
     public float _playerSpeed = 5;
     public int _playerHP = 100;
@@ -85,5 +88,31 @@ public class PlayerManager : MonoBehaviour
         PlayerInfo playerInfo = UIController.instance.PlayerInfo;
         if (playerInfo.gameObject.activeSelf)
             playerInfo.UpdatePlayerStatus();
+    }
+
+    public List<Quest> GetCurrentQuests()
+    {
+        return _currentQuest;
+    }
+
+    public List<Quest> GetCompletedQuests()
+    {
+        return _completedQuest;
+    }
+
+    public void AddQuest(Quest quest)
+    {
+        _currentQuest.Add(quest);
+    }
+
+    public void RemoveQuest(Quest quest)
+    {
+        _currentQuest.Remove(quest);
+    }
+
+    public void CompleteQuest(Quest quest)
+    {
+        _currentQuest.Remove(quest);
+        _completedQuest.Add(quest);
     }
 }

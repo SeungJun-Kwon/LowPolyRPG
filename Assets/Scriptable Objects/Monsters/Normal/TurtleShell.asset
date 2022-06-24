@@ -21,6 +21,6 @@ MonoBehaviour:
   _monsterMoveSpeed: 2
   _monsterAttackDelay: 2
   _monsterRange: 2
-  _cognizance: 10
-  _radiusOfAction: 15
+  _cognizance: 5
+  _radiusOfAction: 10
   _isPreempt: 1
