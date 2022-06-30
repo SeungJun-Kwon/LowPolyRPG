@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -24,7 +25,7 @@ public class QuestInfo : MonoBehaviour
 
     private void OnEnable()
     {
-        _detailText.text = "";
+        _detail.SetActive(false);
 
         List<QuestSlot> questList = new List<QuestSlot>();
         foreach (QuestSlot child in _content.GetComponentsInChildren<QuestSlot>())
@@ -51,7 +52,7 @@ public class QuestInfo : MonoBehaviour
             }
 
             if (_quest.Count > 0)
-                for (int i = 0; i < questList.Count; i++)
+                for (int i = 0; i < _quest.Count; i++)
                 {
                     if (PlayerController.instance.PlayerManager._playerLv >= _quest[i]._requiredLevel)
                     {
@@ -61,8 +62,6 @@ public class QuestInfo : MonoBehaviour
                     }
                 }
         }
-
-        _detail.SetActive(false);
     }
 
     private void Update()
@@ -75,12 +74,19 @@ public class QuestInfo : MonoBehaviour
 
     public void SetQuest(QuestNPC npc)
     {
-        _quest = npc._quest;
+        _quest = npc._quest.ToList();
+
+        PlayerManager playerManager = PlayerController.instance.PlayerManager;
+        List<Quest> playerCompletedQuest = playerManager.GetCompletedQuests();
+        if (playerCompletedQuest.Count <= 0) return;
+        for(int i = 0; i < _quest.Count; i++)
+            if(playerCompletedQuest.Contains(_quest[i]))
+                _quest.RemoveAt(i);
     }
 
     public void SetQuest(List<Quest> quest)
     {
-        _quest = quest;
+        _quest = quest.ToList();
     }
 
     public void AcceptQuest()

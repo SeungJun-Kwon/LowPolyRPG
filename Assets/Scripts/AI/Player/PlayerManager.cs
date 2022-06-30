@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] List<Quest> _currentQuest;
-    [SerializeField] List<Quest> _completedQuest;
-
     public string _playerName = "Default";
     public float _playerSpeed = 5;
     public int _playerHP = 100;
@@ -20,6 +17,9 @@ public class PlayerManager : MonoBehaviour
     public int _playerMinPower = 0, _playerMaxPower = 0;
     public int _playerLv = 1;
     public int _playerExp = 0, _totalExp = 50;
+
+    List<Quest> _currentQuest = new List<Quest>();
+    List<Quest> _completedQuest = new List<Quest>();
 
     int _addedSTR = 0;
     int _addedDEX = 0;

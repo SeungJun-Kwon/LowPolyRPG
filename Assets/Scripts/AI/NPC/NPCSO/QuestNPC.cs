@@ -6,8 +6,5 @@ public class QuestNPC : NPC
 {
     public List<Quest> _quest;
 
-    private void Awake()
-    {
-        this._type = Type.QuestNPC;
-    }
+    private void Awake() => this._type = Type.QuestNPC;
 }
