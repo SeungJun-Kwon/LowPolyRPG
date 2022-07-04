@@ -132,6 +132,7 @@ public class MonsterAI : MonoBehaviour
     public void SetTarget(Transform _targetTf)
     {
         _target = _targetTf;
+        _isChase = true;
     }
 
     public void Damaged(int minDamage, int maxDamage, int numberOfAttack, Transform target)
@@ -167,6 +168,7 @@ public class MonsterAI : MonoBehaviour
         _animator.SetTrigger("Dead");
         _isDead = true;
         _navMesh.enabled = false;
+        _target = null;
 
         PlayerManager playerManager = PlayerController.instance.PlayerManager;
         playerManager.GainExp(_monster._monsterGiveExp);

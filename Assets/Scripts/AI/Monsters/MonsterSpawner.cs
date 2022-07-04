@@ -7,6 +7,7 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField] GameObject _monsterPrefab;
     [SerializeField] NormalMonster _monster;
     [SerializeField] float _spawnRate = 0f;
+    [SerializeField] float _monsterSpawnDistance = 1.5f;
     [SerializeField] int _monsterSpawnQuantity = 2;
 
     [SerializeField] List<GameObject> _spawnMonsters = new List<GameObject>();
@@ -67,8 +68,8 @@ public class MonsterSpawner : MonoBehaviour
 
     private Vector3 RandomLocation()
     {
-        _xPos = Random.Range(-5, 5);
-        _zPos = Random.Range(-5, 5);
+        _xPos = Random.Range(-_monsterSpawnDistance, _monsterSpawnDistance);
+        _zPos = Random.Range(-_monsterSpawnDistance, _monsterSpawnDistance);
         _randomVector = new Vector3(_xPos, 0, _zPos);
         return transform.position + _randomVector;
     }
