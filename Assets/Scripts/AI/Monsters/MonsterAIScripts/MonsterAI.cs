@@ -81,8 +81,7 @@ public class MonsterAI : MonoBehaviour
         SetHpBar();
         _monsterHP = _monster._monsterHP;
         _originPos = transform.position;
-        _navMesh.SetDestination(_originPos);
-        SetTarget(null);
+        _target = null;
         gameObject.layer = LayerMask.NameToLayer("Monster");
         gameObject.tag = "Enemy";
         _isDead = false;
@@ -168,7 +167,6 @@ public class MonsterAI : MonoBehaviour
         _animator.SetTrigger("Dead");
         _isDead = true;
         _navMesh.enabled = false;
-        _target = null;
 
         PlayerManager playerManager = PlayerController.instance.PlayerManager;
         playerManager.GainExp(_monster._monsterGiveExp);

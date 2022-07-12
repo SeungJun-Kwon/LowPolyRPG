@@ -61,6 +61,7 @@ public class MonsterSpawner : MonoBehaviour
                 var monster = GetMonster();
                 monster.transform.position = RandomLocation();
                 monster.transform.rotation = RandomRotation();
+                monster.SetActive(true);
             }
             yield return new WaitForSeconds(_spawnRate);
         }
@@ -83,7 +84,6 @@ public class MonsterSpawner : MonoBehaviour
     {
         var newMonster = Instantiate(_monsterPrefab, RandomLocation(), RandomRotation());
         newMonster.transform.SetParent(transform);
-        newMonster.SetActive(true);
         _spawnMonsters.Add(newMonster);
         _currentMonsterQuantity++;
         return newMonster;
@@ -94,7 +94,6 @@ public class MonsterSpawner : MonoBehaviour
         if(_restMonsters.Count > 0)
         {
             var monster = _restMonsters[0];
-            monster.SetActive(true);
             _spawnMonsters.Add(monster);
             _restMonsters.Remove(monster);
             _currentMonsterQuantity++;
