@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 23542803707668920}
   - component: {fileID: -5369336195553213830}
   m_Layer: 3
-  m_Name: ForestGroundDirt
+  m_Name: ForestGroundSand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f731a2ae89bef7a47a008811dfbd4680, type: 2}
+  - {fileID: 2100000, guid: b5f371fcc8cfcb84385db043e1239fc9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,4 +96,4 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.9999998, y: 2, z: 2.0000005}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.000000923872, y: 0, z: 0}
