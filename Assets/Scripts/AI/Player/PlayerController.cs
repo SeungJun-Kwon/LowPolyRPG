@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
 
         _camera = Camera.main;
 
-        transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+        //transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
         _myState = State.IDLE;
         _stateManager.SetState(_myState);
     }

@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class RockGolemAI : BossAI
 {
-    Collider coll;
+    Transform _punchPosition;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _punchPosition = transform.Find("StrongPunch");
+    }
 
     protected override void Update()
     {
@@ -26,6 +32,15 @@ public class RockGolemAI : BossAI
 
         _state = State.IDLE;
         _navMesh.isStopped = false;
+    }
+
+    void StrongPunch()
+    {
+        var hits = Physics.SphereCastAll(_punchPosition.position, 5f, _punchPosition.forward, LayerMask.GetMask("Player"));
+        if (hits.Length > 0)
+        {
+            PlayerController.instance.Damaged(_bossDamage);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

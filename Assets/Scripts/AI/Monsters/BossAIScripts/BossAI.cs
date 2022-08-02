@@ -38,7 +38,7 @@ public class BossAI : MonoBehaviour
 
     protected State _state;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         TryGetComponent<StateManager>(out _stateManager);
         TryGetComponent<Rigidbody>(out _rigidBody);

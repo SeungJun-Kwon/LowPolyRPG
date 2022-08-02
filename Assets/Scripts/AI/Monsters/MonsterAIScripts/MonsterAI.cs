@@ -19,6 +19,7 @@ public class MonsterAI : MonoBehaviour
     private GameObject _hpBar;
 
     protected Transform _target;
+    protected Transform _attackPosition;
     protected Animator _animator;
     protected SkinnedMeshRenderer _meshRenderer;
     protected NavMeshAgent _navMesh;
@@ -48,6 +49,8 @@ public class MonsterAI : MonoBehaviour
         _boxColl = GetComponent<BoxCollider>();
         _spawner = GetComponentInParent<MonsterSpawner>();
         _uiCanvas = GameObject.Find("UI").GetComponent<Canvas>();
+
+        _attackPosition = transform.Find("Center");
     }
 
     private void Start()
