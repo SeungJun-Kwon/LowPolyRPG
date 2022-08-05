@@ -138,6 +138,7 @@ public class BossAI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.transform.tag);
         if (other.gameObject.tag == "Melee" && _state != State.DEAD)
         {
             PlayerManager _playerManager = PlayerController.instance.PlayerManager;

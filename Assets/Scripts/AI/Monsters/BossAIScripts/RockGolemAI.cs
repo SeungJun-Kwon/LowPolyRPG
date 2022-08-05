@@ -42,9 +42,4 @@ public class RockGolemAI : BossAI
             PlayerController.instance.Damaged(_bossDamage);
         }
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        
-    }
 }
