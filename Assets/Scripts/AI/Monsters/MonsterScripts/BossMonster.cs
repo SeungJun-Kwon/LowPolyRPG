@@ -6,4 +6,9 @@ public class BossMonster : Monster
     public int _stiffness;
     public int _stiffnessCount;
     public float _stiffnessDuration;
+
+    [Header("Attack & Skill")]
+    public string[] _attackName;
+    public Skill[] _skill;
+    public GameObject[] _skillPrefab;
 }

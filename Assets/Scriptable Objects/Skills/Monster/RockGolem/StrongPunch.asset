@@ -17,7 +17,9 @@ MonoBehaviour:
     \uB0A0\uB824\uBC84\uB9B0\uB2E4"
   _skillTrigger: StrongPunch
   _skillNumberOfAttack: 3
+  _skillNumberOfEnemy: 1
   _skillDamageMultiplier: 1.5
-  _skillRange: 10
+  _skillRange: 5
+  _skillDuration: 1
   _skillDelay: 5
   _skillCoolTime: 10

@@ -4,29 +4,36 @@ using UnityEngine;
 
 public class RockGolemAI : BossAI
 {
-    Transform _punchPosition;
+    [SerializeField] Transform _punchPosition;
 
     protected override void Awake()
     {
         base.Awake();
-        _punchPosition = transform.Find("StrongPunch");
     }
 
     protected override void Update()
     {
         base.Update();
+        if(_state != State.ATTACK)
+        {
+            if(_isPlayerInRange)
+                StartCoroutine(Attack(_attackName[0]));
+            else
+            {
 
-        if (_isPlayerInRange && _state != State.ATTACK)
-            StartCoroutine(Attack());
+            }
+        }
+
+        Debug.DrawRay(_punchPosition.position, _punchPosition.forward, Color.red);
     }
 
-    IEnumerator Attack()
+    IEnumerator Attack(string attackName)
     {
         _state = State.ATTACK;
         _navMesh.isStopped = true;
         _animator.SetFloat("Speed", 0);
         transform.LookAt(_target);
-        _animator.SetTrigger("StrongPunch");
+        _animator.SetTrigger(attackName);
 
         yield return new WaitForSeconds(_bossAttackDelay);
 
@@ -36,10 +43,15 @@ public class RockGolemAI : BossAI
 
     void StrongPunch()
     {
-        var hits = Physics.SphereCastAll(_punchPosition.position, 5f, _punchPosition.forward, LayerMask.GetMask("Player"));
+        var hits = Physics.SphereCastAll(_punchPosition.position, 1.5f, _punchPosition.forward, _bossRange, LayerMask.GetMask("Player"));
         if (hits.Length > 0)
         {
             PlayerController.instance.Damaged(_bossDamage);
         }
+    }
+
+    void ThrowingRock()
+    {
+
     }
 }

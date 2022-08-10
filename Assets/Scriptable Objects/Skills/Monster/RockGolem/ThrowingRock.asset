@@ -16,7 +16,9 @@ MonoBehaviour:
   _skillDesc: "\uD070 \uBC14\uC704\uB97C \uC9D1\uC5B4 \uC138\uAC8C \uB358\uC9C4\uB2E4"
   _skillTrigger: ThrowingRock
   _skillNumberOfAttack: 5
+  _skillNumberOfEnemy: 1
   _skillDamageMultiplier: 2
   _skillRange: 10
+  _skillDuration: 1
   _skillDelay: 5
   _skillCoolTime: 10

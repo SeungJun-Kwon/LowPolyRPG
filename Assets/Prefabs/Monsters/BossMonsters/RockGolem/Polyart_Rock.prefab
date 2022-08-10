@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3145213401843664776}
   - component: {fileID: 5599028697635640829}
   - component: {fileID: 1882749022946428489}
+  - component: {fileID: -4857037196904109678}
   m_Layer: 0
   m_Name: Polyart_Rock
   m_TagString: Untagged
@@ -83,3 +84,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-4857037196904109678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5298590762127773683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: befd608c92e292242b37b43f6902897b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -8,9 +8,7 @@ public class BossAI : MonoBehaviour
     [SerializeField] ParticleSystem _hitEffect;
     [SerializeField] GameObject _damageText;
 
-    [SerializeField] BossMonster _bossMonster;
-    [SerializeField] Skill[] _bossSkill;
-    [SerializeField] GameObject[] _bossSkillPrefab;
+    [SerializeField] protected BossMonster _bossMonster;
 
     protected StateManager _stateManager;
 
@@ -23,6 +21,10 @@ public class BossAI : MonoBehaviour
     protected Transform _target;
     protected Vector3 _distanceFromTarget;
     protected float _moveSpeed;
+
+    protected string[] _attackName;
+    protected Skill[] _bossSkill;
+    protected GameObject[] _bossSkillPrefab;
 
     protected string _bossName;
     protected int _bossLevel;
@@ -61,6 +63,10 @@ public class BossAI : MonoBehaviour
         _bossMoveSpeed = _bossMonster._monsterMoveSpeed;
         _bossAttackDelay = _bossMonster._monsterAttackDelay;
         _bossRange = _bossMonster._monsterRange;
+        _attackName = _bossMonster._attackName;
+        _bossSkill = _bossMonster._skill;
+        _bossSkillPrefab = _bossMonster._skillPrefab;
+
         _state = State.IDLE;
         _stateManager.SetInitState();
         _target = PlayerController.instance.transform;
@@ -138,7 +144,6 @@ public class BossAI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.transform.tag);
         if (other.gameObject.tag == "Melee" && _state != State.DEAD)
         {
             PlayerManager _playerManager = PlayerController.instance.PlayerManager;
