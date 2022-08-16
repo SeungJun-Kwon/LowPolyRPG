@@ -13,7 +13,7 @@ public class BossAI : MonoBehaviour
     protected StateManager _stateManager;
 
     protected SkinnedMeshRenderer _meshRenderer;
-    protected MeshCollider _meshCollider;
+    protected BoxCollider _boxCollider;
     protected Rigidbody _rigidBody;
     protected NavMeshAgent _navMesh;
     protected Animator _animator;
@@ -22,7 +22,7 @@ public class BossAI : MonoBehaviour
     protected Vector3 _distanceFromTarget;
     protected float _moveSpeed;
 
-    protected string[] _attackName;
+    protected string[] _skillName;
     protected Skill[] _bossSkill;
     protected GameObject[] _bossSkillPrefab;
 
@@ -44,11 +44,11 @@ public class BossAI : MonoBehaviour
     {
         TryGetComponent<StateManager>(out _stateManager);
         TryGetComponent<Rigidbody>(out _rigidBody);
+        TryGetComponent<BoxCollider>(out _boxCollider);
         TryGetComponent<NavMeshAgent>(out _navMesh);
         TryGetComponent<Animator>(out _animator);
 
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        _meshCollider = GetComponentInChildren<MeshCollider>();
     }
 
     private void Start()
@@ -63,7 +63,6 @@ public class BossAI : MonoBehaviour
         _bossMoveSpeed = _bossMonster._monsterMoveSpeed;
         _bossAttackDelay = _bossMonster._monsterAttackDelay;
         _bossRange = _bossMonster._monsterRange;
-        _attackName = _bossMonster._attackName;
         _bossSkill = _bossMonster._skill;
         _bossSkillPrefab = _bossMonster._skillPrefab;
 
@@ -100,6 +99,20 @@ public class BossAI : MonoBehaviour
         {
             _navMesh.isStopped = true;
         }
+    }
+
+    protected IEnumerator NormalAttack()
+    {
+        _state = State.ATTACK;
+        _navMesh.isStopped = true;
+        transform.LookAt(_target);
+        _animator.SetTrigger("NormalAttack");
+        _animator.SetFloat("Speed", 0);
+
+        yield return new WaitForSeconds(_bossAttackDelay);
+
+        _state = State.IDLE;
+        _navMesh.isStopped = false;
     }
 
     public void Damaged(int minDamage, int maxDamage, int numberOfAttack)

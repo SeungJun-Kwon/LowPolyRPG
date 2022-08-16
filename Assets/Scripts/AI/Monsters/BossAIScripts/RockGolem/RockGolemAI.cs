@@ -16,34 +16,20 @@ public class RockGolemAI : BossAI
         base.Update();
         if(_state != State.ATTACK)
         {
-            if(_isPlayerInRange)
-                StartCoroutine(Attack(_attackName[0]));
+            if (_isPlayerInRange)
+            {
+                StartCoroutine(NormalAttack());
+            }
             else
             {
 
             }
         }
-
-        Debug.DrawRay(_punchPosition.position, _punchPosition.forward, Color.red);
-    }
-
-    IEnumerator Attack(string attackName)
-    {
-        _state = State.ATTACK;
-        _navMesh.isStopped = true;
-        _animator.SetFloat("Speed", 0);
-        transform.LookAt(_target);
-        _animator.SetTrigger(attackName);
-
-        yield return new WaitForSeconds(_bossAttackDelay);
-
-        _state = State.IDLE;
-        _navMesh.isStopped = false;
     }
 
     void StrongPunch()
     {
-        var hits = Physics.SphereCastAll(_punchPosition.position, 1.5f, _punchPosition.forward, _bossRange, LayerMask.GetMask("Player"));
+        var hits = Physics.BoxCastAll(_boxCollider.bounds.center, _boxCollider.bounds.size / 2, transform.forward, transform.rotation, _bossRange, LayerMask.GetMask("Player"));
         if (hits.Length > 0)
         {
             PlayerController.instance.Damaged(_bossDamage);

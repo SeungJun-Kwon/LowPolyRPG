@@ -8,7 +8,6 @@ public class BossMonster : Monster
     public float _stiffnessDuration;
 
     [Header("Attack & Skill")]
-    public string[] _attackName;
     public Skill[] _skill;
     public GameObject[] _skillPrefab;
 }
