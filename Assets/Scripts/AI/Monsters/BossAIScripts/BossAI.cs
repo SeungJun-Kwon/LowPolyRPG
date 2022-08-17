@@ -101,12 +101,12 @@ public class BossAI : MonoBehaviour
         }
     }
 
-    protected IEnumerator NormalAttack()
+    protected IEnumerator PlayAttackAnim(string trigger)
     {
         _state = State.ATTACK;
         _navMesh.isStopped = true;
         transform.LookAt(_target);
-        _animator.SetTrigger("NormalAttack");
+        _animator.SetTrigger(trigger);
         _animator.SetFloat("Speed", 0);
 
         yield return new WaitForSeconds(_bossAttackDelay);

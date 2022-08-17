@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RockGolemAI : BossAI
 {
-    [SerializeField] Transform _punchPosition;
+    [SerializeField] Transform _rockPosition;
 
     protected override void Awake()
     {
@@ -18,14 +18,16 @@ public class RockGolemAI : BossAI
         {
             if (_isPlayerInRange)
             {
-                StartCoroutine(NormalAttack());
+                StartCoroutine(PlayAttackAnim("NormalAttack"));
             }
             else
             {
-
+                StartCoroutine(PlayAttackAnim(_bossSkill[0]._skillTrigger));
             }
         }
     }
+
+
 
     void StrongPunch()
     {
@@ -38,6 +40,6 @@ public class RockGolemAI : BossAI
 
     void ThrowingRock()
     {
-
+        Instantiate(_bossSkillPrefab[0], _rockPosition.position, _bossSkillPrefab[0].transform.rotation);
     }
 }

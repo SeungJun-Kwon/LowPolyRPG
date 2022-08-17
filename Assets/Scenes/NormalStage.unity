@@ -27281,7 +27281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetTransform: {fileID: 0}
   _cameraSpeed: 5
-  _offset: {x: 0, y: 14, z: -7}
+  _offset: {x: 0, y: 20, z: -10}
 --- !u!81 &1465080801
 AudioListener:
   m_ObjectHideFlags: 0

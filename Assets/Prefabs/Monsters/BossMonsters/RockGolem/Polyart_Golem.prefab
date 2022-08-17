@@ -447,7 +447,7 @@ MonoBehaviour:
   _hitEffect: {fileID: 19800000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
   _damageText: {fileID: 4005021116822933497, guid: f8c2fe83beb25de43b2074a32fca9ca6, type: 3}
   _bossMonster: {fileID: 11400000, guid: 75c228975ae368e42b3160605275d139, type: 2}
-  _punchPosition: {fileID: 0}
+  _rockPosition: {fileID: 1358025756}
 --- !u!114 &3628316260279488122
 MonoBehaviour:
   m_ObjectHideFlags: 0

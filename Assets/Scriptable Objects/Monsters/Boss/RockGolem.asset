@@ -24,10 +24,7 @@ MonoBehaviour:
   _stiffness: 150
   _stiffnessCount: 3
   _stiffnessDuration: 5
-  _normalAttackTrigger: StrongPunch
   _skill:
-  - {fileID: 11400000, guid: 1e9a93c05a0c2a843bb0f3485dd33d1a, type: 2}
   - {fileID: 11400000, guid: f6736faee224c15468f6447ce0322249, type: 2}
   _skillPrefab:
-  - {fileID: 0}
   - {fileID: 5298590762127773683, guid: cad9f745870d9f448bf225d2a253d382, type: 3}

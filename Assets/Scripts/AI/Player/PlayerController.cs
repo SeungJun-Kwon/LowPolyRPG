@@ -285,4 +285,9 @@ public class PlayerController : MonoBehaviour
         }
         UIController.instance.SetHPOrb(-_damage);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
 }
