@@ -80,24 +80,27 @@ public class BossAI : MonoBehaviour
     protected virtual void Update()
     {
         _stateManager.SetState(_state);
-        if(_stateManager.IsCanMove())
+        if (_state != State.DEAD)
         {
-            _animator.SetFloat("Speed", _navMesh.velocity.magnitude / _bossMoveSpeed);
-            if(_target)
+            if (_stateManager.IsCanMove())
             {
-                _navMesh.SetDestination(_target.position);
-                _rigidBody.velocity = Vector3.zero;
-                _rigidBody.angularVelocity = Vector3.zero;
-                RaycastHit[] hits = Physics.SphereCastAll(transform.position, _bossRange, transform.up, 0f, LayerMask.GetMask("Player"));
-                if (hits.Length > 0)
-                    _isPlayerInRange = true;
-                else
-                    _isPlayerInRange = false;
+                _animator.SetFloat("Speed", _navMesh.velocity.magnitude / _bossMoveSpeed);
+                if (_target)
+                {
+                    _navMesh.SetDestination(_target.position);
+                    _rigidBody.velocity = Vector3.zero;
+                    _rigidBody.angularVelocity = Vector3.zero;
+                    RaycastHit[] hits = Physics.SphereCastAll(transform.position, _bossRange, transform.up, 0f, LayerMask.GetMask("Player"));
+                    if (hits.Length > 0)
+                        _isPlayerInRange = true;
+                    else
+                        _isPlayerInRange = false;
+                }
             }
-        }
-        else
-        {
-            _navMesh.isStopped = true;
+            else
+            {
+                _navMesh.isStopped = true;
+            }
         }
     }
 
@@ -117,7 +120,7 @@ public class BossAI : MonoBehaviour
 
     public void Damaged(int minDamage, int maxDamage, int numberOfAttack)
     {
-        for(int i = 0; i < numberOfAttack; i++)
+        for (int i = 0; i < numberOfAttack; i++)
         {
             int damage = Random.Range(minDamage, maxDamage + 1);
             _bossHP -= damage;
@@ -129,7 +132,15 @@ public class BossAI : MonoBehaviour
             if (_state != State.STUNNED)
                 _stiffness -= damage;
         }
-        if(_stiffness <= 0)
+        if (_bossHP <= 0)
+        {
+            StopAllCoroutines();
+            StartCoroutine(Die());
+            gameObject.layer = LayerMask.NameToLayer("DeathMonster");
+            gameObject.tag = "DeathEnemy";
+            return;
+        }
+        if (_stiffness <= 0)
         {
             StopAllCoroutines();
             _state = State.IDLE;
@@ -137,7 +148,7 @@ public class BossAI : MonoBehaviour
             _stiffness = _bossMonster._stiffness;
             _stiffnessCount--;
         }
-        if(_stiffnessCount <= 0)
+        if (_stiffnessCount <= 0)
         {
             StartCoroutine(Stun());
             _stiffnessCount = _bossMonster._stiffnessCount;
@@ -153,6 +164,31 @@ public class BossAI : MonoBehaviour
 
         _state = State.IDLE;
         _animator.SetBool("IsStun", false);
+    }
+
+    IEnumerator Die()
+    {
+        _animator.SetTrigger("Dead");
+        _state = State.DEAD;
+        //_navMesh.enabled = false;
+
+        PlayerManager playerManager = PlayerController.instance.PlayerManager;
+        playerManager.GainExp(_bossMonster._monsterGiveExp);
+
+        List<HuntingQuest> playerQuest = new List<HuntingQuest>();
+        foreach (Quest quest in playerManager.GetCurrentQuests())
+            if (quest._type == Quest.Type.HUNTING)
+                playerQuest.Add((HuntingQuest)quest);
+
+        foreach (HuntingQuest quest in playerQuest)
+        {
+            if (quest._targetMonster == _bossMonster)
+                quest.HuntMonster();
+        }
+
+        yield return new WaitForSeconds(3f);
+
+        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
