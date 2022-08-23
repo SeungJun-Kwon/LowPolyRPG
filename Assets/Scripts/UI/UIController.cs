@@ -44,8 +44,22 @@ public class UIController : MonoBehaviour
     }
     KeyCode _questInfoOpen;
 
+    [Header("Boss HP Bar")]
+    [SerializeField] GameObject _bossHPBarPanel;
+    BossHPBar _bossHPBar;
+    [HideInInspector] public BossHPBar BossHPBar
+    {
+        get
+        {
+            if (!_bossHPBar)
+                _bossHPBarPanel.TryGetComponent<BossHPBar>(out _bossHPBar);
+            return _bossHPBar;
+        }
+    }
+
     bool _isPlayerInfoOpen = false;
     bool _isQuestInfoOpen = false;
+    bool _isBossHPBarActive = false;
 
     private void Awake()
     {
@@ -62,6 +76,7 @@ public class UIController : MonoBehaviour
 
         _playerInfoPanel.TryGetComponent<PlayerInfo>(out _playerInfo);
         _questInfoPanel.TryGetComponent<QuestInfo>(out _questInfo);
+        _bossHPBarPanel.TryGetComponent<BossHPBar>(out _bossHPBar);
     }
 
     private void Start()

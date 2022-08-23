@@ -124,6 +124,7 @@ public class BossAI : MonoBehaviour
         {
             int damage = Random.Range(minDamage, maxDamage + 1);
             _bossHP -= damage;
+            UIController.instance.BossHPBar.ReduceHPBar(damage);
             GameObject damageObject = Instantiate(_damageText);
             var damageText = damageObject.GetComponent<DamageText>();
             damageText._damage = damage;

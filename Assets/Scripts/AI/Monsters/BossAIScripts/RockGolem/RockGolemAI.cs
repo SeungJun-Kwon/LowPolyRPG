@@ -6,6 +6,11 @@ public class RockGolemAI : BossAI
 {
     [SerializeField] Transform _rockPosition;
 
+    private void OnEnable()
+    {
+        UIController.instance.BossHPBar.GetBossInformation(_bossMonster);
+    }
+
     protected override void Awake()
     {
         base.Awake();
