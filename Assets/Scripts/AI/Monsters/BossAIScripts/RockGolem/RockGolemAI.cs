@@ -8,7 +8,7 @@ public class RockGolemAI : BossAI
 
     private void OnEnable()
     {
-        UIController.instance.BossHPBar.GetBossInformation(_bossMonster);
+        UIController.instance.SetActiveBossHPBar(_bossMonster, true);
     }
 
     protected override void Awake()

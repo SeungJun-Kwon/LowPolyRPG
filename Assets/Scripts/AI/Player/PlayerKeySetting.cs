@@ -9,6 +9,7 @@ public class PlayerKeySetting : MonoBehaviour
     public KeyCode _action = KeyCode.F;
     public KeyCode _playerInfoOpen = KeyCode.P;
     public KeyCode _questInfoOpen = KeyCode.L;
+    public KeyCode _pauseOpen = KeyCode.Escape;
     public KeyCode[] _skill = { KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R };
     public KeyCode _esc = KeyCode.Escape;
 }

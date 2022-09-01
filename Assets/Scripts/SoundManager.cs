@@ -79,8 +79,22 @@ public class SoundManager : MonoBehaviour
             }
         }
         AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.volume = 0.5f;
         audioSource.clip = audioClip;
         _sfxPlayer.Add(audioSource);
         _sfxPlayer[_sfxPlayer.Count - 1].Play();
+    }
+
+    public void BGMVolume(float value)
+    {
+        _bgmPlayer.volume = value;
+    }
+
+    public void SFXVolume(float value)
+    {
+        foreach(AudioSource audioSource in _sfxPlayer)
+        {
+            audioSource.volume = value;
+        }
     }
 }

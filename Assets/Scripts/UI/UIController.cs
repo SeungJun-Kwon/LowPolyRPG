@@ -44,6 +44,10 @@ public class UIController : MonoBehaviour
     }
     KeyCode _questInfoOpen;
 
+    [Header("Pause")]
+    [SerializeField] GameObject _pausePanel;
+    KeyCode _pauseOpen;
+
     [Header("Boss HP Bar")]
     [SerializeField] GameObject _bossHPBarPanel;
     BossHPBar _bossHPBar;
@@ -57,9 +61,12 @@ public class UIController : MonoBehaviour
         }
     }
 
+    [Header("Sounds")]
+    [SerializeField] Slider _bgmSlider, _sfxSlider;
+
     bool _isPlayerInfoOpen = false;
     bool _isQuestInfoOpen = false;
-    bool _isBossHPBarActive = false;
+    bool _isPauseOpen = false;
 
     private void Awake()
     {
@@ -84,6 +91,7 @@ public class UIController : MonoBehaviour
         PlayerKeySetting playerKeySetting = PlayerController.instance.PlayerKeySetting;
         _playerInfoOpen = playerKeySetting._playerInfoOpen;
         _questInfoOpen = playerKeySetting._questInfoOpen;
+        _pauseOpen = playerKeySetting._pauseOpen;
 
         PlayerManager playerManager = PlayerController.instance.PlayerManager;
         if (playerManager == null)
@@ -94,6 +102,9 @@ public class UIController : MonoBehaviour
         _playerMP = playerManager._playerMP;
         _currentPlayerHP = _playerHP;
         _currentPlayerMP = _playerMP;
+
+        _bgmSlider.onValueChanged.AddListener(SoundManager.instance.BGMVolume);
+        _sfxSlider.onValueChanged.AddListener(SoundManager.instance.SFXVolume);
     }
 
     private void LateUpdate()
@@ -121,6 +132,16 @@ public class UIController : MonoBehaviour
                 _questInfoPanel.SetActive(false);
         }
 
+        if(Input.GetKeyDown(_pauseOpen))
+        {
+            _isPauseOpen = _pausePanel.gameObject.activeSelf;
+
+            if (!_isPauseOpen)
+                _pausePanel.SetActive(true);
+            else
+                _pausePanel.SetActive(false);
+        }
+
         _hpOrb.fillAmount = Mathf.Lerp(_hpOrb.fillAmount, (float)_currentPlayerHP / (float)_playerHP, Time.deltaTime * 5f);
         _mpOrb.fillAmount = Mathf.Lerp(_mpOrb.fillAmount, (float)_currentPlayerMP / (float)_playerMP, Time.deltaTime * 5f);
     }
@@ -141,5 +162,12 @@ public class UIController : MonoBehaviour
             _currentPlayerMP = 0;
         else if (_currentPlayerMP >= _playerMP)
             _currentPlayerMP = _playerMP;
+    }
+
+    public void SetActiveBossHPBar(BossMonster monster, bool trigger)
+    {
+        if(trigger)
+            _bossHPBar.GetBossInformation(monster);
+        _bossHPBarPanel.SetActive(trigger);
     }
 }
