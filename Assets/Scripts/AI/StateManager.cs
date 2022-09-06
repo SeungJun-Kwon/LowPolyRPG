@@ -27,9 +27,7 @@ public class StateManager : MonoBehaviour
         switch(state)
         {
             case State.IDLE:
-                _canMove = true;
-                _isMove = false;
-                _isAttack = false;
+                SetInitState();
                 break;
             case State.MOVE:
                 _isMove = true;
@@ -43,7 +41,6 @@ public class StateManager : MonoBehaviour
                 _canMove = true;
                 break;
             case State.CANTMOVE:
-                SetInitState();
                 _canMove = false;
                 break;
             case State.DEAD:

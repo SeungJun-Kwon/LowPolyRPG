@@ -32,6 +32,7 @@ public class Dialogue : MonoBehaviour
         else if(Input.GetKeyDown(PlayerController.instance.PlayerKeySetting._esc))
         {
             gameObject.SetActive(false);
+            PlayerController.instance.SetMyState(State.IDLE);
         }
     }
 

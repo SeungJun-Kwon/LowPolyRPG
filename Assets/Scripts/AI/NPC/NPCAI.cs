@@ -39,7 +39,7 @@ public class NPCAI : MonoBehaviour
 
     protected virtual void Action()
     {
-
+        PlayerController.instance.SetMyState(State.CANTMOVE);
     }
 
     private void OnTriggerEnter(Collider other)

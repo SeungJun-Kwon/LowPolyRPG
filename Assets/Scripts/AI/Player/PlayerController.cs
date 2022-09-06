@@ -176,8 +176,8 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            //_navMeshAgent.SetDestination(transform.position);
-            //_navMeshAgent.isStopped = true;
+            _navMeshAgent.SetDestination(transform.position);
+            _navMeshAgent.isStopped = true;
         }
     }
 
@@ -285,6 +285,8 @@ public class PlayerController : MonoBehaviour
         }
         UIController.instance.SetHPOrb(-_damage);
     }
+
+    public void SetMyState(State state) => _myState = state;
 
     private void OnTriggerEnter(Collider other)
     {

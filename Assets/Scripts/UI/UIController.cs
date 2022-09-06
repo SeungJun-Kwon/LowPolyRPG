@@ -137,9 +137,17 @@ public class UIController : MonoBehaviour
             _isPauseOpen = _pausePanel.gameObject.activeSelf;
 
             if (!_isPauseOpen)
+            {
                 _pausePanel.SetActive(true);
+                PlayerController.instance.SetMyState(State.CANTMOVE);
+                Time.timeScale = 0;
+            }
             else
+            {
                 _pausePanel.SetActive(false);
+                PlayerController.instance.SetMyState(State.CANMOVE);
+                Time.timeScale = 1;
+            }
         }
 
         _hpOrb.fillAmount = Mathf.Lerp(_hpOrb.fillAmount, (float)_currentPlayerHP / (float)_playerHP, Time.deltaTime * 5f);
