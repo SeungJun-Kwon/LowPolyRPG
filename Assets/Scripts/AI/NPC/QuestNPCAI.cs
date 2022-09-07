@@ -14,6 +14,7 @@ public class QuestNPCAI : NPCAI
 
     protected override void Action()
     {
+        base.Action();
         _questUI.GetComponent<QuestInfo>().SetQuest((QuestNPC)_npc);
         _questUI.SetActive(true);
     }

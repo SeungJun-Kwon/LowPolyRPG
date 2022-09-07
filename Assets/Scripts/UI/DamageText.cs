@@ -22,13 +22,12 @@ public class DamageText : MonoBehaviour
     private void Awake()
     {
         _canvas = GameObject.Find("UI").GetComponent<Canvas>();
-
         _text = GetComponent<TextMeshProUGUI>();
         _rectParent = _canvas.GetComponent<RectTransform>();
     }
     private void OnEnable()
     {
-        transform.SetParent(_canvas.transform);
+        transform.SetParent(_canvas.transform, false);
     }
 
     private void Start()

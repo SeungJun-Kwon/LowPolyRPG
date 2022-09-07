@@ -61,6 +61,20 @@ public class UIController : MonoBehaviour
         }
     }
 
+    NoticeArea _noticeArea;
+    [HideInInspector] public NoticeArea NoticeArea
+    {
+        get
+        {
+            if (!_noticeArea)
+            {
+                GameObject noticeAreaPanel = transform.Find("MessageArea").gameObject;
+                noticeAreaPanel.TryGetComponent<NoticeArea>(out _noticeArea);
+            }
+            return _noticeArea;
+        }
+    }
+
     [Header("Sounds")]
     [SerializeField] Slider _bgmSlider, _sfxSlider;
 

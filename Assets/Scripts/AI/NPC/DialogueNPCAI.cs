@@ -14,6 +14,7 @@ public class DialogueNPCAI : NPCAI
 
     protected override void Action()
     {
+        base.Action();
         _dialogueUI.GetComponent<Dialogue>().SetNPC((DialogueNPC)_npc);
         _dialogueUI.SetActive(true);
     }
