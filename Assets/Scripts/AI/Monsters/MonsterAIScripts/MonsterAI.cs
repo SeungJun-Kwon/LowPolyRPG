@@ -173,6 +173,8 @@ public class MonsterAI : MonoBehaviour
 
         PlayerManager playerManager = PlayerController.instance.PlayerManager;
         playerManager.GainExp(_monster._monsterGiveExp);
+        string noticeMessage = _monsterName + "을(를) 처치하여 " + _monster._monsterGiveExp + "의 경험치를 획득하였습니다.";
+        UIController.instance.NoticeArea.GetMessage(noticeMessage);
 
         List<HuntingQuest> playerQuest = new List<HuntingQuest>();
         foreach(Quest quest in playerManager.GetCurrentQuests())

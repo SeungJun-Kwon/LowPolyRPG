@@ -12,12 +12,6 @@ public class NoticeArea : MonoBehaviour
 
     int _currentMessages = 0;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-            GetMessage("123123");
-    }
-
     GameObject CreateMessage()
     {
         var newMessage = Instantiate(_noticeMessage);
