@@ -23,3 +23,4 @@ MonoBehaviour:
   _skillDuration: 5
   _skillDelay: 2
   _skillCoolTime: 10
+  _skillIconImage: {fileID: 21300000, guid: 0d4bdcfaf41b1794c9f7c954b5d2f2bc, type: 3}

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Skill", menuName = "Skill")]
 public class Skill : ScriptableObject
@@ -13,4 +14,5 @@ public class Skill : ScriptableObject
     public float _skillDuration = 1;
     public float _skillDelay = 1;
     public float _skillCoolTime = 1;
+    public Sprite _skillIconImage;
 }
