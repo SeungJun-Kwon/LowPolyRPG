@@ -105,7 +105,7 @@ public class UIController : MonoBehaviour
         PlayerKeySetting playerKeySetting = PlayerController.instance.PlayerKeySetting;
         _playerInfoOpen = playerKeySetting._playerInfoOpen;
         _questInfoOpen = playerKeySetting._questInfoOpen;
-        _pauseOpen = playerKeySetting._pauseOpen;
+        _pauseOpen = playerKeySetting._esc;
 
         PlayerManager playerManager = PlayerController.instance.PlayerManager;
         if (playerManager == null)

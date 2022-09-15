@@ -14,5 +14,6 @@ public class Skill : ScriptableObject
     public float _skillDuration = 1;
     public float _skillDelay = 1;
     public float _skillCoolTime = 1;
+    public bool _needEnemyInRange = false;
     public Sprite _skillIconImage;
 }

@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
         _maxSpeed = _playerManager._playerSpeed;
         _onHitColor = _meshRenderer.material.color;
 
-        PlayerKeySetting _keySet = PlayerController.instance.PlayerKeySetting;
+        PlayerKeySetting _keySet = PlayerKeySetting;
         _attack = _keySet._attack;
         _move = _keySet._move;
         _action = _keySet._action;
@@ -134,44 +134,58 @@ public class PlayerController : MonoBehaviour
                     }
                 }
 
-                if (Input.GetKeyDown(_skill[0]))
+                if(Input.anyKeyDown)
                 {
-                    if (_skillManager.IsReady("Q"))
+                    string keyName = Input.inputString.ToUpper();
+                    KeyAction keyAction = PlayerKeySetting.GetKeyAction(keyName);
+                    Debug.Log(keyName + " " + keyAction.ToString());
+                    if(keyAction == KeyAction.SKILL)
                     {
-                        if (_skillManager.IsEnemyInRange("Q"))
+                        if(_skillManager.IsReady(keyName))
                         {
                             LookMousePosition();
-                            StartCoroutine(OnAttack(_skillManager.GetSkill("Q")._skillDelay, _skillManager.GetSkill("Q")._skillTrigger));
-                            _skillManager.Use("Q");
+                            StartCoroutine(OnAttack(_skillManager.GetSkill(keyName)._skillDelay, _skillManager.GetSkill(keyName)._skillTrigger));
+                            _skillManager.Use(keyName);
                         }
                     }
+                    
                 }
-                if (Input.GetKeyDown(_skill[1]))
-                {
-                    if (_skillManager.IsReady("W"))
-                    {
-                        LookMousePosition();
-                        StartCoroutine(OnAttack(_skillManager.GetSkill("W")._skillDelay, _skillManager.GetSkill("W")._skillTrigger));
-                        _skillManager.Use("W");
-                    }
-                }
-                if (Input.GetKeyDown(_skill[2]))
-                {
-                    if (_skillManager.IsReady("E"))
-                    {
-                        LookMousePosition();
-                        StartCoroutine(OnAttack(_skillManager.GetSkill("E")._skillDelay, _skillManager.GetSkill("E")._skillTrigger));
-                        _skillManager.Use("E");
-                    }
-                }
-                if (Input.GetKeyDown(_skill[3]))
-                {
-                    if (_skillManager.IsReady("R"))
-                    {
-                        StartCoroutine(OnAttack(_skillManager.GetSkill("R")._skillDelay, _skillManager.GetSkill("R")._skillTrigger));
-                        _skillManager.Use("R");
-                    }
-                }
+
+                //if (Input.GetKeyDown(_skill[0]))
+                //{
+                //    if (_skillManager.IsReady("Q"))
+                //    {
+                //        LookMousePosition();
+                //        StartCoroutine(OnAttack(_skillManager.GetSkill("Q")._skillDelay, _skillManager.GetSkill("Q")._skillTrigger));
+                //        _skillManager.Use("Q");
+                //    }
+                //}
+                //if (Input.GetKeyDown(_skill[1]))
+                //{
+                //    if (_skillManager.IsReady("W"))
+                //    {
+                //        LookMousePosition();
+                //        StartCoroutine(OnAttack(_skillManager.GetSkill("W")._skillDelay, _skillManager.GetSkill("W")._skillTrigger));
+                //        _skillManager.Use("W");
+                //    }
+                //}
+                //if (Input.GetKeyDown(_skill[2]))
+                //{
+                //    if (_skillManager.IsReady("E"))
+                //    {
+                //        LookMousePosition();
+                //        StartCoroutine(OnAttack(_skillManager.GetSkill("E")._skillDelay, _skillManager.GetSkill("E")._skillTrigger));
+                //        _skillManager.Use("E");
+                //    }
+                //}
+                //if (Input.GetKeyDown(_skill[3]))
+                //{
+                //    if (_skillManager.IsReady("R"))
+                //    {
+                //        StartCoroutine(OnAttack(_skillManager.GetSkill("R")._skillDelay, _skillManager.GetSkill("R")._skillTrigger));
+                //        _skillManager.Use("R");
+                //    }
+                //}
             }
         }
         else

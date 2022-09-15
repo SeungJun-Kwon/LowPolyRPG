@@ -52,7 +52,17 @@ public class SkillManager : MonoBehaviour
     {
         int _skillKey = (int)Enum.Parse<SkillKey>(_key);
         if (_currentCoolTime[_skillKey] >= _skill[(int)_skillKey]._skillCoolTime)
-            return true;
+        {
+            if(_skill[(int)_skillKey]._needEnemyInRange)
+            {
+                if (IsEnemyInRange((int)_skillKey))
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return true;
+        }
 
         return false;
     }
@@ -75,9 +85,8 @@ public class SkillManager : MonoBehaviour
         Instantiate(_skillPrefab[_skillKey], _skillTransform[_skillKey].position, Quaternion.identity);
     }
 
-    public bool IsEnemyInRange(string _key)
+    public bool IsEnemyInRange(int _skillKey)
     {
-        int _skillKey = (int)Enum.Parse<SkillKey>(_key);
         float _range = _skill[_skillKey]._skillRange;
         if (Physics.OverlapSphere(transform.position, _range, LayerMask.GetMask("Boss", "Monster")).Length > 0)
         {
