@@ -129,8 +129,11 @@ public class PlayerController : MonoBehaviour
                     RaycastHit hit;
                     if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit, 100f, layer))
                     {
-                        _myState = State.MOVE;
-                        SetDestination(hit.point);
+                        if ((hit.point - transform.position).magnitude > 0.5f)
+                        {
+                            _myState = State.MOVE;
+                            SetDestination(hit.point);
+                        }
                     }
                 }
 

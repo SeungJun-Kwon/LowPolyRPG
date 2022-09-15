@@ -27504,7 +27504,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1465080798}
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 2, y: 10, z: -5}
+  m_LocalPosition: {x: 2, y: 12, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27526,6 +27526,9 @@ MonoBehaviour:
   _targetTransform: {fileID: 0}
   _cameraSpeed: 5
   _offset: {x: 0, y: 20, z: -10}
+  _minOffset: {x: 0, y: 6, z: -3}
+  _maxOffset: {x: 0, y: 40, z: -20}
+  _scrollSpeed: 5
 --- !u!81 &1465080801
 AudioListener:
   m_ObjectHideFlags: 0

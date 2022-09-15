@@ -7,11 +7,27 @@ public class CameraController : MonoBehaviour
     [SerializeField] Transform _targetTransform;
     [SerializeField] float _cameraSpeed;
     [SerializeField] Vector3 _offset;
+    [SerializeField] Vector3 _minOffset, _maxOffset;
+    [SerializeField] float _scrollSpeed = 5f;
 
     private void Awake()
     {
         if (!_targetTransform)
             _targetTransform = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
+    private void Update()
+    {
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+        if(scroll > 0 && _offset.magnitude > _minOffset.magnitude)
+        {
+            _offset -= new Vector3(0, 0.2f, -0.1f) * _scrollSpeed;
+        }
+        else if(scroll < 0 && _offset.magnitude < _maxOffset.magnitude)
+        {
+            _offset += new Vector3(0, 0.2f, -0.1f) * _scrollSpeed;
+        }
     }
 
     private void LateUpdate()
