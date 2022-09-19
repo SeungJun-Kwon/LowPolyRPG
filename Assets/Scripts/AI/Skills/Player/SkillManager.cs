@@ -36,7 +36,7 @@ public class SkillManager : MonoBehaviour
             if (_currentCoolTime[i] < _skill[i]._skillCoolTime)
             {
                 _currentCoolTime[i] += Time.deltaTime;
-                UIController.instance._skillIcon[i].fillAmount = (_skill[i]._skillCoolTime - _currentCoolTime[i]) / _skill[i]._skillCoolTime;
+                //UIController.instance._skillIcon[i].fillAmount = (_skill[i]._skillCoolTime - _currentCoolTime[i]) / _skill[i]._skillCoolTime;
             }
 
         }

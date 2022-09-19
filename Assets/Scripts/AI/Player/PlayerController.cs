@@ -136,8 +136,7 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-
-                if(Input.anyKeyDown)
+                else if(Input.anyKeyDown)
                 {
                     string keyName = Input.inputString.ToUpper();
                     KeyAction keyAction = PlayerKeySetting.GetKeyAction(keyName);

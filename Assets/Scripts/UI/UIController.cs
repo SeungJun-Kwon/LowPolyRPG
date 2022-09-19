@@ -13,8 +13,7 @@ public class UIController : MonoBehaviour
     private int _playerHP, _playerMP;
     private int _currentPlayerHP, _currentPlayerMP;
 
-    [Header("Skills")]
-    [SerializeField] public Image[] _skillIcon = new Image[4];
+    SkillSlot _skillSlot;
 
     [Header("Player Info")]
     [SerializeField] GameObject _playerInfoPanel;
@@ -98,6 +97,8 @@ public class UIController : MonoBehaviour
         _playerInfoPanel.TryGetComponent<PlayerInfo>(out _playerInfo);
         _questInfoPanel.TryGetComponent<QuestInfo>(out _questInfo);
         _bossHPBarPanel.TryGetComponent<BossHPBar>(out _bossHPBar);
+
+        _skillSlot = GetComponentInChildren<SkillSlot>();
     }
 
     private void Start()

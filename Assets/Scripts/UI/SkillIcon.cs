@@ -11,7 +11,11 @@ public class SkillIcon : MonoBehaviour
 
     float _currentCoolTime;
 
-    public void SetSkill(Skill skill) => _skill = skill;
+    public void SetSkill(Skill skill)
+    {
+        _skillImage.sprite = skill._skillIconImage;
+        _skillFill.sprite = skill._skillIconImage;
+    }
 
     public void UseSkill()
     {
@@ -29,5 +33,15 @@ public class SkillIcon : MonoBehaviour
         }
         else
             yield break;
+    }
+
+    private void OnMouseEnter()
+    {
+        
+    }
+
+    private void OnMouseExit()
+    {
+        
     }
 }
