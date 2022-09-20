@@ -1,20 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkillIcon : MonoBehaviour
+public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] Image _skillImage, _skillFill;
 
     Skill _skill;
+    GameObject _skillInfoPrefab;
 
     float _currentCoolTime;
 
+    private void Awake()
+    {
+        _skillInfoPrefab = Resources.Load("SkilInfo") as GameObject;
+    }
+
     public void SetSkill(Skill skill)
     {
-        _skillImage.sprite = skill._skillIconImage;
-        _skillFill.sprite = skill._skillIconImage;
+        _skill = skill;
+        _skillImage.sprite = _skill._skillIconImage;
+        _skillFill.sprite = _skill._skillIconImage;
     }
 
     public void UseSkill()
@@ -25,23 +33,25 @@ public class SkillIcon : MonoBehaviour
 
     IEnumerator StartCoolDown()
     {
-        if (_currentCoolTime < _skill._skillCoolTime)
+        while(_currentCoolTime < _skill._skillCoolTime)
         {
             _skillFill.fillAmount = (_skill._skillCoolTime - _currentCoolTime) / _skill._skillCoolTime;
             _currentCoolTime += 0.1f;
+            Debug.Log(_currentCoolTime);
             yield return new WaitForSeconds(0.1f);
         }
-        else
-            yield break;
+
+        yield break;
     }
 
-    private void OnMouseEnter()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        
+        Vector3 position = new Vector3(transform.position.x, transform.position.y - 100f, transform.position.z);
+        Instantiate(_skillInfoPrefab, position, Quaternion.identity);
     }
 
-    private void OnMouseExit()
+    public void OnPointerExit(PointerEventData eventData)
     {
-        
+        Debug.Log("Exit " + _skill.name);
     }
 }

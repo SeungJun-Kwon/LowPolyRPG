@@ -18,4 +18,6 @@ public class SkillSlot : MonoBehaviour
             _skillIcon[i].SetSkill(_skill[i]);
         }
     }
+
+    public void UseSkill(int index) => _skillIcon[index].UseSkill();
 }

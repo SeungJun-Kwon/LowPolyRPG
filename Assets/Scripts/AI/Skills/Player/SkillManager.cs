@@ -34,11 +34,7 @@ public class SkillManager : MonoBehaviour
         for (int i = 0; i < _currentCoolTime.Length; i++)
         {
             if (_currentCoolTime[i] < _skill[i]._skillCoolTime)
-            {
                 _currentCoolTime[i] += Time.deltaTime;
-                //UIController.instance._skillIcon[i].fillAmount = (_skill[i]._skillCoolTime - _currentCoolTime[i]) / _skill[i]._skillCoolTime;
-            }
-
         }
     }
 
@@ -70,7 +66,7 @@ public class SkillManager : MonoBehaviour
     public void Use(string _key)
     {
         int _skillKey = (int)Enum.Parse<SkillKey>(_key);
-        _currentCoolTime[_skillKey] = 0;
+        UIController.instance.UseSkill(_skillKey);
     }
 
     public void Activation(string _key)

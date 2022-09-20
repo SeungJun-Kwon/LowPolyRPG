@@ -187,6 +187,8 @@ public class UIController : MonoBehaviour
             _currentPlayerMP = _playerMP;
     }
 
+    public void UseSkill(int index) => _skillSlot.UseSkill(index);
+
     public void SetActiveBossHPBar(BossMonster monster, bool trigger)
     {
         if(trigger)
