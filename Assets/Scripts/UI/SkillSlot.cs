@@ -7,7 +7,9 @@ public class SkillSlot : MonoBehaviour
 {
     [SerializeField] SkillIcon[] _skillIcon;
 
-    [SerializeField] List<Skill> _skill;
+    public SkillInfo _skillInfo;
+
+    List<Skill> _skill = new List<Skill>();
 
     private void Start()
     {

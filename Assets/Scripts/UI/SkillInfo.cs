@@ -8,6 +8,12 @@ public class SkillInfo : MonoBehaviour
     [SerializeField] Text _skillName, _skillDescription;
 
     Skill _skill;
+    RectTransform _rectTf;
+
+    private void Awake()
+    {
+        TryGetComponent<RectTransform>(out _rectTf);
+    }
 
     public void GetSkill(Skill skill)
     {

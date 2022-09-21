@@ -9,13 +9,13 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     [SerializeField] Image _skillImage, _skillFill;
 
     Skill _skill;
-    GameObject _skillInfoPrefab;
+    SkillSlot _skillSlot;
 
     float _currentCoolTime;
 
     private void Awake()
     {
-        _skillInfoPrefab = Resources.Load("SkilInfo") as GameObject;
+        _skillSlot = GetComponentInParent<SkillSlot>();
     }
 
     public void SetSkill(Skill skill)
@@ -37,7 +37,6 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             _skillFill.fillAmount = (_skill._skillCoolTime - _currentCoolTime) / _skill._skillCoolTime;
             _currentCoolTime += 0.1f;
-            Debug.Log(_currentCoolTime);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -46,12 +45,14 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 position = new Vector3(transform.position.x, transform.position.y - 100f, transform.position.z);
-        Instantiate(_skillInfoPrefab, position, Quaternion.identity);
+        Vector3 position = new Vector3(transform.position.x, transform.position.y + 5f, transform.position.z);
+        _skillSlot._skillInfo.transform.position = position;
+        _skillSlot._skillInfo.gameObject.SetActive(true);
+        _skillSlot._skillInfo.GetSkill(_skill);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Exit " + _skill.name);
+        _skillSlot._skillInfo.gameObject.SetActive(false);
     }
 }
