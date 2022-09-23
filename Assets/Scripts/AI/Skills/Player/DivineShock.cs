@@ -63,7 +63,8 @@ public class DivineShock : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer.Equals(LayerMask.GetMask("Boss", "Monster")))
+        Debug.Log(other.gameObject.layer.ToString());
+        if (other.gameObject.tag == "Enemy")
         {
             other.TryGetComponent<MonsterAI>(out var _monsterAI);
             PlayerManager _playerManager = PlayerController.instance.PlayerManager;
