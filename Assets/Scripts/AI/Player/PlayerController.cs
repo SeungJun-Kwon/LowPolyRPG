@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        _navMeshAgent.updateRotation = false;
+        //_navMeshAgent.updateRotation = false;
         _maxSpeed = _playerManager._playerSpeed;
         _onHitColor = _meshRenderer.material.color;
 
@@ -111,9 +111,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         _stateManager.SetState(_myState);
+        _animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude / _maxSpeed);
         if (_stateManager.IsCanMove())
         {
-            _animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude / _maxSpeed);
             if (!_stateManager.IsAttacking())
             {
                 if (Input.GetKeyDown(_attack))
@@ -140,7 +140,6 @@ public class PlayerController : MonoBehaviour
                 {
                     string keyName = Input.inputString.ToUpper();
                     KeyAction keyAction = PlayerKeySetting.GetKeyAction(keyName);
-                    Debug.Log(keyName + " " + keyAction.ToString());
                     if(keyAction == KeyAction.SKILL)
                     {
                         if(_skillManager.IsReady(keyName))
@@ -152,54 +151,24 @@ public class PlayerController : MonoBehaviour
                     }
                     
                 }
-
-                //if (Input.GetKeyDown(_skill[0]))
-                //{
-                //    if (_skillManager.IsReady("Q"))
-                //    {
-                //        LookMousePosition();
-                //        StartCoroutine(OnAttack(_skillManager.GetSkill("Q")._skillDelay, _skillManager.GetSkill("Q")._skillTrigger));
-                //        _skillManager.Use("Q");
-                //    }
-                //}
-                //if (Input.GetKeyDown(_skill[1]))
-                //{
-                //    if (_skillManager.IsReady("W"))
-                //    {
-                //        LookMousePosition();
-                //        StartCoroutine(OnAttack(_skillManager.GetSkill("W")._skillDelay, _skillManager.GetSkill("W")._skillTrigger));
-                //        _skillManager.Use("W");
-                //    }
-                //}
-                //if (Input.GetKeyDown(_skill[2]))
-                //{
-                //    if (_skillManager.IsReady("E"))
-                //    {
-                //        LookMousePosition();
-                //        StartCoroutine(OnAttack(_skillManager.GetSkill("E")._skillDelay, _skillManager.GetSkill("E")._skillTrigger));
-                //        _skillManager.Use("E");
-                //    }
-                //}
-                //if (Input.GetKeyDown(_skill[3]))
-                //{
-                //    if (_skillManager.IsReady("R"))
-                //    {
-                //        StartCoroutine(OnAttack(_skillManager.GetSkill("R")._skillDelay, _skillManager.GetSkill("R")._skillTrigger));
-                //        _skillManager.Use("R");
-                //    }
-                //}
             }
-        }
-        else
-        {
-            _navMeshAgent.SetDestination(transform.position);
-            _navMeshAgent.isStopped = true;
         }
     }
 
     private void FixedUpdate()
     {
-        LookMoveDirection();
+        //if (_stateManager.IsMoving())
+        //    LookMoveDirection();
+    }
+
+    public void SetDestination(Transform tf)
+    {
+        _navMeshAgent.isStopped = false;
+        _navMeshAgent.SetDestination(tf.position);
+        var _moveDir = new Vector3(_navMeshAgent.steeringTarget.x, transform.position.y, _navMeshAgent.steeringTarget.z) - transform.position;
+        if(_moveDir == Vector3.zero)
+            _moveDir = new Vector3(tf.position.x, transform.position.y, tf.position.z) - transform.position;
+        transform.forward = _moveDir;
     }
 
     public void SetDestination(Vector3 _dest)
@@ -210,18 +179,15 @@ public class PlayerController : MonoBehaviour
 
     void LookMoveDirection()
     {
-        if (_stateManager.IsMoving())
+        if (_navMeshAgent.velocity.magnitude <= 0.1f)
         {
-            if (_navMeshAgent.velocity.magnitude <= 0.1f)
-            {
-                _myState = State.IDLE;
-                _navMeshAgent.isStopped = true;
-                return;
-            }
-
-            var _moveDir = new Vector3(_navMeshAgent.steeringTarget.x, transform.position.y, _navMeshAgent.steeringTarget.z) - transform.position;
-            transform.forward = _moveDir;
+            _myState = State.IDLE;
+            _navMeshAgent.isStopped = true;
+            return;
         }
+
+        var _moveDir = new Vector3(_navMeshAgent.steeringTarget.x, transform.position.y, _navMeshAgent.steeringTarget.z) - transform.position;
+        transform.forward = _moveDir;
     }
 
     private void LookMousePosition()
@@ -303,6 +269,20 @@ public class PlayerController : MonoBehaviour
     }
 
     public void SetMyState(State state) => _myState = state;
+
+    public void RunTimeline()
+    {
+        Camera.main.TryGetComponent<CameraController>(out var cameraController);
+        cameraController._isAble = false;
+        _myState = State.CANTMOVE;
+    }
+
+    public void EndTimeline()
+    {
+        Camera.main.TryGetComponent<CameraController>(out var cameraController);
+        cameraController._isAble = true;
+        _myState = State.CANMOVE;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

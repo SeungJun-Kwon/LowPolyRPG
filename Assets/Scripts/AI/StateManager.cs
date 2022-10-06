@@ -41,10 +41,12 @@ public class StateManager : MonoBehaviour
                 _canMove = true;
                 break;
             case State.CANTMOVE:
+                _isMove = false;
                 _canMove = false;
                 break;
             case State.DEAD:
                 _canMove = false;
+                _isMove = false;
                 _isDead = true;
                 break;
             case State.STUNNED:
@@ -62,7 +64,7 @@ public class StateManager : MonoBehaviour
 
     public bool IsMoving()
     {
-        return (_canMove == true) && (_isMove == true);
+        return _isMove == true;
     }
 
     public bool IsAttacking()

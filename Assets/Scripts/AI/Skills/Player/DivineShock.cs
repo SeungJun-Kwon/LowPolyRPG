@@ -63,7 +63,6 @@ public class DivineShock : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.layer.ToString());
         if (other.gameObject.tag == "Enemy")
         {
             other.TryGetComponent<MonsterAI>(out var _monsterAI);
