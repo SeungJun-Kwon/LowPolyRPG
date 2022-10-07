@@ -66,6 +66,7 @@ public class SkillManager : MonoBehaviour
     public void Use(string _key)
     {
         int _skillKey = (int)Enum.Parse<SkillKey>(_key);
+        _currentCoolTime[_skillKey] = 0;
         UIController.instance.UseSkill(_skillKey);
     }
 

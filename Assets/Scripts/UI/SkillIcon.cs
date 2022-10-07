@@ -12,6 +12,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     SkillSlot _skillSlot;
 
     float _currentCoolTime;
+    float _skillInfoYPos = 5f;
 
     private void Awake()
     {
@@ -36,8 +37,8 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         while(_currentCoolTime < _skill._skillCoolTime)
         {
             _skillFill.fillAmount = (_skill._skillCoolTime - _currentCoolTime) / _skill._skillCoolTime;
-            _currentCoolTime += 0.1f;
-            yield return new WaitForSeconds(0.1f);
+            _currentCoolTime += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
         }
 
         yield break;
@@ -45,7 +46,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 position = new Vector3(transform.position.x, transform.position.y + 5f, transform.position.z);
+        Vector3 position = new Vector3(transform.position.x, transform.position.y + _skillInfoYPos, transform.position.z);
         _skillSlot._skillInfo.transform.position = position;
         _skillSlot._skillInfo.gameObject.SetActive(true);
         _skillSlot._skillInfo.GetSkill(_skill);
