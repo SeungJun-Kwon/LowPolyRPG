@@ -111,6 +111,11 @@ public class QuestInfo : MonoBehaviour
     {
         _selectedQuest = currentQuest;
         _detailText.text = _selectedQuest._desc;
+        if (currentQuest._type == Quest.Type.HUNTING)
+        {
+            HuntingQuest huntingQuest = (HuntingQuest)_selectedQuest;
+            _detailText.text = _detailText.text + "\n" + huntingQuest._targetMonster.name + " " + huntingQuest._currentNumberOfHunts + "/" + huntingQuest._numberOfHunts;
+        }
         _expText.text = _selectedQuest._reward._exp.ToString();
         _goldText.text = _selectedQuest._reward._gold.ToString();
         switch(questState)

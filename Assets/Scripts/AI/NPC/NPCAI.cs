@@ -5,7 +5,7 @@ using UnityEngine;
 public class NPCAI : MonoBehaviour
 {
     [SerializeField] protected NPC _npc;
-    [SerializeField] GameObject _actionUI;
+    GameObject _actionUI;
 
     protected GameObject _canvas;
 

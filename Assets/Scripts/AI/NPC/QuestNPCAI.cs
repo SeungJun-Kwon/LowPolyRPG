@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class QuestNPCAI : NPCAI
 {
-    [SerializeField] GameObject _questUI;
+    GameObject _questUI;
 
     protected override void Awake()
     {

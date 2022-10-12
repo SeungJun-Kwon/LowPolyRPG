@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DialogueNPCAI : NPCAI
 {
-    [SerializeField] GameObject _dialogueUI;
+    GameObject _dialogueUI;
 
     protected override void Awake()
     {
@@ -15,7 +15,13 @@ public class DialogueNPCAI : NPCAI
     protected override void Action()
     {
         base.Action();
-        _dialogueUI.GetComponent<Dialogue>().SetNPC((DialogueNPC)_npc);
+        _dialogueUI.GetComponent<Dialogue>().SetNPC((DialogueNPC)_npc, this);
         _dialogueUI.SetActive(true);
+    }
+
+    public void End()
+    {
+        if (_npc._isTimeline)
+            TimelineController.instance.PlayFromTimeline(_npc._playableDirector, _npc._timeline);
     }
 }

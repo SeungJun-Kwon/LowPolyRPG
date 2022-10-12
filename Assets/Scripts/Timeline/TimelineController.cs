@@ -2,21 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 public class TimelineController : MonoBehaviour
 {
-    public PlayableDirector _playableDirector;
+    public static TimelineController instance;
 
-    // Start is called before the first frame update
-    void Start()
+    public PlayableDirector _playableDirector;
+    public TimelineAsset _timeline;
+
+    private void Awake()
     {
-        
+        #region Singleton
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (instance != this)
+            Destroy(this.gameObject);
+        #endregion
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Play(PlayableDirector playableDirector)
     {
-        if(Input.GetKeyDown(KeyCode.A))
-            _playableDirector.Play();
+        _playableDirector = playableDirector;
+        _playableDirector.Play();
+    }
+
+    public void PlayFromTimeline(PlayableDirector playableDirector, TimelineAsset timeline)
+    {
+        _playableDirector = playableDirector;
+        _timeline = timeline;
+        _playableDirector.Play(_timeline);
     }
 }

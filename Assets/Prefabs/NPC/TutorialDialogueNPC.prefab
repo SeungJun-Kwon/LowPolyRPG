@@ -3819,8 +3819,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _npc: {fileID: 11400000, guid: 36e5f6f56537b5041a6dd0b5bc5ae3c4, type: 2}
-  _actionUI: {fileID: 3250273437218749801, guid: d549ecbf3e820fb42a12b9149acb3933, type: 3}
-  _dialogueUI: {fileID: 6535942524681659208, guid: eafec98dbdf410248a9d767fbba2c33e, type: 3}
 --- !u!1 &5937872194780759465
 GameObject:
   m_ObjectHideFlags: 0

@@ -77,6 +77,7 @@ public class UIController : MonoBehaviour
     [Header("Sounds")]
     [SerializeField] Slider _bgmSlider, _sfxSlider;
 
+    bool _isAnyUIOpen = false;
     bool _isPlayerInfoOpen = false;
     bool _isQuestInfoOpen = false;
     bool _isPauseOpen = false;
@@ -126,17 +127,16 @@ public class UIController : MonoBehaviour
     {
         if(Input.GetKeyDown(_playerInfoOpen))
         {
-            _isPlayerInfoOpen = _playerInfo.gameObject.activeSelf;
-
             if (!_isPlayerInfoOpen)
                 _playerInfoPanel.SetActive(true);
             else
                 _playerInfoPanel.SetActive(false);
+
+            _isPlayerInfoOpen = _playerInfo.gameObject.activeSelf;
         }
 
         if(Input.GetKeyDown(_questInfoOpen))
         {
-            _isQuestInfoOpen = _questInfo.gameObject.activeSelf;
             if (!_isQuestInfoOpen)
             {
                 List<Quest> currentQuest = PlayerController.instance.PlayerManager.GetCurrentQuests();
@@ -145,23 +145,29 @@ public class UIController : MonoBehaviour
             }
             else
                 _questInfoPanel.SetActive(false);
+
+            _isQuestInfoOpen = _questInfo.gameObject.activeSelf;
         }
 
-        if(Input.GetKeyDown(_pauseOpen))
+        if (Input.GetKeyDown(_pauseOpen))
         {
-            _isPauseOpen = _pausePanel.gameObject.activeSelf;
+            _isAnyUIOpen = _isPlayerInfoOpen | _isQuestInfoOpen;
+            if (!_isAnyUIOpen)
+            {
+                _isPauseOpen = _pausePanel.gameObject.activeSelf;
 
-            if (!_isPauseOpen)
-            {
-                _pausePanel.SetActive(true);
-                PlayerController.instance.SetMyState(State.CANTMOVE);
-                Time.timeScale = 0;
-            }
-            else
-            {
-                _pausePanel.SetActive(false);
-                PlayerController.instance.SetMyState(State.CANMOVE);
-                Time.timeScale = 1;
+                if (!_isPauseOpen)
+                {
+                    _pausePanel.SetActive(true);
+                    PlayerController.instance.SetMyState(State.CANTMOVE);
+                    Time.timeScale = 0;
+                }
+                else
+                {
+                    _pausePanel.SetActive(false);
+                    PlayerController.instance.SetMyState(State.CANMOVE);
+                    Time.timeScale = 1;
+                }
             }
         }
 

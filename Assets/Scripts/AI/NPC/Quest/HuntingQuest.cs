@@ -5,7 +5,8 @@ public class HuntingQuest : Quest
 {
     public Monster _targetMonster;
     public int _numberOfHunts;
-    int _currentNumberOfHunts = 0;
+    [HideInInspector]
+    public int _currentNumberOfHunts = 0;
 
     private void Awake()
     {
@@ -17,6 +18,7 @@ public class HuntingQuest : Quest
         if(_currentNumberOfHunts < _numberOfHunts)
         {
             _currentNumberOfHunts++;
+            UIController.instance.NoticeArea.GetMessage(_targetMonster.name + " " + _currentNumberOfHunts + "/" + _numberOfHunts);
             if (_currentNumberOfHunts == _numberOfHunts)
                 _canComplete = true;
         }

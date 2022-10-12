@@ -10,6 +10,7 @@ public class Dialogue : MonoBehaviour
     [SerializeField] TextMeshProUGUI _dialogue;
 
     DialogueNPC _npc;
+    DialogueNPCAI _npcAI;
     int _cnt;
 
     private void OnEnable()
@@ -17,6 +18,12 @@ public class Dialogue : MonoBehaviour
         _cnt = 0;
         _name.text = _npc._name;
         _dialogue.text = _npc._dialogue[_cnt];
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.instance.SetMyState(State.CANMOVE);
+        _npcAI.End();
     }
 
     private void Update()
@@ -32,12 +39,12 @@ public class Dialogue : MonoBehaviour
         else if(Input.GetKeyDown(PlayerController.instance.PlayerKeySetting._esc))
         {
             gameObject.SetActive(false);
-            PlayerController.instance.SetMyState(State.IDLE);
         }
     }
 
-    public void SetNPC(DialogueNPC npc)
+    public void SetNPC(DialogueNPC npc, DialogueNPCAI npcAI)
     {
         _npc = npc;
+        _npcAI = npcAI;
     }
 }

@@ -3818,9 +3818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cb043bac4f189042ad9bc04c4d6d242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _npc: {fileID: 0}
-  _actionUI: {fileID: 3250273437218749801, guid: d549ecbf3e820fb42a12b9149acb3933, type: 3}
-  _questUI: {fileID: 5405680720512018329, guid: cfeaf56ba814c404d8b0dbfde0baefbf, type: 3}
+  _npc: {fileID: 11400000, guid: 576b40006af4f37499fe40e6d9d3e59d, type: 2}
 --- !u!1 &5937872194780759465
 GameObject:
   m_ObjectHideFlags: 0
