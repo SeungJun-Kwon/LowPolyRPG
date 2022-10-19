@@ -16,7 +16,7 @@ public class NPCEditor : Editor
     {
         _npc = (NPC)target;
 
-        if (_npc._type == NPC.Type.DialogueNPC)
+        if (_npc._npcType == NPC.Type.DialogueNPC)
         {
             DialogueNPC dialogueNPC = (DialogueNPC)target;
             var properties = serializedObject.FindProperty("_dialogue");
@@ -30,7 +30,7 @@ public class NPCEditor : Editor
                 EditorGUI.PropertyField(rect, elements);
             };
         }
-        else if(_npc._type == NPC.Type.QuestNPC)
+        else if(_npc._npcType == NPC.Type.QuestNPC)
         {
             QuestNPC questNPC = (QuestNPC)target;
             var properties = serializedObject.FindProperty("_quest");
@@ -49,7 +49,7 @@ public class NPCEditor : Editor
     public override void OnInspectorGUI()
     {
         _npc._name = EditorGUILayout.TextField("이름", _npc._name);
-        _npc._type = (NPC.Type)EditorGUILayout.EnumPopup("NPC 타입", _npc._type);
+        _npc._npcType = (NPC.Type)EditorGUILayout.EnumPopup("NPC 타입", _npc._npcType);
         serializedObject.Update();
         list.DoLayoutList();
         serializedObject.ApplyModifiedProperties();

@@ -88,10 +88,17 @@ public class PlayerController : MonoBehaviour
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
         _camera = Camera.main;
+    }
 
-        //transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+    private void OnEnable()
+    {
+        _myState = State.CANTMOVE;
+
+        _navMeshAgent.enabled = false;
+        transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+        _navMeshAgent.enabled = true;
+
         _myState = State.IDLE;
-        _stateManager.SetState(_myState);
     }
 
     void Start()
@@ -111,7 +118,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         _stateManager.SetState(_myState);
-        _animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude / _maxSpeed);
+        if(_navMeshAgent.enabled)
+            _animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude / _maxSpeed);
         if (_stateManager.IsCanMove())
         {
             if (!_stateManager.IsAttacking())

@@ -23,6 +23,9 @@ public class QuestInfo : MonoBehaviour
     // 0 : 퀘스트 수락 전, 1 : 퀘스트 진행 중, 2 : 퀘스트 완료
     int _confirmState = 0;
 
+    // NPC 대화를 통해 퀘스트 창을 열었을 경우에만 퀘스트 완료 가능
+    bool _canComplete = false;
+
     private void OnEnable()
     {
         _detail.SetActive(false);
@@ -64,16 +67,11 @@ public class QuestInfo : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(PlayerController.instance.PlayerKeySetting._esc))
-        {
-            gameObject.SetActive(false);
-        }
-    }
+    private void OnDisable() => PlayerController.instance.SetMyState(State.CANMOVE);
 
     public void SetQuest(QuestNPC npc)
     {
+        _canComplete = true;
         _quest = npc._quest.ToList();
 
         PlayerManager playerManager = PlayerController.instance.PlayerManager;
@@ -86,6 +84,7 @@ public class QuestInfo : MonoBehaviour
 
     public void SetQuest(List<Quest> quest)
     {
+        _canComplete = false;
         _quest = quest.ToList();
     }
 
@@ -126,7 +125,8 @@ public class QuestInfo : MonoBehaviour
                 break;
             case 1:
                 _acceptButton.SetActive(false);
-                _completeButton.SetActive(true);
+                if(_canComplete)
+                    _completeButton.SetActive(true);
                 break;
             case 2:
                 _acceptButton.SetActive(false);

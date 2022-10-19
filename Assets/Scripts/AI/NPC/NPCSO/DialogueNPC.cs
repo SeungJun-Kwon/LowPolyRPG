@@ -7,6 +7,6 @@ public class DialogueNPC : NPC
 
     private void Awake()
     {
-        this._type = Type.DialogueNPC;
+        this._npcType = Type.DialogueNPC;
     }
 }

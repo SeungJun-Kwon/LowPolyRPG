@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(ObjectInfoForMouse))]
 public class MonsterAI : MonoBehaviour
 {
-    [SerializeField] NormalMonster _monster;
+    [SerializeField] public NormalMonster _monster;
     [SerializeField] ParticleSystem _hitEffect;
     [SerializeField] GameObject _damageText;
 

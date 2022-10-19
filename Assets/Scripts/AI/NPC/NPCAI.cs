@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ObjectInfoForMouse))]
 public class NPCAI : MonoBehaviour
 {
-    [SerializeField] protected NPC _npc;
+    public NPC _npc;
     GameObject _actionUI;
 
     protected GameObject _canvas;

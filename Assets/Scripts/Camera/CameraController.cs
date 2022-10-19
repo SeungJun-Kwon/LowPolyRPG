@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public static CameraController instance;
+
     [SerializeField] Transform _targetTransform;
     [SerializeField] float _cameraSpeed;
     [SerializeField] Vector3 _offset;
@@ -13,8 +15,22 @@ public class CameraController : MonoBehaviour
 
     [HideInInspector] public bool _isAble = true;
 
+    float _shakeSpeed = 0.1f;
+
     private void Awake()
     {
+        #region Singleton
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        #endregion
+
         if (!_targetTransform)
             _targetTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
@@ -39,5 +55,32 @@ public class CameraController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, _targetTransform.position + _offset, Time.deltaTime * _cameraSpeed);
             transform.rotation = Quaternion.Euler(_rotation);
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+            CameraShake();
+    }
+
+    public void CameraShake()
+    {
+        _isAble = false;
+        StartCoroutine(Shake(1f));
+    }
+
+    IEnumerator Shake(float duration, float magnitude = 1f)
+    {
+        Vector3 startPos = transform.position;
+        Debug.Log(startPos.ToString());
+        float timer = 0;
+
+        while(timer < duration)
+        {
+            transform.position = startPos + new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f)) * magnitude;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = startPos;
+        _isAble = true;
     }
 }
