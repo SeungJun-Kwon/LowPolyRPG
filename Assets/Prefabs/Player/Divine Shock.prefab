@@ -4759,7 +4759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adaf9fc767f6b0b469c1fd8262ac3951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skill: {fileID: 11400000, guid: 3a28d062a324a5d40943e9300018dc2c, type: 2}
+  _skill: {fileID: 11400000, guid: 896f50368bf98ec49a073a84736e2c1a, type: 2}
 --- !u!135 &7375912294336650329
 SphereCollider:
   m_ObjectHideFlags: 0

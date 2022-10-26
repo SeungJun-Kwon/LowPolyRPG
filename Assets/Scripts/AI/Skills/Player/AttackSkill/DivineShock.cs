@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DivineShock : MonoBehaviour
 {
-    [SerializeField] private Skill _skill;
+    [SerializeField] private PlayerSkill _skill;
 
     SphereCollider _sphereCollider;
     ParticleSystem _particleSystem;

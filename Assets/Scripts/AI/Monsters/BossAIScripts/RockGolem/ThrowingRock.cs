@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class ThrowingRock : MonoBehaviour
 {
-    [SerializeField] Skill _skill;
+    [SerializeField] MonsterSkill _skill;
     [SerializeField] AudioClip _rockDestroySound;
 
     Rigidbody _rigidBody;
     Vector3 _originPos;
 
-    float _skillNumberOfAttack = 0, _skillNumberOfEnemy = 0, _skillDamageMultiplier = 0, _skillRange = 0, _skillDuration = 0, _skillDelay = 0, _skillCoolTime = 0;
+    int _skillDamage;
+    float _skillRange, _skillDuration, _skillDelay;
+    bool _isPercentageAttack;
 
     private void Awake()
     {
@@ -19,13 +21,11 @@ public class ThrowingRock : MonoBehaviour
 
     private void Start()
     {
-        _skillNumberOfAttack = _skill._skillNumberOfAttack;
-        _skillNumberOfEnemy = _skill._skillNumberOfEnemy;
-        _skillDamageMultiplier = _skill._skillDamageMultiplier;
+        _skillDamage = _skill._skillDamage;
         _skillRange = _skill._skillRange;
         _skillDuration = _skill._skillDuration;
         _skillDelay = _skill._skillDelay;
-        _skillCoolTime = _skill._skillCoolTime;
+        _isPercentageAttack = _skill._isPercentageAttack;
     }
 
     private void OnEnable()
@@ -44,7 +44,12 @@ public class ThrowingRock : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.tag == "Player")
+        {
+            CameraController.instance.CameraShake(0.5f);
+            collision.gameObject.TryGetComponent<PlayerController>(out var playerController);
+            playerController.Damaged(_skillDamage, false, _isPercentageAttack);
             Destroy(this.gameObject);
+        }
     }
 
     private void OnDestroy()

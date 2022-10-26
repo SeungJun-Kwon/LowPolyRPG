@@ -112,4 +112,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc28ae2b3a2519b4c943b4ad82f41d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skill: {fileID: 11400000, guid: c0f5d4554363e2d499acc8d19691c355, type: 2}
+  _skill: {fileID: 11400000, guid: 64de62cef975922438151d14916e4726, type: 2}

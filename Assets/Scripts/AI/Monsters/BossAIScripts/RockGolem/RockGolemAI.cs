@@ -39,7 +39,7 @@ public class RockGolemAI : BossAI
         var hits = Physics.BoxCastAll(_boxCollider.bounds.center, _boxCollider.bounds.size / 2, transform.forward, transform.rotation, _bossRange, LayerMask.GetMask("Player"));
         if (hits.Length > 0)
         {
-            PlayerController.instance.Damaged(_bossDamage);
+            PlayerController.instance.Damaged(_bossDamage, false);
         }
     }
 

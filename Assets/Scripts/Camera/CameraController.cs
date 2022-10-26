@@ -15,8 +15,6 @@ public class CameraController : MonoBehaviour
 
     [HideInInspector] public bool _isAble = true;
 
-    float _shakeSpeed = 0.1f;
-
     private void Awake()
     {
         #region Singleton
@@ -57,19 +55,18 @@ public class CameraController : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.A))
-            CameraShake();
+            CameraShake(1f);
     }
 
-    public void CameraShake()
+    public void CameraShake(float duration, float magnitude = 1f)
     {
         _isAble = false;
-        StartCoroutine(Shake(1f));
+        StartCoroutine(Shake(duration));
     }
 
     IEnumerator Shake(float duration, float magnitude = 1f)
     {
         Vector3 startPos = transform.position;
-        Debug.Log(startPos.ToString());
         float timer = 0;
 
         while(timer < duration)

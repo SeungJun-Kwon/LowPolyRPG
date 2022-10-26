@@ -28,14 +28,14 @@ public class TurtleShellAI : MonsterAI
     {
         RaycastHit[] hits = Physics.SphereCastAll(_attackPosition.position, _monsterRange, _attackPosition.up, 0f, LayerMask.GetMask("Player"));
         if (hits.Length > 0)
-            PlayerController.instance.Damaged(_monsterDamage);
+            PlayerController.instance.Damaged(_monsterDamage, true);
     }
 
     private void TrySpinAttack()
     {
         RaycastHit[] hits = Physics.SphereCastAll(_attackPosition.position, _monsterRange, _attackPosition.up, 0f, LayerMask.GetMask("Player"));
         if (hits.Length > 0)
-            PlayerController.instance.Damaged(_monsterDamage * 2);
+            PlayerController.instance.Damaged(_monsterDamage * 2, false);
         StartCoroutine(SpinCoolDown());
     }
 

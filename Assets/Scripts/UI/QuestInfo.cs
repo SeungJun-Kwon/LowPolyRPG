@@ -21,7 +21,7 @@ public class QuestInfo : MonoBehaviour
     Quest _selectedQuest;
 
     // 0 : 퀘스트 수락 전, 1 : 퀘스트 진행 중, 2 : 퀘스트 완료
-    int _confirmState = 0;
+    // int _confirmState = 0;
 
     // NPC 대화를 통해 퀘스트 창을 열었을 경우에만 퀘스트 완료 가능
     bool _canComplete = false;

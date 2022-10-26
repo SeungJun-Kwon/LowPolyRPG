@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: befd608c92e292242b37b43f6902897b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skill: {fileID: 11400000, guid: f6736faee224c15468f6447ce0322249, type: 2}
+  _skill: {fileID: 11400000, guid: 66d776dd0aa25924c87b1fc7c28df63f, type: 2}
   _rockDestroySound: {fileID: 8300000, guid: 0ebe0285157e2f74bbaf08189cb52f60, type: 3}
 --- !u!135 &6428623609297924075
 SphereCollider:

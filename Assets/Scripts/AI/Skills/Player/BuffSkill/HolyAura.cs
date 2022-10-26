@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HolyAura : MonoBehaviour
 {
-    [SerializeField] private Skill _skill;
+    [SerializeField] private PlayerSkill _skill;
 
     ParticleSystem _particleSystem;
 

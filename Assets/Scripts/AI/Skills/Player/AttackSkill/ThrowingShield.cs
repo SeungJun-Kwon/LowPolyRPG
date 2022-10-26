@@ -5,7 +5,7 @@ using System.Linq;
 
 public class ThrowingShield : MonoBehaviour
 {
-    [SerializeField] private Skill _skill;
+    [SerializeField] private PlayerSkill _skill;
 
     Transform _nextTarget = null;
     BoxCollider _boxCollider;

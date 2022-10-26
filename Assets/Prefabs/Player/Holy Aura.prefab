@@ -4776,7 +4776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46908c56735a75e4f99e0109fa9eef6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skill: {fileID: 11400000, guid: 878b7bbc3a688364a957f825d044e3f5, type: 2}
+  _skill: {fileID: 11400000, guid: 642899607315c6948b1e09a754157bc1, type: 2}
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0

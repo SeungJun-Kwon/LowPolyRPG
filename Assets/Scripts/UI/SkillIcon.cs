@@ -8,7 +8,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 {
     [SerializeField] Image _skillImage, _skillFill;
 
-    Skill _skill;
+    PlayerSkill _skill;
     SkillSlot _skillSlot;
 
     float _currentCoolTime;
@@ -19,7 +19,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         _skillSlot = GetComponentInParent<SkillSlot>();
     }
 
-    public void SetSkill(Skill skill)
+    public void SetSkill(PlayerSkill skill)
     {
         _skill = skill;
         _skillImage.sprite = _skill._skillIconImage;

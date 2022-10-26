@@ -264,16 +264,18 @@ public class PlayerController : MonoBehaviour
         _weaponTrail.enabled = _toggle;
     }
 
-    public void Damaged(int _damage)
+    public void Damaged(int damage, bool isImmuned = true, bool percentageDamage = false)
     {
         SettingAttackInstance(0);
         _myState = State.IDLE;
         _navMeshAgent.isStopped = true;
-        if (!_isRigidImmuntity)
+        if (!isImmuned)
         {
             _animator.SetTrigger("OnHit");
         }
-        UIController.instance.SetHPOrb(-_damage);
+        if (percentageDamage)
+            damage = (int)(_playerManager._playerHP * (float)damage / 100);
+        UIController.instance.SetHPOrb(-damage);
     }
 
     public void SetMyState(State state) => _myState = state;

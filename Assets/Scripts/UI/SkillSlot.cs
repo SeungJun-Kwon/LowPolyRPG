@@ -9,11 +9,11 @@ public class SkillSlot : MonoBehaviour
 
     public SkillInfo _skillInfo;
 
-    List<Skill> _skill = new List<Skill>();
+    List<PlayerSkill> _skill = new List<PlayerSkill>();
 
     private void Start()
     {
-        Skill[] skills = SkillManager.instance._skill;
+        PlayerSkill[] skills = SkillManager.instance._skill;
         for (int i = 0; i < skills.Length; i++)
         {
             _skill.Add(skills[i]);

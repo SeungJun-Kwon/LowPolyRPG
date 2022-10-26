@@ -6,7 +6,7 @@ using UnityEngine;
 public class SkillManager : MonoBehaviour
 {
     public static SkillManager instance;
-    public Skill[] _skill;
+    public PlayerSkill[] _skill;
     public GameObject[] _skillPrefab;
     public Transform[] _skillTransform;
 
