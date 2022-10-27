@@ -92,13 +92,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        _myState = State.CANTMOVE;
-
-        _navMeshAgent.enabled = false;
-        transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
-        _navMeshAgent.enabled = true;
-
-        _myState = State.IDLE;
+        ToTheStartPoint();
     }
 
     void Start()
@@ -167,6 +161,17 @@ public class PlayerController : MonoBehaviour
     {
         //if (_stateManager.IsMoving())
         //    LookMoveDirection();
+    }
+
+    public void ToTheStartPoint()
+    {
+        _myState = State.CANTMOVE;
+
+        _navMeshAgent.enabled = false;
+        transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+        _navMeshAgent.enabled = true;
+
+        _myState = State.IDLE;
     }
 
     public void SetDestination(Transform tf)
