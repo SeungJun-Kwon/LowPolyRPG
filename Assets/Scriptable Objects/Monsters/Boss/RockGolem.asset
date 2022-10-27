@@ -25,6 +25,7 @@ MonoBehaviour:
   _stiffnessCount: 3
   _stiffnessDuration: 5
   _bossImage: {fileID: 21300000, guid: dcbb369ba15823b41a13d2c86f59f30f, type: 3}
+  _bossScene: BossStage
   _skill:
   - {fileID: 11400000, guid: f6736faee224c15468f6447ce0322249, type: 2}
   _skillPrefab:

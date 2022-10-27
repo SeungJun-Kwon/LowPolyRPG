@@ -77,6 +77,23 @@ public class UIController : MonoBehaviour
     [Header("Sounds")]
     [SerializeField] Slider _bgmSlider, _sfxSlider;
 
+    [Header("BossEntry")]
+    [SerializeField] GameObject _bossEntryPanel;
+    BossEntry _bossEntry;
+    [HideInInspector] public BossEntry BossEntry
+    {
+        get
+        {
+            if (!_bossEntry)
+            {
+                if (!_bossEntryPanel)
+                    _bossEntryPanel = transform.Find("BossEntryUI").gameObject;
+                _bossEntryPanel.TryGetComponent<BossEntry>(out _bossEntry);
+            }
+            return _bossEntry;
+        }
+    }
+
     bool _isAnyUIOpen = false;
     bool _isPlayerInfoOpen = false;
     bool _isQuestInfoOpen = false;

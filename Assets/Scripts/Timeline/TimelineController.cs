@@ -26,12 +26,16 @@ public class TimelineController : MonoBehaviour
 
     public void Play(PlayableDirector playableDirector)
     {
+        if (playableDirector == null)
+            PlayerController.instance.TryGetComponent<PlayableDirector>(out playableDirector);
         _playableDirector = playableDirector;
         _playableDirector.Play();
     }
 
     public void PlayFromTimeline(PlayableDirector playableDirector, TimelineAsset timeline)
     {
+        if (playableDirector == null)
+            PlayerController.instance.TryGetComponent<PlayableDirector>(out playableDirector);
         _playableDirector = playableDirector;
         _timeline = timeline;
         _playableDirector.Play(_timeline);
