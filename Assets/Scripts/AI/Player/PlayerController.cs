@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -118,11 +119,9 @@ public class PlayerController : MonoBehaviour
         {
             if (!_stateManager.IsAttacking())
             {
-                if (Input.GetKeyDown(_attack))
+                if (Input.GetKey(_attack))
                 {
-                    LookMousePosition();
                     StopAllCoroutines();
-                    _myState = State.ATTACK;
                     StartCoroutine(OnAttack(_attackDelay, "OnSwordAttack"));
                 }
                 else if (Input.GetKey(_move))
@@ -236,10 +235,12 @@ public class PlayerController : MonoBehaviour
     {
         _myState = State.ATTACK;
         _navMeshAgent.SetDestination(transform.position);
+        LookMousePosition();
         _animator.SetTrigger(trigger);
+        _animator.SetInteger("AttackIndex", Random.Range(0, 2));
         //_animator.GetCurrentAnimatorClipInfo(0).Length;   현재 애니메이션의 길이
 
-        yield return new WaitForSeconds(attackDelay);
+        yield return new WaitForSecondsRealtime(attackDelay);
 
         _myState = State.IDLE;
         SettingAttackInstance(0);

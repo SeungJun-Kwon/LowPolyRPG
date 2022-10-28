@@ -17,8 +17,8 @@ public class BossEntry : MonoBehaviour
     {
         _image.sprite = bossMonster._bossImage;
         _bossName.text = bossMonster._monsterName;
-        _bossLv.text = bossMonster._monsterLevel.ToString();
-        _bossHp.text = bossMonster._monsterHP.ToString();
+        _bossLv.text = "Lv : " + bossMonster._monsterLevel.ToString();
+        _bossHp.text = "Hp : " + bossMonster._monsterHP.ToString();
         _nextScene = bossMonster._bossScene;
     }
 
