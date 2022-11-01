@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
 {
     public static CameraController instance;
 
+    [Header("Follow Player")]
     [SerializeField] Transform _targetTransform;
     [SerializeField] float _cameraSpeed;
     [SerializeField] Vector3 _offset;
@@ -13,7 +14,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] Vector3 _rotation;
     [SerializeField] float _scrollSpeed = 5f;
 
+    [Header("Event Camera")]
+    [SerializeField] Transform _eventCam;
+
     [HideInInspector] public bool _isAble = true;
+    [HideInInspector] public bool _isEvent = false;
 
     private void Awake()
     {
@@ -46,6 +51,11 @@ public class CameraController : MonoBehaviour
                 _offset -= new Vector3(0, 0.2f, -0.1f) * _scrollSpeed;
             else if (scroll < 0 && _offset.magnitude < _maxOffset.magnitude)
                 _offset += new Vector3(0, 0.2f, -0.1f) * _scrollSpeed;
+        }
+        else if (_isEvent)
+        {
+            transform.position = _eventCam.position;
+            transform.rotation = _eventCam.rotation;
         }
 
         if (Input.GetKeyDown(KeyCode.A))

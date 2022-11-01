@@ -88,6 +88,7 @@ public class MonsterAI : MonoBehaviour
         _target = null;
         gameObject.layer = LayerMask.NameToLayer("Monster");
         gameObject.tag = "Enemy";
+        _isAttack = false;
         _isDead = false;
         _isChase = false;
     }
