@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f94faa5730d2e34ba848e62ecd02ddf, type: 3}
+  m_Name: DialogueQuestsample
+  m_EditorClassIdentifier: 
+  _title: "\uC544\uC800\uC528\uC5D0\uAC8C \uB9D0\uC744 \uAC78\uC5B4\uBCF4\uC790!"
+  _type: 0
+  _startNPC: {fileID: 11400000, guid: fc3e4754585ffda4182eb20383216fc8, type: 2}
+  _desc: "\uC544\uC800\uC528\uC5D0\uAC8C \uB9D0\uC744 \uAC78\uC5B4 \uC598\uAE30\uB97C
+    \uB4E4\uC5B4\uBCF4\uC790."
+  _dialogues:
+  - "\uC624, \uC548\uB155\uD558\uC2E0\uAC00! \uBCF4\uC544\uD558\uB2C8 \uC774 \uC138\uACC4\uB294
+    \uCC98\uC74C\uC778 \uBAA8\uC591\uC774\uB85C\uAD70?"
+  - "\uB098\uC5D0\uAC8C \uB2E4\uC2DC \uB9D0\uC744 \uAC78\uBA74 \uC774 \uC138\uACC4\uB97C
+    \uC0B4\uC544\uAC00\uB294\uB370 \uC788\uC5B4 \uD544\uC694\uD55C \uC815\uBCF4\uB4E4\uC744
+    \uC54C\uB824\uC8FC\uACA0\uB124."
+  _reward:
+    _exp: 50
+    _gold: 0
+  _canComplete: 0
+  _requiredLevel: 1
+  _precednetQuest: {fileID: 0}
+  _targetNPC:
+  - {fileID: 11400000, guid: fc3e4754585ffda4182eb20383216fc8, type: 2}
+  _npcDialogue:
+  - _sentences:
+    - "\uC774\uB3D9\uC740 \uB9C8\uC6B0\uC2A4 \uC6B0\uD074\uB9AD"
+    - "\uACF5\uACA9\uC740 \uB9C8\uC6B0\uC2A4 \uC88C\uD074\uB9AD"
+    - "\uC2A4\uD0AC\uC740 Q, W, E, R"
+    - "\uB0B4 \uC815\uBCF4\uB294 P"
+    - "\uD018\uC2A4\uD2B8 \uC815\uBCF4\uB294 L"
+    - "\uC124\uC815\uC740 Esc"

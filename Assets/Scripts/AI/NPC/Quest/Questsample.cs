@@ -1,22 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Reward
-{
-    public int _exp;
-    public int _gold;
-}
-
-public class Quest : ScriptableObject
+public class Questsample : ScriptableObject
 {
     public enum Type { DIALOGUE, HUNTING }
 
     public string _title;
     public Type _type;
-    public NPC _startNPC;
+    public NPCsample _startNPC;
     public string _desc;
+    public List<string> _dialogues = new List<string>();
     public Reward _reward;
     public bool _canComplete = false;
     public int _requiredLevel = 1;
+    public Quest _precednetQuest;
 }
