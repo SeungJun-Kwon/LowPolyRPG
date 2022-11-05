@@ -21,6 +21,10 @@ public class PlayerManager : MonoBehaviour
     List<Quest> _currentQuest = new List<Quest>();
     List<Quest> _completedQuest = new List<Quest>();
 
+    [SerializeField]
+    List<Questsample> _currentQuestsample = new List<Questsample>();
+    List<Questsample> _completedQuestsample = new List<Questsample>();
+
     int _addedSTR = 0;
     int _addedDEX = 0;
     int _addedINT = 0;
@@ -114,5 +118,13 @@ public class PlayerManager : MonoBehaviour
     {
         _currentQuest.Remove(quest);
         _completedQuest.Add(quest);
+    }
+
+    public bool FindQuestsample(Questsample quest)
+    {
+        foreach (Questsample item in _currentQuestsample)
+            if (item._questId == quest._questId)
+                return true;
+        return false;
     }
 }

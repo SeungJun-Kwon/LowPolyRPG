@@ -1813,6 +1813,8 @@ MonoBehaviour:
   _playerLv: 1
   _playerExp: 0
   _totalExp: 50
+  _currentQuestsample:
+  - {fileID: 11400000, guid: b0400359664b9c74e994d0b5e80310db, type: 2}
 --- !u!114 &8378421799570214870
 MonoBehaviour:
   m_ObjectHideFlags: 0

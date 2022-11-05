@@ -5,16 +5,20 @@ using UnityEngine.UI;
 
 public class NPCDialoguesample : MonoBehaviour
 {
+    [SerializeField] GameObject _questListBox;
     [SerializeField] Text _name;
     [SerializeField] Text _contentText;
-    [SerializeField] Button _questButton, _dialogueButton, _exitButton;
+    [SerializeField] Button _questButton, _questAcceptButton, _dialogueButton, _exitButton;
 
+    NPCQuestListsample _npcQuestList;
     CanvasGroup _canvasGroup;
     NPCsample _npc;
 
     private void Awake()
     {
         TryGetComponent<CanvasGroup>(out _canvasGroup);
+
+        _questListBox.TryGetComponent<NPCQuestListsample>(out _npcQuestList);
     }
 
     private void OnEnable()
@@ -26,16 +30,16 @@ public class NPCDialoguesample : MonoBehaviour
     {
         _npc = npc;
         _name.text = _npc._name;
-        _contentText.text = _npc._firstSentence;
-        if (_npc._quests.Count > 0)
-            _questButton.enabled = true;
-        else
-            _questButton.enabled = false;
+        SetInit();
     }
 
     public void ShowQuest()
     {
-
+        _contentText.gameObject.SetActive(false);
+        _questListBox.gameObject.SetActive(true);
+        _questButton.gameObject.SetActive(false);
+        _dialogueButton.gameObject.SetActive(false);
+        _npcQuestList.SetQuest(_npc._quests);
     }
 
     public void DoConversation()
@@ -57,7 +61,10 @@ public class NPCDialoguesample : MonoBehaviour
     private void SetInit()
     {
         _contentText.text = _npc._firstSentence;
-        _questButton.gameObject.SetActive(true);
+        if(_npc._quests.Count > 0)
+            _questButton.gameObject.SetActive(true);
+        else
+            _questButton.gameObject.SetActive(false);
         _dialogueButton.gameObject.SetActive(true);
     }
 
