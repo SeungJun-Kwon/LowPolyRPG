@@ -20,9 +20,6 @@ MonoBehaviour:
   - "\uC694\uC998 \uC0DD\uD65C\uC740 \uC5B4\uB5A0\uD55C\uAC00"
   _quests:
   - {fileID: 11400000, guid: b0400359664b9c74e994d0b5e80310db, type: 2}
-  - {fileID: 11400000, guid: ee9ef0ff7e59e114f9ce9a49736cef48, type: 2}
-  - {fileID: 11400000, guid: bc703f5f65ea2ff43b8b34b1373a02b5, type: 2}
-  - {fileID: 11400000, guid: caf0873e86279c847b47055203a4111c, type: 2}
   _isTimeline: 0
   _playableDirector: {fileID: 0}
   _timeline: {fileID: 0}

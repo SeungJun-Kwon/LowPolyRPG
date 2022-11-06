@@ -212,6 +212,8 @@ public class UIController : MonoBehaviour
 
     public void UseSkill(int index) => _skillSlot.UseSkill(index);
 
+    public void SetAsLastSibling(GameObject go) => go.transform.SetAsLastSibling();
+
     public void SetActiveBossHPBar(BossMonster monster, bool trigger)
     {
         if(trigger)

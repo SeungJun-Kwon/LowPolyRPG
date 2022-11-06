@@ -126,7 +126,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 188014279338853727}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -8256034257863204349}
+        m_TargetAssemblyTypeName: NPCQuestsample, Assembly-CSharp
+        m_MethodName: OnClickQuest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &59619642578267571
 MonoBehaviour:
   m_ObjectHideFlags: 0

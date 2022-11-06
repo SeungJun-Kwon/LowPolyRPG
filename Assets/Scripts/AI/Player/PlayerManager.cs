@@ -104,10 +104,17 @@ public class PlayerManager : MonoBehaviour
         return _completedQuest;
     }
 
+    public List<Questsample> GetCompletedQuestssample()
+    {
+        return _completedQuestsample;
+    }
+
     public void AddQuest(Quest quest)
     {
         _currentQuest.Add(quest);
     }
+
+    public void AcceptQuest(Questsample quest) => _currentQuestsample.Add(quest);
 
     public void RemoveQuest(Quest quest)
     {
@@ -126,5 +133,13 @@ public class PlayerManager : MonoBehaviour
             if (item._questId == quest._questId)
                 return true;
         return false;
+    }
+
+    public Questsample GetQuest(Questsample quest)
+    {
+        foreach(Questsample item in _currentQuestsample)
+            if(item._questId == quest._questId)
+                return item;
+        return null;
     }
 }
