@@ -4,6 +4,8 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(PlayerManager))]
+[RequireComponent(typeof(QuestManager))]
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
@@ -27,6 +29,17 @@ public class PlayerController : MonoBehaviour
             if (_playerManager == null)
                 TryGetComponent<PlayerManager>(out _playerManager);
             return _playerManager;
+        }
+    }
+
+    QuestManager _questManager;
+    public QuestManager QuestManager
+    {
+        get
+        {
+            if (_questManager == null)
+                TryGetComponent<QuestManager>(out _questManager);
+            return _questManager;
         }
     }
 

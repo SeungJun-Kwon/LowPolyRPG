@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -20,10 +21,6 @@ public class PlayerManager : MonoBehaviour
 
     List<Quest> _currentQuest = new List<Quest>();
     List<Quest> _completedQuest = new List<Quest>();
-
-    [SerializeField]
-    List<Questsample> _currentQuestsample = new List<Questsample>();
-    List<Questsample> _completedQuestsample = new List<Questsample>();
 
     int _addedSTR = 0;
     int _addedDEX = 0;
@@ -104,17 +101,10 @@ public class PlayerManager : MonoBehaviour
         return _completedQuest;
     }
 
-    public List<Questsample> GetCompletedQuestssample()
-    {
-        return _completedQuestsample;
-    }
-
     public void AddQuest(Quest quest)
     {
         _currentQuest.Add(quest);
     }
-
-    public void AcceptQuest(Questsample quest) => _currentQuestsample.Add(quest);
 
     public void RemoveQuest(Quest quest)
     {
@@ -125,21 +115,5 @@ public class PlayerManager : MonoBehaviour
     {
         _currentQuest.Remove(quest);
         _completedQuest.Add(quest);
-    }
-
-    public bool FindQuestsample(Questsample quest)
-    {
-        foreach (Questsample item in _currentQuestsample)
-            if (item._questId == quest._questId)
-                return true;
-        return false;
-    }
-
-    public Questsample GetQuest(Questsample quest)
-    {
-        foreach(Questsample item in _currentQuestsample)
-            if(item._questId == quest._questId)
-                return item;
-        return null;
     }
 }

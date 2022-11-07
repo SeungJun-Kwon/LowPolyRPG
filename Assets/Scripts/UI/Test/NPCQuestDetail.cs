@@ -7,8 +7,8 @@ public class NPCQuestDetail : MonoBehaviour
 {
     Text _title, _desc, _reward;
 
-    Questsample _quest;
-    NPCDialoguesample _npcDialoguesample;
+    Quest _quest;
+    NPCDialogue _npcDialogue;
 
     private void Awake()
     {
@@ -16,10 +16,10 @@ public class NPCQuestDetail : MonoBehaviour
         transform.Find("Description").gameObject.TryGetComponent<Text>(out _desc);
         transform.Find("Reward").gameObject.TryGetComponent<Text>(out _reward);
 
-        UIController.instance.transform.Find("NPCDialoguesample").gameObject.TryGetComponent<NPCDialoguesample>(out _npcDialoguesample);
+        UIController.instance.transform.Find("NPCDialogue").gameObject.TryGetComponent<NPCDialogue>(out _npcDialogue);
     }
 
-    public void SetQuest(Questsample quest)
+    public void SetQuest(Quest quest)
     {
         _quest = quest;
         _title.text = _quest._title;
@@ -29,7 +29,14 @@ public class NPCQuestDetail : MonoBehaviour
 
     public void AcceptQuest()
     {
-        PlayerController.instance.PlayerManager.AcceptQuest(_quest);
-        _npcDialoguesample.SetState(0);
+        PlayerController.instance.QuestManager.AcceptQuest(_quest);
+        _npcDialogue.SetState((int)NPCDialogueState.INIT);
+    }
+
+    public void CompleteQuest()
+    {
+        QuestManager questManager = PlayerController.instance.QuestManager;
+        questManager.CompleteQuest(_quest);
+        _npcDialogue.SetState((int)NPCDialogueState.INIT);
     }
 }

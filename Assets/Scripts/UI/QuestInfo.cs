@@ -69,18 +69,18 @@ public class QuestInfo : MonoBehaviour
 
     private void OnDisable() => PlayerController.instance.SetMyState(State.CANMOVE);
 
-    public void SetQuest(QuestNPC npc)
-    {
-        _canComplete = true;
-        _quest = npc._quest.ToList();
+    //public void SetQuest(QuestNPC npc)
+    //{
+    //    _canComplete = true;
+    //    _quest = npc._quest.ToList();
 
-        PlayerManager playerManager = PlayerController.instance.PlayerManager;
-        List<Quest> playerCompletedQuest = playerManager.GetCompletedQuests();
-        if (playerCompletedQuest.Count <= 0) return;
-        for(int i = 0; i < _quest.Count; i++)
-            if(playerCompletedQuest.Contains(_quest[i]))
-                _quest.RemoveAt(i);
-    }
+    //    PlayerManager playerManager = PlayerController.instance.PlayerManager;
+    //    List<Quest> playerCompletedQuest = playerManager.GetCompletedQuests();
+    //    if (playerCompletedQuest.Count <= 0) return;
+    //    for(int i = 0; i < _quest.Count; i++)
+    //        if(playerCompletedQuest.Contains(_quest[i]))
+    //            _quest.RemoveAt(i);
+    //}
 
     public void SetQuest(List<Quest> quest)
     {
@@ -96,14 +96,14 @@ public class QuestInfo : MonoBehaviour
 
     public void CompleteQuest()
     {
-        if (_selectedQuest._canComplete)
-        {
-            _completeButton.SetActive(false);
-            Reward reward = _selectedQuest._reward;
-            PlayerManager playerManager = PlayerController.instance.PlayerManager;
-            playerManager.GainExp(reward._exp);
-            playerManager.CompleteQuest(_selectedQuest);
-        }
+        //if (_selectedQuest._canComplete)
+        //{
+        //    _completeButton.SetActive(false);
+        //    Reward reward = _selectedQuest._reward;
+        //    PlayerManager playerManager = PlayerController.instance.PlayerManager;
+        //    playerManager.GainExp(reward._exp);
+        //    playerManager.CompleteQuest(_selectedQuest);
+        //}
     }
 
     public void UpdateDetail(Quest currentQuest, int questState)
@@ -113,7 +113,7 @@ public class QuestInfo : MonoBehaviour
         if (currentQuest._type == Quest.Type.HUNTING)
         {
             HuntingQuest huntingQuest = (HuntingQuest)_selectedQuest;
-            _detailText.text = _detailText.text + "\n" + huntingQuest._targetMonster.name + " " + huntingQuest._currentNumberOfHunts + "/" + huntingQuest._numberOfHunts;
+            //_detailText.text = _detailText.text + "\n" + huntingQuest._targetMonster.name + " " + huntingQuest._currentNumberOfHunts + "/" + huntingQuest._numberOfHunts;
         }
         _expText.text = _selectedQuest._reward._exp.ToString();
         _goldText.text = _selectedQuest._reward._gold.ToString();

@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(ObjectInfoForMouse))]
 public class NPCAI : MonoBehaviour
 {
     public NPC _npc;
     GameObject _actionUI;
+    GameObject _dialogueUI;
 
     protected GameObject _canvas;
 
     KeyCode _action;
+
+    [HideInInspector]
+    public bool _isAction = false;
 
     bool _isAroundPlayer;
 
@@ -18,29 +21,40 @@ public class NPCAI : MonoBehaviour
     {
         _canvas = GameObject.Find("UI");
         _actionUI = _canvas.transform.Find("DoConversation").gameObject;
+        _dialogueUI = _canvas.transform.Find("NPCDialogue").gameObject;
     }
 
     private void Start()
     {
         _action = PlayerController.instance.PlayerKeySetting._action;
+
+        StartCoroutine(UpdateCor());
     }
 
-    private void Update()
+    IEnumerator UpdateCor()
     {
-        if(_isAroundPlayer)
+        while(true)
         {
-            if (Input.GetKeyDown(_action))
+            if (_isAroundPlayer && !_isAction)
             {
-                _isAroundPlayer = false;
-                _actionUI.SetActive(_isAroundPlayer);
-                Action();
+                if (Input.GetKey(_action))
+                {
+                    Action();
+                }
             }
+
+            yield return new WaitForEndOfFrame();
         }
     }
 
     protected virtual void Action()
     {
         PlayerController.instance.SetMyState(State.CANTMOVE);
+        _isAction = true;
+        _actionUI.SetActive(false);
+        _dialogueUI.SetActive(true);
+        _dialogueUI.TryGetComponent<NPCDialogue>(out var npcDialogue);
+        npcDialogue.SetNPC(_npc);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,6 +63,18 @@ public class NPCAI : MonoBehaviour
         {
             _isAroundPlayer = true;
             _actionUI.SetActive(_isAroundPlayer);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            if (_isAction && !_dialogueUI.gameObject.activeSelf)
+            {
+                _isAction = false;
+                _actionUI.SetActive(_isAroundPlayer);
+            }
         }
     }
 

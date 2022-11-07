@@ -15,44 +15,11 @@ public class NPCEditor : Editor
     private void OnEnable()
     {
         _npc = (NPC)target;
-
-        if (_npc._npcType == NPC.Type.DialogueNPC)
-        {
-            DialogueNPC dialogueNPC = (DialogueNPC)target;
-            var properties = serializedObject.FindProperty("_dialogue");
-            list = new ReorderableList(serializedObject, properties);
-            list.drawHeaderCallback = rect => EditorGUI.LabelField(rect, "대화 내용");
-            list.drawElementCallback = (rect, index, isActive, isFocused) =>
-            {
-                var elements = properties.GetArrayElementAtIndex(index);
-                rect.height -= 4;
-                rect.y += 2;
-                EditorGUI.PropertyField(rect, elements);
-            };
-        }
-        else if(_npc._npcType == NPC.Type.QuestNPC)
-        {
-            QuestNPC questNPC = (QuestNPC)target;
-            var properties = serializedObject.FindProperty("_quest");
-            list = new ReorderableList(serializedObject, properties);
-            list.drawHeaderCallback = rect => EditorGUI.LabelField(rect, "퀘스트 목록");
-            list.drawElementCallback = (rect, index, isActive, isFocused) =>
-            {
-                var elements = properties.GetArrayElementAtIndex(index);
-                rect.height -= 4;
-                rect.y += 2;
-                EditorGUI.PropertyField(rect, elements);
-            };
-        }
     }
 
     public override void OnInspectorGUI()
     {
-        _npc._name = EditorGUILayout.TextField("이름", _npc._name);
-        _npc._npcType = (NPC.Type)EditorGUILayout.EnumPopup("NPC 타입", _npc._npcType);
-        serializedObject.Update();
-        list.DoLayoutList();
-        serializedObject.ApplyModifiedProperties();
+        base.OnInspectorGUI();
 
         _npc._isTimeline = EditorGUILayout.Toggle("타임라인 유무", _npc._isTimeline);
         if(_npc._isTimeline)

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 59619642578267571}
   - component: {fileID: -8256034257863204349}
   m_Layer: 5
-  m_Name: Questsample
+  m_Name: Quest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

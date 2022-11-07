@@ -176,16 +176,11 @@ public class BossAI : MonoBehaviour
         PlayerManager playerManager = PlayerController.instance.PlayerManager;
         playerManager.GainExp(_bossMonster._monsterGiveExp);
 
-        List<HuntingQuest> playerQuest = new List<HuntingQuest>();
-        foreach (Quest quest in playerManager.GetCurrentQuests())
-            if (quest._type == Quest.Type.HUNTING)
-                playerQuest.Add((HuntingQuest)quest);
-
-        foreach (HuntingQuest quest in playerQuest)
-        {
-            if (quest._targetMonster == _bossMonster)
-                quest.HuntMonster();
-        }
+        QuestManager questManager = PlayerController.instance.QuestManager;
+        List<QuestData> questDataList = questManager.GetCurrentQuestData(Quest.Type.HUNTING);
+        if (questDataList != null)
+            foreach (HuntingQuestData quest in questDataList)
+                quest.HuntMonster(_bossMonster);
 
         yield return new WaitForSeconds(3f);
 

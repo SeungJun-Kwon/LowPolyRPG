@@ -4,23 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum NPCDialogueState { INIT = 0, DIALOGUE, QUESTLIST, QUESTDETAIL, QUESTDIALOGUE };
-public class NPCDialoguesample : MonoBehaviour
+public class NPCDialogue : MonoBehaviour
 {
     [SerializeField] GameObject _questListBox, _questDetailBox;
     [SerializeField] Text _name;
     [SerializeField] Text _contentText;
-    [SerializeField] Button _questButton, _questAcceptButton, _dialogueButton, _nextButton, _exitButton;
+    [SerializeField] Button _questButton, _questAcceptButton, _questCompleteButton, _dialogueButton, _nextButton, _exitButton;
 
-    [HideInInspector] public NPCQuestListsample _npcQuestList;
+    [HideInInspector] public NPCQuestList _npcQuestList;
     [HideInInspector] public NPCQuestDetail _npcQuestDetail;
-    [HideInInspector] public NPCsample _npc;
-    [HideInInspector] public Questsample _selectedQuest;
+    [HideInInspector] public NPC _npc;
+    [HideInInspector] public Quest _selectedQuest;
     [HideInInspector] public List<string> _questDialogue;
     [HideInInspector] public int _questDialogueCount;
 
     CanvasGroup _canvasGroup;
 
-    PlayerManager _playerManager;
+    QuestManager _questManager;
 
     NPCDialogueState _state;
 
@@ -28,7 +28,7 @@ public class NPCDialoguesample : MonoBehaviour
     {
         TryGetComponent<CanvasGroup>(out _canvasGroup);
 
-        _questListBox.TryGetComponent<NPCQuestListsample>(out _npcQuestList);
+        _questListBox.TryGetComponent<NPCQuestList>(out _npcQuestList);
         _questDetailBox.TryGetComponent<NPCQuestDetail>(out _npcQuestDetail);
     }
 
@@ -37,7 +37,7 @@ public class NPCDialoguesample : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
-    public void SetNPC(NPCsample npc)
+    public void SetNPC(NPC npc)
     {
         _npc = npc;
         _name.text = _npc._name;
@@ -51,10 +51,18 @@ public class NPCDialoguesample : MonoBehaviour
 
     public void QuestDialogue()
     {
-        Debug.Log(_questDialogueCount);
         if (_questDialogueCount >= _questDialogue.Count)
         {
-            Debug.LogFormat("{0} {1}", _questDialogueCount, _questDialogue.Count);
+            _questManager = PlayerController.instance.QuestManager;
+            if (_questManager.FindQuest(_selectedQuest))
+            {
+                DialogueQuestData quest = (DialogueQuestData)_questManager.GetQuest(_selectedQuest);
+                quest.IncreaseCurrentIndex();
+            }
+            else
+            {
+                _questManager.AcceptQuest(_selectedQuest);
+            }
             SetState(0);
             _questDialogue = null;
             return;
@@ -82,16 +90,17 @@ public class NPCDialoguesample : MonoBehaviour
 
     private void SetUI()
     {
-        _playerManager = PlayerController.instance.PlayerManager;
+        _questManager = PlayerController.instance.QuestManager;
 
         switch (_state)
         {
             case NPCDialogueState.INIT:
-                _questAcceptButton.gameObject.SetActive(false);
                 if (_npc._quests.Count > 0)
                     _questButton.gameObject.SetActive(true);
                 else
                     _questButton.gameObject.SetActive(false);
+                _questAcceptButton.gameObject.SetActive(false);
+                _questCompleteButton.gameObject.SetActive(false);
                 _dialogueButton.gameObject.SetActive(true);
                 _nextButton.gameObject.SetActive(false);
                 _contentText.gameObject.SetActive(true);
@@ -100,8 +109,9 @@ public class NPCDialoguesample : MonoBehaviour
                 _contentText.text = _npc._firstSentence;
                 break;
             case NPCDialogueState.DIALOGUE:
-                _questAcceptButton.gameObject.SetActive(false);
                 _questButton.gameObject.SetActive(false);
+                _questAcceptButton.gameObject.SetActive(false);
+                _questCompleteButton.gameObject.SetActive(false);
                 _dialogueButton.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(false);
                 _contentText.gameObject.SetActive(true);
@@ -109,8 +119,9 @@ public class NPCDialoguesample : MonoBehaviour
                 _questDetailBox.gameObject.SetActive(false);
                 break;
             case NPCDialogueState.QUESTLIST:
-                _questAcceptButton.gameObject.SetActive(false);
                 _questButton.gameObject.SetActive(false);
+                _questAcceptButton.gameObject.SetActive(false);
+                _questCompleteButton.gameObject.SetActive(false);
                 _dialogueButton.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(false);
                 _contentText.gameObject.SetActive(false);
@@ -118,11 +129,21 @@ public class NPCDialoguesample : MonoBehaviour
                 _npcQuestList.SetQuest(_npc._quests);
                 break;
             case NPCDialogueState.QUESTDETAIL:
-                if(_playerManager.FindQuestsample(_selectedQuest))
-                    _questAcceptButton.gameObject.SetActive(false);
-                else
-                    _questAcceptButton.gameObject.SetActive(true);
                 _questButton.gameObject.SetActive(false);
+                if (_questManager.FindQuest(_selectedQuest))
+                {
+                    _questAcceptButton.gameObject.SetActive(false);
+                    QuestData questData = _questManager.GetQuest(_selectedQuest);
+                    if (questData._canComplete)
+                        _questCompleteButton.gameObject.SetActive(true);
+                    else
+                        _questCompleteButton.gameObject.SetActive(false);
+                }
+                else
+                {
+                    _questAcceptButton.gameObject.SetActive(true);
+                    _questCompleteButton.gameObject.SetActive(false);
+                }
                 _dialogueButton.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(false);
                 _contentText.gameObject.SetActive(false);
@@ -131,8 +152,8 @@ public class NPCDialoguesample : MonoBehaviour
                 _npcQuestDetail.SetQuest(_selectedQuest);
                 break;
             case NPCDialogueState.QUESTDIALOGUE:
-                _questAcceptButton.gameObject.SetActive(false);
                 _questButton.gameObject.SetActive(false);
+                _questAcceptButton.gameObject.SetActive(false);
                 _dialogueButton.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(true);
                 _contentText.gameObject.SetActive(true);
