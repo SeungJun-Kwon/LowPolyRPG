@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillSlot : MonoBehaviour
+public class SkillSlot : BaseUI
 {
     [SerializeField] SkillIcon[] _skillIcon;
 

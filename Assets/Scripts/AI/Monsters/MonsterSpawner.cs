@@ -67,19 +67,6 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-    private Vector3 RandomLocation()
-    {
-        _xPos = Random.Range(-_monsterSpawnDistance, _monsterSpawnDistance);
-        _zPos = Random.Range(-_monsterSpawnDistance, _monsterSpawnDistance);
-        _randomVector = new Vector3(_xPos, 0, _zPos);
-        return transform.position + _randomVector;
-    }
-
-    private Quaternion RandomRotation()
-    {
-        return Quaternion.Euler(0, Random.Range(-180, 180), 0); ;
-    }
-
     public GameObject AddMonster()
     {
         var newMonster = Instantiate(_monsterPrefab, RandomLocation(), RandomRotation());
@@ -91,7 +78,7 @@ public class MonsterSpawner : MonoBehaviour
 
     public GameObject GetMonster()
     {
-        if(_restMonsters.Count > 0)
+        if (_restMonsters.Count > 0)
         {
             var monster = _restMonsters[0];
             _spawnMonsters.Add(monster);
@@ -112,6 +99,19 @@ public class MonsterSpawner : MonoBehaviour
         _restMonsters.Add(monster);
         _spawnMonsters.Remove(monster);
         _currentMonsterQuantity--;
+    }
+
+    private Vector3 RandomLocation()
+    {
+        _xPos = Random.Range(-_monsterSpawnDistance, _monsterSpawnDistance);
+        _zPos = Random.Range(-_monsterSpawnDistance, _monsterSpawnDistance);
+        _randomVector = new Vector3(_xPos, 0, _zPos);
+        return transform.position + _randomVector;
+    }
+
+    private Quaternion RandomRotation()
+    {
+        return Quaternion.Euler(0, Random.Range(-180, 180), 0); ;
     }
 
     private void OnTriggerEnter(Collider other)

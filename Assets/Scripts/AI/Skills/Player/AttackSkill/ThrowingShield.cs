@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Security.Cryptography;
 
-public class ThrowingShield : MonoBehaviour
+public class ThrowingShield : SkillScript
 {
-    [SerializeField] private PlayerSkill _skill;
-
     Transform _nextTarget = null;
     BoxCollider _boxCollider;
     Vector3 _moveDir;
@@ -27,7 +26,7 @@ public class ThrowingShield : MonoBehaviour
             _boxCollider = GetComponent<BoxCollider>();
     }
 
-    private void OnEnable()
+    public override void OnStart()
     {
         _moveDir = Vector3.zero;
         _skillDamageMultiplier = _skill._skillDamageMultiplier;
@@ -45,6 +44,11 @@ public class ThrowingShield : MonoBehaviour
         }
 
         _activeSelf = true;
+    }
+
+    public override void OnEnd()
+    {
+        _activeSelf = false;
     }
 
     private void FixedUpdate()
@@ -80,7 +84,7 @@ public class ThrowingShield : MonoBehaviour
             return;
         }
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, _skillRange, LayerMask.GetMask("Boss", "Monster"));
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _skillRange, LayerMask.GetMask("Boss", "Monster"), QueryTriggerInteraction.Collide);
         if(colliders.Length == 0)
         {
             _nextTarget = null;
@@ -111,11 +115,6 @@ public class ThrowingShield : MonoBehaviour
         SetTarget();
     }
 
-    private void OnDestroy()
-    {
-        _activeSelf = false;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.transform == _nextTarget)
@@ -125,14 +124,15 @@ public class ThrowingShield : MonoBehaviour
             int maxDamage = (int)(_playerManager._playerMaxPower * _skillDamageMultiplier);
             if(other.gameObject.layer == LayerMask.NameToLayer("Boss"))
             {
-                other.transform.root.TryGetComponent<BossAI>(out var bossAI);
-                bossAI.Damaged(minDamage, maxDamage, _skillNumberOfAttack);
+                other.gameObject.TryGetComponent<BossAI>(out var bossAI);
+                bossAI.Damaged(minDamage, maxDamage, _skillNumberOfAttack, _skill._skillHitSound);
             }
             else
             {
                 other.TryGetComponent<MonsterAI>(out var _monsterAI);
-                _monsterAI.Damaged(minDamage, maxDamage, _skillNumberOfAttack, PlayerController.instance.transform);
+                _monsterAI.Damaged(minDamage, maxDamage, _skillNumberOfAttack, PlayerController.instance.transform, _skill._skillHitSound);
             }
+            SoundManager.instance.SFXPlay(_skill._skillHitSound);
             StartCoroutine(Delay());
         }
     }

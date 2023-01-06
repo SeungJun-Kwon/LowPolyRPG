@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f94faa5730d2e34ba848e62ecd02ddf, type: 3}
+  m_Name: TalkToUnityChan
+  m_EditorClassIdentifier: 
+  _questId: 105
+  _title: "\uC720\uB2C8\uD2F0\uC9F1\uACFC \uB300\uD654\uD558\uC790."
+  _type: 0
+  _startNPC: {fileID: 11400000, guid: fc3e4754585ffda4182eb20383216fc8, type: 2}
+  _desc: "\uC720\uB2C8\uD2F0\uC9F1\uC774 \uD560 \uB9D0\uC774 \uC788\uB2E4\uACE0 \uD55C\uB2E4."
+  _dialogues:
+  - "\uADF8\uB7FC \uAE30\uCD08\uC801\uC778 \uD6C8\uB828\uC740 \uB05D\uB09C \uAC83
+    \uAC19\uB124."
+  - "\uC800\uAE30 \uC624\uB978\uCABD\uC5D0 \uC788\uB294 \uC720\uB2C8\uD2F0\uC9F1\uC5D0\uAC8C
+    \uAC00\uBCF4\uAC8C."
+  _reward:
+    _exp: 200
+    _gold: 0
+  _requiredLevel: 3
+  _precednetQuest: {fileID: 11400000, guid: bfb6d185fc536fd4da71f2f9b598e0b0, type: 2}
+  _isTimeline: 1
+  _playableDirector: {fileID: 0}
+  _timeline: {fileID: 0}
+  _targetNPC:
+  - {fileID: 11400000, guid: ee20d962dd90b034688baa49873a91a4, type: 2}
+  _npcDialogue:
+  - _sentences:
+    - "\uC548\uB155\uD558\uC138\uC694?! \uCC98\uC74C \uBD59\uB124\uC694"
+    - "\uC800\uC5D0\uAC8C \uC654\uB2E4\uB294 \uAC74 \uC544\uC800\uC528\uC5D0\uAC8C
+      \uAE30\uCD08 \uD6C8\uB828\uC744 \uB2E4 \uBC1B\uACE0 \uC624\uC2E0 \uAC70\uACA0\uC8E0?"
+    - "\uADF8\uB7FC \uC774\uC81C \uBCF4\uC2A4 \uC804\uD22C\uB97C \uD560 \uB54C\uAC00
+      \uC628 \uAC83 \uAC19\uB124\uC694!"
+    - "\uC800\uC5D0\uAC8C \uB2E4\uC2DC \uB9D0\uC744 \uAC78\uC5B4\uC11C \"\uACE8\uB818
+      \uC0AC\uB0E5\" \uD018\uC2A4\uD2B8\uB97C \uBC1B\uACE0 \uC800 \uB4A4\uC758 \uACE8\uB818\uC758
+      \uC131\uC73C\uB85C \uB4E4\uC5B4\uAC00 \uACE8\uB818\uC744 \uC7A1\uC544\uBCF4\uC138\uC694!"

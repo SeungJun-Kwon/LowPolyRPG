@@ -5,8 +5,8 @@ using UnityEngine;
 public class ThrowingRock : MonoBehaviour
 {
     [SerializeField] MonsterSkill _skill;
-    [SerializeField] AudioClip _rockDestroySound;
 
+    AudioClip _rockDestroySound;
     Rigidbody _rigidBody;
     Vector3 _originPos;
 
@@ -26,6 +26,7 @@ public class ThrowingRock : MonoBehaviour
         _skillDuration = _skill._skillDuration;
         _skillDelay = _skill._skillDelay;
         _isPercentageAttack = _skill._isPercentageAttack;
+        _rockDestroySound = _skill._skillHitSound;
     }
 
     private void OnEnable()
@@ -41,15 +42,15 @@ public class ThrowingRock : MonoBehaviour
             Destroy(this.gameObject);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.transform.tag == "Player")
+        if(other.transform.tag == "Player")
         {
             CameraController.instance.CameraShake(0.5f);
-            collision.gameObject.TryGetComponent<PlayerController>(out var playerController);
+            other.gameObject.TryGetComponent<PlayerController>(out var playerController);
             playerController.Damaged(_skillDamage, false, _isPercentageAttack);
             Destroy(this.gameObject);
-        }
+        }   
     }
 
     private void OnDestroy()

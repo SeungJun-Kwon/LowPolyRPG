@@ -17,7 +17,7 @@ public class SlimeAI : MonsterAI
 
     private void TryAttack()
     {
-        RaycastHit[] hits = Physics.SphereCastAll(_attackPosition.position, _monsterRange, _attackPosition.up, 0f, LayerMask.GetMask("Player"));
+        RaycastHit[] hits = Physics.SphereCastAll(_attackPosition.position, _monsterRange, _attackPosition.up, 0f, LayerMask.GetMask("Player"), QueryTriggerInteraction.Collide);
         if (hits.Length > 0)
             PlayerController.instance.Damaged(_monsterDamage, true);
     }

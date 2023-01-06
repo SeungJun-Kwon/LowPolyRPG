@@ -11,10 +11,4 @@ public class NPC : ScriptableObject
     public string _firstSentence;
     public List<string> _dialogues = new List<string>();
     public List<Quest> _quests = new List<Quest>();
-    [HideInInspector]
-    public bool _isTimeline = false;
-    [HideInInspector]
-    public PlayableDirector _playableDirector;
-    [HideInInspector]
-    public TimelineAsset _timeline;
 }

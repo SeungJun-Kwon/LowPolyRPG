@@ -7,10 +7,10 @@ public class NoticeArea : MonoBehaviour
     [SerializeField] GameObject _noticeMessage;
     [SerializeField] int _maxNumOfMessages;
 
-    [SerializeField] List<GameObject> _activeMessages = new List<GameObject>();
-    [SerializeField] List<GameObject> _nonActiveMessages = new List<GameObject>();
+    List<GameObject> _activeMessages = new List<GameObject>();
+    List<GameObject> _nonActiveMessages = new List<GameObject>();
 
-    int _currentMessages = 0;
+    RectTransform _rectTransform;
 
     GameObject CreateMessage()
     {
@@ -19,6 +19,11 @@ public class NoticeArea : MonoBehaviour
         newMessage.transform.SetAsLastSibling();
         _activeMessages.Add(newMessage);
         return newMessage;
+    }
+
+    private void Awake()
+    {
+        TryGetComponent(out _rectTransform);
     }
 
     public void GetMessage(string content)
@@ -32,7 +37,6 @@ public class NoticeArea : MonoBehaviour
             noticeMessage.SetText(content);
             _activeMessages.Add(message);
             _nonActiveMessages.Remove(message);
-            _currentMessages++;
             message.SetActive(true);
         }
         // If it have some message prefabs
@@ -47,13 +51,15 @@ public class NoticeArea : MonoBehaviour
         {
             _activeMessages[0].gameObject.SetActive(false);
             GetMessage(content);
+            return;
         }
+
+        _rectTransform.SetAsLastSibling();
     }
 
     public void RemoveMessage(GameObject message)
     {
         _activeMessages.Remove(message);
         _nonActiveMessages.Add(message);
-        _currentMessages--;
     }
 }

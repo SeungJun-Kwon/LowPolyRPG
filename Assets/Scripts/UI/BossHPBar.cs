@@ -9,24 +9,23 @@ public class BossHPBar : MonoBehaviour
     [SerializeField] Text _bossNameArea;
     [SerializeField] Image _bossHPBar;
 
+    BossAI _bossAI;
+
     int _bossHP, _bossCurrentHP;
 
-    public void GetBossInformation(BossMonster bossMonster)
+    public void GetBossInformation(BossMonster bossMonster, BossAI bossAI)
     {
         _bossImageArea.sprite = bossMonster._bossImage;
         _bossNameArea.text = bossMonster._monsterName;
         _bossHP = bossMonster._monsterHP;
         _bossCurrentHP = _bossHP;
         _bossHPBar.fillAmount = (float)_bossCurrentHP / (float)_bossHP;
+        _bossAI = bossAI;
     }
 
-    public void ReduceHPBar(int value)
+    public void SetHPBar(int value)
     {
-        if (_bossCurrentHP <= 0)
-            return;
-        _bossCurrentHP -= value;
-        if (_bossCurrentHP <= 0)
-            _bossCurrentHP = 0;
+        _bossCurrentHP = value;
         _bossHPBar.fillAmount = (float)_bossCurrentHP / (float)_bossHP;
     }
 }

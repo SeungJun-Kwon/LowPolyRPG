@@ -21,6 +21,9 @@ MonoBehaviour:
   _monsterMoveSpeed: 2
   _monsterAttackDelay: 2
   _monsterRange: 2
+  _attackSound: {fileID: 0}
+  _hitSound: {fileID: 8300000, guid: efa807f0805ed244db87e8205f325ae7, type: 3}
+  _deadSound: {fileID: 0}
   _cognizance: 5
   _radiusOfAction: 10
   _isPreempt: 0

@@ -5,9 +5,24 @@ using UnityEngine;
 
 public class EventCameraController : MonoBehaviour
 {
+    public static EventCameraController instance;
+
     [SerializeField] Vector3 _pos;
     [SerializeField] Quaternion _rot;
     [SerializeField] float _moveSpeed = 1f, _rotationSpeed = 1f;
+
+    private void Awake()
+    {
+        #region Singleton
+        if (!instance)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else if(instance != this)
+            Destroy(gameObject);
+        #endregion
+    }
 
     private void OnEnable()
     {

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 [Serializable]
 public class Reward
@@ -25,6 +24,12 @@ public class Quest : ScriptableObject
     public Reward _reward;
     public int _requiredLevel = 1;
     public Quest _precednetQuest;
+    [HideInInspector]
+    public bool _isTimeline = false;
+    [HideInInspector]
+    public PlayableDirector _playableDirector;
+    [HideInInspector]
+    public TimelineAsset _timeline;
 
     public bool CanAccept()
     {

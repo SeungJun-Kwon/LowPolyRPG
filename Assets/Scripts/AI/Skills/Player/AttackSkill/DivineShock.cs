@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class DivineShock : MonoBehaviour
+public class DivineShock : SkillScript
 {
-    [SerializeField] private PlayerSkill _skill;
-
     SphereCollider _sphereCollider;
     ParticleSystem _particleSystem;
 
@@ -24,52 +23,66 @@ public class DivineShock : MonoBehaviour
             _particleSystem = GetComponent<ParticleSystem>();
     }
 
-    private void OnEnable()
+    public override void OnStart()
     {
         _skillDamageMultiplier = _skill._skillDamageMultiplier;
         _skillRange = _skill._skillRange;
         _skillDuration = _skill._skillDuration;
         _skillNumberOfAttack = _skill._skillNumberOfAttack;
+        _skillKey = SkillManager.instance.GetSkillKey(_skill);
         transform.forward = PlayerController.instance.transform.forward;
         transform.position += transform.forward * _skillRange;
         StartCoroutine(Attack());
     }
 
-    private void OnDisable()
+    public override void OnEnd()
     {
-        StopAllCoroutines();
+        _sphereCollider.enabled = false;
+        _particleSystem.Stop();
+        PlayerController.instance.SetMyState(State.IDLE);
+        PlayerController.instance.Animator.SetTrigger(_skill._skillTrigger);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(_skillKey))
+            SkillManager.instance.Destroy(_skill);
     }
 
     IEnumerator Attack()
     {
-        float _time = 0f;
-        while(true)
+        float time = 0f;
+        while(time < _skillDuration)
         {
             _sphereCollider.enabled = true;
-            _time += 0.1f;
+            time += 0.1f;
             yield return new WaitForSeconds(0.1f);
             _sphereCollider.enabled = false;
-            _time += 0.1f;
+            time += 0.1f;
             yield return new WaitForSeconds(0.1f);
-            if (_time >= _skillDuration)
-            {
-                _sphereCollider.enabled = false;
-                _particleSystem.Stop();
-                if(_particleSystem.isStopped)
-                    gameObject.SetActive(false);
-            }
         }
+        SkillManager.instance.Destroy(_skill);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
         {
-            other.TryGetComponent<MonsterAI>(out var _monsterAI);
             PlayerManager _playerManager = PlayerController.instance.PlayerManager;
             int minDamage = (int)(_playerManager._playerMinPower * _skillDamageMultiplier);
             int maxDamage = (int)(_playerManager._playerMaxPower * _skillDamageMultiplier);
-            _monsterAI.Damaged(minDamage, maxDamage, _skillNumberOfAttack, PlayerController.instance.transform);
+
+            if (other.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            {
+                other.TryGetComponent<MonsterAI>(out var _monsterAI);
+                _monsterAI.Damaged(minDamage, maxDamage, _skillNumberOfAttack, PlayerController.instance.transform);
+            }
+            else if(other.gameObject.layer == LayerMask.NameToLayer("Boss")) {
+                other.TryGetComponent<BossAI>(out var _bossAI);
+                _bossAI.Damaged(minDamage, maxDamage, _skillNumberOfAttack);
+            }
+
+            SoundManager.instance.SFXPlay(_skill._skillHitSound);
         }
     }
 }

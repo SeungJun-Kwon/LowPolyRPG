@@ -14,12 +14,14 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance = null;
 
     [Header("BGM")]
-    [SerializeField] Sound[] _bgmSounds;
+    [SerializeField] AudioClip _bgmClip;
     [SerializeField] AudioSource _bgmPlayer;
 
     [Header("SFX")]
     [SerializeField] Sound[] _sfxSounds;
-    [SerializeField] List<AudioSource> _sfxPlayer = new List<AudioSource>();
+    List<AudioSource> _sfxPlayer = new List<AudioSource>();
+
+    float _curBGMVolume = 0.5f, _curSFXVolume = 0.5f;
 
     private void Awake()
     {
@@ -33,14 +35,18 @@ public class SoundManager : MonoBehaviour
 
     void Start()
     {
-        _bgmPlayer.clip = _bgmSounds[0]._audioClip;
-        BGMPlay();
+        BGMPlay(_bgmClip);
     }
 
-    public void BGMPlay()
+    public void BGMPlay(AudioClip bgm)
     {
+        _bgmClip = bgm;
+        _bgmPlayer.clip = _bgmClip;
+        _bgmPlayer.loop = true;
         _bgmPlayer.Play();
     }
+
+    public void BGMStop() => _bgmPlayer.Stop();
 
     public void SFXPlay(string sfxName)
     {
@@ -58,41 +64,54 @@ public class SoundManager : MonoBehaviour
                     }
                 }
                 AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource.volume = _curSFXVolume;
                 audioSource.clip = _sfxSounds[i]._audioClip;
                 _sfxPlayer.Add(audioSource);
                 _sfxPlayer[_sfxPlayer.Count - 1].Play();
                 return;
             }
         }
-        Debug.Log("NOT FOUND " + sfxName);
     }
 
-    public void SFXPlay(AudioClip audioClip)
+    public void SFXPlay(AudioClip audioClip, bool loop = false)
     {
+        if (audioClip == null)
+            return;
+
         for (int i = 0; i < _sfxPlayer.Count; i++)
         {
             if (!_sfxPlayer[i].isPlaying)
             {
                 _sfxPlayer[i].clip = audioClip;
                 _sfxPlayer[i].Play();
+                _sfxPlayer[i].loop = loop;
                 return;
             }
         }
         AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.volume = 0.5f;
+        audioSource.volume = _curSFXVolume;
         audioSource.clip = audioClip;
+        audioSource.loop = loop;
         _sfxPlayer.Add(audioSource);
         _sfxPlayer[_sfxPlayer.Count - 1].Play();
     }
 
+    public void SFXStop()
+    {
+        foreach (var sfxPlayer in _sfxPlayer)
+            sfxPlayer.Stop();
+    }
+
     public void BGMVolume(float value)
     {
+        _curBGMVolume = value;
         _bgmPlayer.volume = value;
     }
 
     public void SFXVolume(float value)
     {
-        foreach(AudioSource audioSource in _sfxPlayer)
+        _curSFXVolume = value;
+        foreach (AudioSource audioSource in _sfxPlayer)
         {
             audioSource.volume = value;
         }

@@ -17,6 +17,6 @@ public class DialogueQuestData : QuestData
         DialogueQuest quest = _quest as DialogueQuest;
         _currentIndex += 1;
         if (_currentIndex >= quest._targetNPC.Length)
-            _canComplete = true;
+            CanComplete = true;
     }
 }

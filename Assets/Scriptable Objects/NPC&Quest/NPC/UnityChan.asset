@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5340f6c8a42c9134281ceafe9948cd5f, type: 3}
+  m_Name: UnityChan
+  m_EditorClassIdentifier: 
+  _name: "\uC720\uB2C8\uD2F0\uC9F1"
+  _firstSentence: "\uBC18\uAC00\uC6CC\uC694!"
+  _dialogues:
+  - "\uBB34\uC2A8 \uC77C\uC774\uC5D0\uC694?"
+  _quests:
+  - {fileID: 11400000, guid: 7bd76b501866d0a4084e3194a72ea671, type: 2}
+  - {fileID: 11400000, guid: 662c869b0cb3b2b41812aac4af37fb69, type: 2}

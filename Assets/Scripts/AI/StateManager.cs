@@ -8,18 +8,12 @@ public class StateManager : MonoBehaviour
     bool _canMove;
     bool _isMove;
     bool _isAttack;
-    bool _isRigidImmuntity;
-    bool _isDead;
-    bool _isStunned;
 
     public void SetInitState()
     {
         _canMove = true;
         _isMove = false;
         _isAttack = false;
-        _isRigidImmuntity = false;
-        _isDead = false;
-        _isStunned = false;
     }
 
     public void SetState(State state)
@@ -47,19 +41,17 @@ public class StateManager : MonoBehaviour
             case State.DEAD:
                 _canMove = false;
                 _isMove = false;
-                _isDead = true;
                 break;
             case State.STUNNED:
                 _canMove = false;
                 _isMove = false;
-                _isStunned = true;
                 break;
         }
     }
 
     public bool IsCanMove()
     {
-        return (_canMove == true);
+        return _canMove == true;
     }
 
     public bool IsMoving()

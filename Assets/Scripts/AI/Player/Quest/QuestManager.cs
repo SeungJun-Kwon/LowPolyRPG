@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class QuestManager : MonoBehaviour
 {
@@ -9,6 +11,13 @@ public class QuestManager : MonoBehaviour
 
     List<QuestData> _currentQuest = new List<QuestData>();
     List<QuestData> _completedQuest = new List<QuestData>();
+
+    AudioClip _questClearSound;
+
+    private void Start()
+    {
+        _questClearSound = Resources.Load("Sounds/SFX/SFX_QuestClear") as AudioClip;
+    }
 
     public bool FindQuest(Quest quest)
     {
@@ -39,8 +48,18 @@ public class QuestManager : MonoBehaviour
             if (item._quest._type == type)
                 result.Add(item);
 
-        if (result.Count == 0)
-            return null;
+        return result;
+    }
+
+    public List<QuestData> GetCurrentQuestData(NPC npc)
+    {
+        List<QuestData> result = new List<QuestData>();
+
+        foreach (QuestData item in _currentQuest)
+            if (item._quest._startNPC == npc)
+                result.Add(item);
+
+        result.Sort((x, y) => x._quest._questId.CompareTo(y._quest._questId));
 
         return result;
     }
@@ -55,9 +74,44 @@ public class QuestManager : MonoBehaviour
         return result;
     }
 
+    public List<Quest> GetCurrentQuest(NPC npc)
+    {
+        List<Quest> result = new List<Quest>();
+
+        foreach (QuestData item in _currentQuest)
+            if (item._quest._startNPC == npc)
+                result.Add(item._quest);
+
+        result.Sort((x, y) => x._questId.CompareTo(y._questId));
+
+        return result;
+    }
+
+    public bool CurrentQuestContain(Quest quest)
+    {
+        foreach (var item in _currentQuest)
+            if (item._quest._questId == quest._questId)
+                return true;
+
+        return false;
+    }
+
     public List<QuestData> GetCompletedQuestData()
     {
         return _completedQuest;
+    }
+
+    public List<QuestData> GetCompletedQuestData(NPC npc)
+    {
+        List<QuestData> result = new List<QuestData>();
+
+        foreach (QuestData item in _completedQuest)
+            if (item._quest._startNPC == npc)
+                result.Add(item);
+
+        result.Sort((x, y) => x._quest._questId.CompareTo(y._quest._questId));
+
+        return result;
     }
 
     public List<Quest> GetCompletedQuest()
@@ -68,6 +122,33 @@ public class QuestManager : MonoBehaviour
             result.Add(item._quest);
 
         return result;
+    }
+
+    public List<Quest> GetCompletedQuest(NPC npc)
+    {
+        List<Quest> result = new List<Quest>();
+
+        foreach (QuestData item in _completedQuest)
+            if (item._quest._startNPC == npc)
+                result.Add(item._quest);
+
+        result.Sort((x, y) => x._questId.CompareTo(y._questId));
+
+        return result;
+    }
+
+    public bool CompletedQuestContain(Quest quest)
+    {
+        foreach(var item in _completedQuest)
+            if (item._quest._questId == quest._questId)
+                return true;
+
+        return false;
+    }
+
+    public void AcceptQuest(QuestData questData)
+    {
+        _currentQuest.Add(questData);
     }
 
     public void AcceptQuest(Quest quest)
@@ -91,16 +172,18 @@ public class QuestManager : MonoBehaviour
         _currentQuest.Add(questData);
     }
 
-    public void CompleteQuest(Quest quest)
+    public void CompleteQuest(Quest quest, UnityAction unityAction)
     {
         for (int i = 0; i < _currentQuest.Count; i++)
         {
             if (_currentQuest[i]._quest._questId == quest._questId)
             {
+                _currentQuest[i].OnQuestComplete.RemoveListener(unityAction);
                 _completedQuest.Add(_currentQuest[i]);
                 _currentQuest.RemoveAt(i);
-                PlayerController.instance.PlayerManager.GainExp(quest._reward._exp);
+                PlayerController.instance.PlayerManager.CurrentExp += quest._reward._exp;
                 //PlayerController.instance.PlayerManager.GainGold(quest._reward._gold);
+                SoundManager.instance.SFXPlay(_questClearSound);
                 return;
             }
         }

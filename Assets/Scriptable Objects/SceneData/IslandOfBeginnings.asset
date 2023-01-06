@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a11c7dbc2804eb468c372e46e65efc6, type: 3}
+  m_Name: IslandOfBeginnings
+  m_EditorClassIdentifier: 
+  _type: 1
+  _name: NormalStage
+  _properLevel: 1
+  _bgm: {fileID: 8300000, guid: b5c39e60f9e21bc4a999caca48cf42a4, type: 3}

@@ -2,22 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ObjectInfoForMouse))]
-public class MonsterAI : MonoBehaviour
+public class MonsterAI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] public NormalMonster _monster;
     [SerializeField] ParticleSystem _hitEffect;
     [SerializeField] GameObject _damageText;
 
-    [Header("Hp Bar")]
-    public GameObject _hpBarPrefab;
-    public Vector3 _hpBarOffset = new Vector3(0, 2.2f, 0);
-
-    private Canvas _uiCanvas;
-    private Image _hpBarImage;
-    private GameObject _hpBar;
+    private GameObject _monsterHPGo;
+    private MonsterHPBar _monsterHPBar;
 
     protected Transform _target;
     protected Transform _attackPosition;
@@ -49,9 +44,14 @@ public class MonsterAI : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody>();
         _boxColl = GetComponent<BoxCollider>();
         _spawner = GetComponentInParent<MonsterSpawner>();
-        _uiCanvas = GameObject.Find("UI").GetComponent<Canvas>();
 
         _attackPosition = transform.Find("Center");
+
+        if(!_monsterHPGo)
+        {
+            _monsterHPGo = Instantiate(Resources.Load("Prefabs/UI/MonsterHPBar"), transform) as GameObject;
+            _monsterHPGo.TryGetComponent(out _monsterHPBar);
+        }
     }
 
     private void Start()
@@ -71,6 +71,7 @@ public class MonsterAI : MonoBehaviour
         _navMesh.acceleration = _monsterMoveSpeed;
         _navMesh.stoppingDistance = _monsterRange;
         _navMesh.angularSpeed = 1000f;
+        _monsterHPBar.SetTransform(_boxColl);
     }
 
     private void OnEnable()
@@ -78,12 +79,13 @@ public class MonsterAI : MonoBehaviour
         StatusInit();
     }
 
-    private void StatusInit()
+    protected virtual void StatusInit()
     {
         if (!_navMesh.enabled)
             _navMesh.enabled = true;
-        SetHpBar();
+        _animator.ResetTrigger("Attack");
         _monsterHP = _monster._monsterHP;
+        _monsterHPBar._fill.fillAmount = 1f;
         _originPos = transform.position;
         _target = null;
         gameObject.layer = LayerMask.NameToLayer("Monster");
@@ -91,17 +93,6 @@ public class MonsterAI : MonoBehaviour
         _isAttack = false;
         _isDead = false;
         _isChase = false;
-    }
-
-    void SetHpBar()
-    {
-        _hpBar = Instantiate<GameObject>(_hpBarPrefab, _uiCanvas.transform);
-        _hpBar.SetActive(true);
-        _hpBarImage = _hpBar.GetComponentsInChildren<Image>()[1];
-
-        var _monsterHpBar = _hpBar.GetComponent<MonsterHpBar>();
-        _monsterHpBar._targetTransform = gameObject.transform;
-        _monsterHpBar._offset = _hpBarOffset;
     }
 
     protected virtual void Update()
@@ -120,7 +111,7 @@ public class MonsterAI : MonoBehaviour
                 _navMesh.SetDestination(_target.position);
                 _rigidBody.velocity = Vector3.zero;
                 _rigidBody.angularVelocity = Vector3.zero;
-                RaycastHit[] hits = Physics.SphereCastAll(transform.position, _monsterRange, transform.up, 0f, LayerMask.GetMask("Player"));
+                RaycastHit[] hits = Physics.SphereCastAll(transform.position, _monsterRange, transform.up, 0f, LayerMask.GetMask("Player"), QueryTriggerInteraction.Collide);
                 if (hits.Length > 0)
                     _isChase = false;
             }
@@ -139,16 +130,16 @@ public class MonsterAI : MonoBehaviour
         _isChase = true;
     }
 
-    public void Damaged(int minDamage, int maxDamage, int numberOfAttack, Transform target)
+    public void Damaged(int minDamage, int maxDamage, int numberOfAttack, Transform target = null, AudioClip hitSound = null)
     {
         if (target == null)
-            target = GameObject.FindGameObjectWithTag("Player").transform;
+            target = PlayerController.instance.transform;
         SetTarget(target);
         for (int i = 0; i < numberOfAttack; i++)
         {
             int damage = Random.Range(minDamage, maxDamage + 1);
             _monsterHP -= damage;
-            _hpBarImage.fillAmount = (float)_monsterHP / (float)_monster._monsterHP;
+            _monsterHPBar._fill.fillAmount = (float)_monsterHP / (float)_monster._monsterHP;
             GameObject damageObject = Instantiate(_damageText);
             var damageText = damageObject.GetComponent<DamageText>();
             damageText._damage = damage;
@@ -165,6 +156,19 @@ public class MonsterAI : MonoBehaviour
             return;
         }
         _animator.SetTrigger("OnHit");
+        if (hitSound == null)
+            hitSound = _monster._hitSound;
+        SoundManager.instance.SFXPlay(hitSound);
+        StartCoroutine(Damaged());
+    }
+
+    IEnumerator Damaged()
+    {
+        _navMesh.isStopped = true;
+
+        yield return new WaitForSeconds(1f);
+
+        _navMesh.isStopped = false;
     }
 
     IEnumerator Die()
@@ -172,9 +176,10 @@ public class MonsterAI : MonoBehaviour
         _animator.SetTrigger("Dead");
         _isDead = true;
         _navMesh.enabled = false;
+        SoundManager.instance.SFXPlay(_monster._deadSound);
 
         PlayerManager playerManager = PlayerController.instance.PlayerManager;
-        playerManager.GainExp(_monster._monsterGiveExp);
+        playerManager.CurrentExp += _monster._monsterGiveExp;
         string noticeMessage = _monsterName + "을(를) 처치하여 " + _monster._monsterGiveExp + "의 경험치를 획득하였습니다.";
         UIController.instance.NoticeArea.GetMessage(noticeMessage);
 
@@ -191,7 +196,6 @@ public class MonsterAI : MonoBehaviour
 
     private void OnDisable()
     {
-        Destroy(_hpBar);
         if (!_spawner)
             _spawner = GetComponentInParent<MonsterSpawner>();
         if(_spawner)
@@ -205,5 +209,15 @@ public class MonsterAI : MonoBehaviour
             PlayerManager _playerManager = PlayerController.instance.PlayerManager;
             Damaged(_playerManager._playerMinPower, _playerManager._playerMaxPower, 1, other.transform);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        UIController.instance.ObjectInfo(_monster, transform);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIController.instance.ObjectInfo(_monster, transform, false);
     }
 }

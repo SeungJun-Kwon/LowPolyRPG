@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInfo : MonoBehaviour
+public class PlayerInfo : BaseUI
 {
     [Header("UI Text")]
     [SerializeField] Text _playerName;
@@ -18,28 +18,40 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] Text _expPercent;
     [SerializeField] Image _expBar;
 
-    private void OnEnable()
+    PlayerManager _playerManager;
+
+    protected override void OnEnable()
     {
+        base.OnEnable();
+        _playerManager = PlayerController.instance.PlayerManager;
         UpdatePlayerStatus();
+        _playerManager.OnValueChanged.AddListener(UpdatePlayerStatus);
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        _playerManager.OnValueChanged.RemoveListener(UpdatePlayerStatus);
     }
 
     public void UpdatePlayerStatus()
     {
-        PlayerManager playerManager = PlayerController.instance.PlayerManager;
-        playerManager.SetPower();
-        _playerName.text = playerManager._playerName;
-        _playerLv.text = playerManager._playerLv.ToString();
-        _playerStr.text = playerManager._playerSTR.ToString();
-        _playerDex.text = playerManager._playerDEX.ToString();
-        _playerInt.text = playerManager._playerINT.ToString();
-        _playerLuk.text = playerManager._playerLUK.ToString();
-        _playerStatPoint.text = playerManager._playerStatPoint.ToString();
-        _playerPower[0].text = playerManager._playerMinPower.ToString();
-        _playerPower[1].text = playerManager._playerMaxPower.ToString();
-        _expPercent.text = string.Format("{0:F2}%", ((float)playerManager._playerExp * 100 / (float)playerManager._totalExp).ToString());
-        _expBar.fillAmount = (float)playerManager._playerExp / (float)playerManager._totalExp;
+        if (_playerManager == null)
+            _playerManager = PlayerController.instance.PlayerManager;
 
-        if(playerManager._playerStatPoint <= 0)
+        _playerName.text = _playerManager._playerName;
+        _playerLv.text = _playerManager._playerLv.ToString();
+        _playerStr.text = _playerManager._playerSTR.ToString();
+        _playerDex.text = _playerManager._playerDEX.ToString();
+        _playerInt.text = _playerManager._playerINT.ToString();
+        _playerLuk.text = _playerManager._playerLUK.ToString();
+        _playerStatPoint.text = _playerManager._playerStatPoint.ToString();
+        _playerPower[0].text = _playerManager._playerMinPower.ToString();
+        _playerPower[1].text = _playerManager._playerMaxPower.ToString();
+        _expPercent.text = string.Format("{0:F2}%", ((float)_playerManager.CurrentExp * 100 / (float)_playerManager._totalExp).ToString());
+        _expBar.fillAmount = (float)_playerManager.CurrentExp / (float)_playerManager._totalExp;
+
+        if(_playerManager._playerStatPoint <= 0)
         {
             for (int i = 0; i < _playerStatPointButton.Length; i++)
             {
@@ -59,28 +71,32 @@ public class PlayerInfo : MonoBehaviour
 
     public void StatUp(int _value)
     {
-        PlayerManager playerManager = PlayerController.instance.PlayerManager;
-        if (playerManager._playerStatPoint > 0)
+        if (_playerManager._playerStatPoint > 0)
         {
-            playerManager._playerStatPoint--;
+            _playerManager._playerStatPoint--;
             switch (_value)
             {
                 case 0:
-                    playerManager._playerSTR++;
+                    _playerManager._playerSTR++;
+                    _playerManager.PlayerHP += 10;
+                    _playerManager.CurrentHP += 10;
                     break;
                 case 1:
-                    playerManager._playerDEX++;
+                    _playerManager._playerDEX++;
+                    _playerManager._attackSpeed *= 0.95f;
                     break;
                 case 2:
-                    playerManager._playerINT++;
+                    _playerManager._playerINT++;
+                    _playerManager.PlayerMP += 10;
+                    _playerManager.CurrentMP += 10;
                     break;
                 case 3:
-                    playerManager._playerLUK++;
+                    _playerManager._playerLUK++;
                     break;
                 default:
                     break;
             }
-            UpdatePlayerStatus();
+            _playerManager.SetPower();
         }
     }
 }

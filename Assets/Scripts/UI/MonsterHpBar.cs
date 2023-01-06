@@ -1,40 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class MonsterHpBar : MonoBehaviour
+public class MonsterHPBar : MonoBehaviour
 {
-    private Camera _uiCamera;
-    private Canvas _canvas;
-    private RectTransform _rectParent;
-    private RectTransform _rectHp;
+    public Image _fill;
 
-    [HideInInspector] public Vector3 _offset = Vector3.zero;
-    [HideInInspector] public Transform _targetTransform;
+    RectTransform _rectTransform;
+
+    private void Awake()
+    {
+        TryGetComponent(out _rectTransform);
+    }
 
     private void Start()
     {
-        _canvas = GetComponentInParent<Canvas>();
-        _uiCamera = _canvas.worldCamera;
-        _rectParent = _canvas.GetComponent<RectTransform>();
-        _rectHp = GetComponent<RectTransform>();
+        StartCoroutine(UpdateCor());
     }
 
-    private void LateUpdate()
+    private void OnDisable()
     {
-        // 3D ÁÂÇ¥¸¦ ½ºÅ©¸°(2D) ÁÂÇ¥·Î º¯°æ
-        var _screenPos = Camera.main.WorldToScreenPoint(_targetTransform.position + _offset);
+        StopCoroutine(UpdateCor());
+    }
 
-        //if (_screenPos.z < 0.0f)
-        //    _rectHp.gameObject.SetActive(false);
-        //else
-        //    _rectHp.gameObject.SetActive(true);
+    IEnumerator UpdateCor()
+    {
+        while(true)
+        {
+            transform.LookAt(transform.position + CameraController.instance.transform.rotation * Vector3.back, CameraController.instance.transform.rotation * Vector3.down);
 
-        var _localPos = Vector2.zero;
+            yield return null;
+        }
+    }
 
-        // ½ºÅ©¸°(2D) ÁÂÇ¥¸¦ UI Canvas ÁÂÇ¥·Î º¯°æ
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectParent, _screenPos, _uiCamera, out _localPos);
-
-        _rectHp.localPosition = _localPos;
+    public void SetTransform(Collider col)
+    {
+        _rectTransform.localPosition = new Vector3(0f, col.bounds.size.y + 0.5f, 0f);
+        _rectTransform.localScale = new Vector3(col.bounds.size.x * 1f, col.bounds.size.y * 0.2f);
     }
 }

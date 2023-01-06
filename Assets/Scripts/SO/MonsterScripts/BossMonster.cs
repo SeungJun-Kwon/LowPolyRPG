@@ -8,7 +8,8 @@ public class BossMonster : Monster
     public int _stiffnessCount;
     public float _stiffnessDuration;
     public Sprite _bossImage;
-    public string _bossScene;
+    public SceneData _bossScene;
+    public SceneData _endScene;
 
     [Header("Attack & Skill")]
     public Skill[] _skill;

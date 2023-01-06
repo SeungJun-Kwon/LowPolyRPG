@@ -1,7 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 public class BossAI : MonoBehaviour
 {
@@ -9,6 +14,8 @@ public class BossAI : MonoBehaviour
     [SerializeField] GameObject _damageText;
 
     [SerializeField] protected BossMonster _bossMonster;
+
+    [HideInInspector] public UnityEvent _onDie;
 
     protected StateManager _stateManager;
 
@@ -51,37 +58,31 @@ public class BossAI : MonoBehaviour
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         _bossName = _bossMonster._monsterName;
         _bossLevel = _bossMonster._monsterLevel;
         _bossDamage = _bossMonster._monsterDamage;
-        _bossHP = _bossMonster._monsterHP;
-        _stiffness = _bossMonster._stiffness;
-        _stiffnessCount = _bossMonster._stiffnessCount;
-        _stiffnessDuration = _bossMonster._stiffnessDuration;
         _bossMoveSpeed = _bossMonster._monsterMoveSpeed;
         _bossAttackDelay = _bossMonster._monsterAttackDelay;
         _bossRange = _bossMonster._monsterRange;
         _bossSkill = _bossMonster._skill;
         _bossSkillPrefab = _bossMonster._skillPrefab;
+        UIController.instance.SetActiveBossHPBar(_bossMonster, this, true);
 
-        _state = State.IDLE;
-        _stateManager.SetInitState();
-        _target = PlayerController.instance.transform;
-        if (!_navMesh.enabled)
-            _navMesh.enabled = true;
-        _navMesh.speed = _bossMoveSpeed;
-        _navMesh.acceleration = _bossMoveSpeed;
-        _navMesh.stoppingDistance = _bossRange;
-        _navMesh.angularSpeed = 1000f;
+        if (_onDie == null)
+            _onDie = new UnityEvent();
+
+        SetInit();
+        _state = State.CANTMOVE;
+        CameraController.instance.StartCoroutine(CameraController.instance.BossEnterCameraWork(transform, 5f));
     }
 
     protected virtual void Update()
     {
-        _stateManager.SetState(_state);
         if (_state != State.DEAD)
         {
+            _stateManager.SetState(_state);
             if (_stateManager.IsCanMove())
             {
                 _animator.SetFloat("Speed", _navMesh.velocity.magnitude / _bossMoveSpeed);
@@ -90,19 +91,43 @@ public class BossAI : MonoBehaviour
                     _navMesh.SetDestination(_target.position);
                     _rigidBody.velocity = Vector3.zero;
                     _rigidBody.angularVelocity = Vector3.zero;
-                    RaycastHit[] hits = Physics.SphereCastAll(transform.position, _bossRange, transform.up, 0f, LayerMask.GetMask("Player"));
+                    RaycastHit[] hits = Physics.SphereCastAll(transform.position, _bossRange, transform.up, 0f, LayerMask.GetMask("Player"), QueryTriggerInteraction.Collide);
                     if (hits.Length > 0)
                         _isPlayerInRange = true;
                     else
                         _isPlayerInRange = false;
                 }
+                else if(_target != null || _target.tag != "Player")
+                    _target = PlayerController.instance.transform;
             }
-            else
-            {
-                _navMesh.isStopped = true;
-            }
+            //else
+            //{
+            //    _navMesh.isStopped = true;
+            //}
         }
     }
+
+    public void SetInit()
+    {
+        _bossHP = _bossMonster._monsterHP;
+        _stiffness = _bossMonster._stiffness;
+        _stiffnessCount = _bossMonster._stiffnessCount;
+        _stiffnessDuration = _bossMonster._stiffnessDuration;
+        transform.tag = "Enemy";
+        gameObject.layer = LayerMask.NameToLayer("Boss");
+        _state = State.IDLE;
+        _stateManager.SetInitState();
+        _target = PlayerController.instance.transform;
+        _navMesh.enabled = true;
+        _navMesh.speed = _bossMoveSpeed;
+        _navMesh.acceleration = _bossMoveSpeed;
+        _navMesh.stoppingDistance = _bossRange;
+        _navMesh.angularSpeed = 1000f;
+        _animator.SetFloat("Speed", _navMesh.velocity.magnitude / _bossMoveSpeed);
+        UIController.instance.BossHPBar.SetHPBar(_bossHP);
+    }
+
+    public void SetMyState(State state) => _state = state;
 
     protected IEnumerator PlayAttackAnim(string trigger)
     {
@@ -118,13 +143,15 @@ public class BossAI : MonoBehaviour
         _navMesh.isStopped = false;
     }
 
-    public void Damaged(int minDamage, int maxDamage, int numberOfAttack)
+    public void Damaged(int minDamage, int maxDamage, int numberOfAttack, AudioClip hitSound = null)
     {
         for (int i = 0; i < numberOfAttack; i++)
         {
             int damage = Random.Range(minDamage, maxDamage + 1);
             _bossHP -= damage;
-            UIController.instance.BossHPBar.ReduceHPBar(damage);
+            if (_bossHP < 0)
+                _bossHP = 0;
+            UIController.instance.BossHPBar.SetHPBar(_bossHP);
             GameObject damageObject = Instantiate(_damageText);
             var damageText = damageObject.GetComponent<DamageText>();
             damageText._damage = damage;
@@ -141,6 +168,11 @@ public class BossAI : MonoBehaviour
             gameObject.tag = "DeathEnemy";
             return;
         }
+
+        if (hitSound == null)
+            hitSound = _bossMonster._hitSound;
+        SoundManager.instance.SFXPlay(hitSound);
+
         if (_stiffness <= 0)
         {
             StopAllCoroutines();
@@ -171,10 +203,13 @@ public class BossAI : MonoBehaviour
     {
         _animator.SetTrigger("Dead");
         _state = State.DEAD;
+        _stateManager.SetState(_state);
         //_navMesh.enabled = false;
+        SoundManager.instance.SFXPlay(_bossMonster._deadSound);
+        _onDie.Invoke();
 
         PlayerManager playerManager = PlayerController.instance.PlayerManager;
-        playerManager.GainExp(_bossMonster._monsterGiveExp);
+        playerManager.CurrentExp += _bossMonster._monsterGiveExp;
 
         QuestManager questManager = PlayerController.instance.QuestManager;
         List<QuestData> questDataList = questManager.GetCurrentQuestData(Quest.Type.HUNTING);
@@ -182,14 +217,19 @@ public class BossAI : MonoBehaviour
             foreach (HuntingQuestData quest in questDataList)
                 quest.HuntMonster(_bossMonster);
 
+        CameraController.instance.StopAllCoroutines();
+        CameraController.instance.StartCoroutine(CameraController.instance.BossEndCameraWork(transform, 3f));
+
         yield return new WaitForSeconds(3f);
 
+        UIController.instance.SetActiveBossHPBar(_bossMonster, this, false);
+        //SceneManager.LoadScene(_bossMonster._endScene);
         gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Melee" && _state != State.DEAD)
+        if (other.gameObject.tag == "Melee" && (transform.tag == "Enemy" || gameObject.layer == LayerMask.NameToLayer("Boss")))
         {
             PlayerManager _playerManager = PlayerController.instance.PlayerManager;
             Damaged(_playerManager._playerMinPower, _playerManager._playerMaxPower, 1);

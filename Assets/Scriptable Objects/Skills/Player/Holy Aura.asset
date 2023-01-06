@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Holy Aura
   m_EditorClassIdentifier: 
   _skillName: Holy Aura
+  _skillActivition: 0
+  _skillType: 3
   _skillDesc: "\uC2E0\uC131\uD55C \uAE30\uC6B4\uC744 \uBC1C\uC0B0\uD558\uC5EC \uC77C\uC815
     \uC2DC\uAC04 \uC2A4\uD0EF\uC774 \uD06C\uAC8C \uC99D\uAC00\uD55C\uB2E4."
   _skillTrigger: HolyAura
@@ -20,6 +22,9 @@ MonoBehaviour:
   _skillDuration: 10
   _skillDelay: 1
   _skillIconImage: {fileID: 21300000, guid: 2d089513ae4adfc48a683c362ad9992c, type: 3}
+  _skillUseSound: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
+  _skillHitSound: {fileID: 0}
+  _requireMP: 25
   _skillNumberOfAttack: 0
   _skillNumberOfEnemy: 0
   _skillDamageMultiplier: 1.5

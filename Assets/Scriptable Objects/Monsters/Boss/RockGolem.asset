@@ -21,12 +21,16 @@ MonoBehaviour:
   _monsterMoveSpeed: 3
   _monsterAttackDelay: 5
   _monsterRange: 5
+  _attackSound: {fileID: 8300000, guid: 5ae306e71e53ffb4e94b98da0817931d, type: 3}
+  _hitSound: {fileID: 8300000, guid: 30e897ec6f82ba149aaf6163cf727034, type: 3}
+  _deadSound: {fileID: 8300000, guid: 87af217894270924bbf7a76b105561fe, type: 3}
   _stiffness: 150
   _stiffnessCount: 3
   _stiffnessDuration: 5
   _bossImage: {fileID: 21300000, guid: dcbb369ba15823b41a13d2c86f59f30f, type: 3}
-  _bossScene: BossStage
+  _bossScene: {fileID: 11400000, guid: ccc342c90b376fb44ab8f8fcf2b9c466, type: 2}
+  _endScene: {fileID: 11400000, guid: eb1b25438f7f6464ebba367b451920f8, type: 2}
   _skill:
-  - {fileID: 11400000, guid: f6736faee224c15468f6447ce0322249, type: 2}
+  - {fileID: 11400000, guid: 66d776dd0aa25924c87b1fc7c28df63f, type: 2}
   _skillPrefab:
   - {fileID: 5298590762127773683, guid: cad9f745870d9f448bf225d2a253d382, type: 3}

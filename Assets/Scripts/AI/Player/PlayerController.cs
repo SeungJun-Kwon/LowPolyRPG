@@ -1,25 +1,22 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(PlayerManager))]
 [RequireComponent(typeof(QuestManager))]
+[RequireComponent(typeof(PlayerKeySetting))]
+[RequireComponent(typeof(SkillManager))]
+[RequireComponent(typeof(StateManager))]
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController instance;
+    public static PlayerController instance;    
 
     [SerializeField] CapsuleCollider _weaponCollider;
     [SerializeField] TrailRenderer _weaponTrail;
-    [SerializeField] float _attackDelay;
-
-    [Header("Sounds Name")]
-    [SerializeField] AudioClip[] _walkSound;
-    [SerializeField] AudioClip[] _attackSound;
-    [SerializeField] AudioClip[] _hitSound;
-    [SerializeField] AudioClip[] _dieSound;
-    [SerializeField] AudioClip[] _skillSounds;
 
     PlayerManager _playerManager;
     public PlayerManager PlayerManager
@@ -65,15 +62,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private StateManager _stateManager;
-    private Camera _camera;
-    private Animator _animator;
-    private Rigidbody _rigidBody;
-    [HideInInspector] public NavMeshAgent _navMeshAgent;
-    private SkinnedMeshRenderer _meshRenderer;
-    private Color _onHitColor;
+    Animator _animator;
+    public Animator Animator
+    {
+        get
+        {
+            if (_animator == null)
+                TryGetComponent(out _animator);
+            return _animator;
+        }
+    }
 
-    private State _myState;
+    [HideInInspector] public NavMeshAgent _navMeshAgent;
+    [HideInInspector] public UnityEvent _attackEvent;
+
+    StateManager _stateManager;
+    Camera _camera;
+    Rigidbody _rigidBody;
+    SkinnedMeshRenderer _meshRenderer;
+    AudioClip _dieSound;
+    Color _originColor, _onHitColor;
+
+    State _myState;
 
     KeyCode _attack, _move, _action, _pause;
     KeyCode[] _skill;
@@ -111,9 +121,14 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        //_navMeshAgent.updateRotation = false;
-        _maxSpeed = _playerManager._playerSpeed;
-        _onHitColor = _meshRenderer.material.color;
+        if (_attackEvent == null)
+            _attackEvent = new UnityEvent();
+
+        _maxSpeed = _playerManager._playerMaxSpeed;
+        _originColor = _meshRenderer.material.color;
+        _onHitColor = Color.red;
+        _animator.SetFloat("AttackSpeed", _playerManager._attackSpeed);
+        _dieSound = Resources.Load("Sounds/SFX/Player/SFX_Player_Die") as AudioClip;
 
         PlayerKeySetting _keySet = PlayerKeySetting;
         _attack = _keySet._attack;
@@ -121,49 +136,86 @@ public class PlayerController : MonoBehaviour
         _action = _keySet._action;
         _pause = _keySet._esc;
         _skill = _keySet._skill;
+
+        ToTheStartPoint();
     }
 
     void Update()
     {
         _stateManager.SetState(_myState);
-        if(_navMeshAgent.enabled)
-            _animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude / _maxSpeed);
-        if (_stateManager.IsCanMove())
+        if (_myState != State.DEAD)
         {
-            if (!_stateManager.IsAttacking())
+            if (_navMeshAgent.enabled)
+                _animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude / _maxSpeed);
+            if (_stateManager.IsCanMove())
             {
-                if (Input.GetKey(_attack))
+                if (!_stateManager.IsAttacking())
                 {
-                    StopAllCoroutines();
-                    StartCoroutine(OnAttack(_attackDelay, "OnSwordAttack"));
-                }
-                else if (Input.GetKey(_move))
-                {
-                    int layer = 1 << LayerMask.NameToLayer("Ground");
-                    RaycastHit hit;
-                    if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit, 100f, layer))
+                    if (EventSystem.current.currentSelectedGameObject == null)
                     {
-                        if ((hit.point - transform.position).magnitude > 0.5f)
+                        if (Input.GetKey(_attack))
                         {
-                            _myState = State.MOVE;
-                            SetDestination(hit.point);
-                        }
-                    }
-                }
-                else if(Input.anyKeyDown)
-                {
-                    string keyName = Input.inputString.ToUpper();
-                    KeyAction keyAction = PlayerKeySetting.GetKeyAction(keyName);
-                    if(keyAction == KeyAction.SKILL)
-                    {
-                        if(_skillManager.IsReady(keyName))
-                        {
+                            StopAllCoroutines();
                             LookMousePosition();
-                            StartCoroutine(OnAttack(_skillManager.GetSkill(keyName)._skillDelay, _skillManager.GetSkill(keyName)._skillTrigger));
-                            _skillManager.Use(keyName);
+                            StartCoroutine(OnAttack(_playerManager._attackSpeed, "OnSwordAttack"));
+                            _attackEvent.Invoke();
+                        }
+                        else if (Input.GetKey(_move))
+                        {
+                            int layer = 1 << LayerMask.NameToLayer("Ground");
+                            RaycastHit hit;
+                            if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit, 100f, layer))
+                            {
+                                if ((hit.point - transform.position).magnitude > 0.5f)
+                                {
+                                    _myState = State.MOVE;
+                                    SetDestination(hit.point);
+                                }
+                            }
+                        }
+                        else if (Input.anyKeyDown)
+                        {
+                            string keyName = Input.inputString;
+                            if (keyName.Length < 1)
+                                return;
+                            if (keyName[0] >= '0' && keyName[0] <= '9')
+                                keyName = "Alpha" + keyName;
+                            else
+                                keyName = keyName.ToUpper();
+                            KeyAction keyAction = PlayerKeySetting.GetKeyAction(keyName);
+
+                            if (keyAction == KeyAction.SKILL)
+                            {
+                                if (_skillManager.GetSkillActivition(keyName) == SkillActivition.PASSIVE)
+                                    return;
+
+                                if (_skillManager.IsReady(keyName))
+                                {
+                                    LookMousePosition();
+                                    Skill skill = _skillManager.GetSkill(keyName);
+                                    SkillType type = _skillManager.GetSkillType(keyName);
+                                    switch (type)
+                                    {
+                                        case SkillType.INSTANT:
+                                            StartCoroutine(OnAttack(skill._skillDelay, skill._skillTrigger));
+                                            break;
+                                        case SkillType.CASTING:
+                                            OnCasting(skill._skillTrigger);
+                                            break;
+                                        case SkillType.KEYDOWN:
+                                            StartCoroutine(OnKeyDown(keyName, skill._skillDuration, skill._skillTrigger));
+                                            break;
+                                        case SkillType.BUFF:
+                                            StartCoroutine(OnAction(skill._skillDelay, skill._skillTrigger));
+                                            break;
+                                    }
+                                    _skillManager.Use(keyName);
+                                }
+                            }
+                            else if(keyAction == KeyAction.HEALTHPOTION || keyAction == KeyAction.MANAPOTION)
+                                UIController.instance.UsePotion(keyAction);
                         }
                     }
-                    
                 }
             }
         }
@@ -175,15 +227,29 @@ public class PlayerController : MonoBehaviour
         //    LookMoveDirection();
     }
 
+    public void Resurrection(bool anim = true, float time = 2f)
+    {
+        if(anim)
+            _animator.SetTrigger("Resurrection");
+        Invoke("ToTheStartPoint", time);
+        PlayerManager.CurrentHP = PlayerManager.PlayerHP;
+        PlayerManager.CurrentMP = PlayerManager.PlayerMP;
+        UIController.instance.SetInit();
+    }
+
     public void ToTheStartPoint()
     {
-        _myState = State.CANTMOVE;
-
         _navMeshAgent.enabled = false;
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
-        _navMeshAgent.enabled = true;
 
+        _navMeshAgent.enabled = true;
         _myState = State.IDLE;
+        SetDestination(transform.position);
+        gameObject.layer = LayerMask.NameToLayer("Player");
+
+        BossAI boss = GameObject.FindObjectOfType<BossAI>();
+        if (boss != null && boss.gameObject.activeSelf)
+            boss.SetInit();
     }
 
     public void SetDestination(Transform tf)
@@ -193,7 +259,8 @@ public class PlayerController : MonoBehaviour
         var _moveDir = new Vector3(_navMeshAgent.steeringTarget.x, transform.position.y, _navMeshAgent.steeringTarget.z) - transform.position;
         if(_moveDir == Vector3.zero)
             _moveDir = new Vector3(tf.position.x, transform.position.y, tf.position.z) - transform.position;
-        transform.forward = _moveDir;
+        if(_moveDir != Vector3.zero)
+            transform.forward = _moveDir;
     }
 
     public void SetDestination(Vector3 _dest)
@@ -212,7 +279,8 @@ public class PlayerController : MonoBehaviour
         }
 
         var _moveDir = new Vector3(_navMeshAgent.steeringTarget.x, transform.position.y, _navMeshAgent.steeringTarget.z) - transform.position;
-        transform.forward = _moveDir;
+        if (_moveDir != Vector3.zero)
+            transform.forward = _moveDir;
     }
 
     private void LookMousePosition()
@@ -231,47 +299,73 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator OnCasting(float attackDelay, string trigger)
+    IEnumerator OnKeyDown(string key, float delay, string trigger)
     {
+        _myState = State.ATTACK;
         _navMeshAgent.SetDestination(transform.position);
-        _animator.SetBool(trigger, true);
-        //_animator.GetCurrentAnimatorClipInfo(0).Length;   현재 애니메이션의 길이
+        _animator.SetTrigger(trigger);
 
-        yield return new WaitForSeconds(attackDelay);
+        float count = 0f;
+        while(count < delay)
+        {
+            count += Time.deltaTime;
 
-        _animator.SetBool(trigger, false);
+            if (Input.GetKeyUp(key.ToLower()))
+                break;
+
+            yield return null;
+        }
+
+        _skillManager.Destroy(key);
+        _animator.SetTrigger(trigger);
         _myState = State.IDLE;
         SettingAttackInstance(0);
     }
 
-    IEnumerator OnAttack(float attackDelay, string trigger)
+    IEnumerator OnAttack(float attackSpeed, string trigger)
     {
         _myState = State.ATTACK;
         _navMeshAgent.SetDestination(transform.position);
-        LookMousePosition();
         _animator.SetTrigger(trigger);
         _animator.SetInteger("AttackIndex", Random.Range(0, 2));
-        //_animator.GetCurrentAnimatorClipInfo(0).Length;   현재 애니메이션의 길이
 
-        yield return new WaitForSecondsRealtime(attackDelay);
+        yield return new WaitForSeconds(1/attackSpeed);
 
         _myState = State.IDLE;
         SettingAttackInstance(0);
+    }
+
+    void OnCasting(string trigger)
+    {
+        _myState = State.ATTACK;
+        _navMeshAgent.SetDestination(transform.position);
+        _animator.SetTrigger(trigger);
+    }
+
+    IEnumerator OnAction(float delay, string trigger)
+    {
+        _myState = State.CANTMOVE;
+        _navMeshAgent.SetDestination(transform.position);
+        _animator.SetTrigger(trigger);
+
+        yield return new WaitForSeconds(delay);
+
+        _myState = State.IDLE;
     }
 
     private void WalkSoundPlay()
     {
-        int num = Random.Range(0, _walkSound.Length);
-        SoundManager.instance.SFXPlay(_walkSound[num]);
+        int num = Random.Range(0, _playerManager._walkSound.Length);
+        SoundManager.instance.SFXPlay(_playerManager._walkSound[num]);
     }
 
     private void SwingSoundPlay()
     {
-        int num = Random.Range(0, _attackSound.Length);
-        SoundManager.instance.SFXPlay(_attackSound[num]);
+        int num = Random.Range(0, _playerManager._attackSound.Length);
+        SoundManager.instance.SFXPlay(_playerManager._attackSound[num]);
     }
 
-    private void SettingAttackInstance(int _value)
+    public void SettingAttackInstance(int _value)
     {
         bool _toggle;
         if (_value > 0)
@@ -285,36 +379,64 @@ public class PlayerController : MonoBehaviour
 
     public void Damaged(int damage, bool isImmuned = true, bool percentageDamage = false)
     {
-        SettingAttackInstance(0);
-        _myState = State.IDLE;
-        _navMeshAgent.isStopped = true;
-        if (!isImmuned)
+        if (gameObject.layer != LayerMask.NameToLayer("DeathPlayer"))
         {
-            _animator.SetTrigger("OnHit");
+            SettingAttackInstance(0);
+            _myState = State.IDLE;
+            _navMeshAgent.isStopped = true;
+            if (percentageDamage)
+                damage = (int)(_playerManager.PlayerHP * (float)damage / 100);
+            _playerManager.CurrentHP -= damage;
+            if (_playerManager.CurrentHP <= 0)
+            {
+                Die();
+                return;
+            }
+            _meshRenderer.material.color = _onHitColor;
+            Invoke("HitColor", 0.5f);
+            SoundManager.instance.SFXPlay(PlayerManager._hitSound);
+
+            if (!isImmuned)
+            {
+                _animator.SetTrigger("OnHit");
+            }
         }
-        if (percentageDamage)
-            damage = (int)(_playerManager._playerHP * (float)damage / 100);
-        UIController.instance.SetHPOrb(-damage);
+    }
+
+    void HitColor() => _meshRenderer.material.color = _originColor;
+
+    void Die()
+    {
+        StopAllCoroutines();
+        _myState = State.DEAD;
+        _animator.SetTrigger("Dead");
+        _navMeshAgent.enabled = true;
+        SoundManager.instance.SFXPlay(_dieSound);
+        SettingAttackInstance(0);
+        _navMeshAgent.transform.position = transform.position;
+        _navMeshAgent.isStopped = true;
+        gameObject.layer = LayerMask.NameToLayer("DeathPlayer");
+        UIController.instance._playerDeathUI.SetActive(true);
+        UIController.instance._isPlayerDeath = true;
     }
 
     public void SetMyState(State state) => _myState = state;
 
-    public void RunTimeline()
+    public void RunTimeline(float speed)
     {
         Camera.main.TryGetComponent<CameraController>(out var cameraController);
         cameraController._isAble = false;
-        _myState = State.CANTMOVE;
+        _navMeshAgent.speed = speed;
+        UIController.instance.PlayUI.SetActive(false);
+        UIController.instance.CinemachineUI.SetActive(true);
     }
 
     public void EndTimeline()
     {
         Camera.main.TryGetComponent<CameraController>(out var cameraController);
         cameraController._isAble = true;
-        _myState = State.CANMOVE;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        
+        _navMeshAgent.speed = PlayerManager._playerSpeed;
+        UIController.instance.PlayUI.SetActive(true);
+        UIController.instance.CinemachineUI.SetActive(false);
     }
 }
