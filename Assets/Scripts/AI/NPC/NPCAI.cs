@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -183,25 +181,5 @@ public class NPCAI : MonoBehaviour
             _isAroundPlayer = false;
             _actionUI.SetActive(_isAroundPlayer);
         }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        UIController.instance.ObjectInfo(_npc, transform);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        UIController.instance.ObjectInfo(_npc, transform, false);
-    }
-
-    private void OnMouseEnter()
-    {
-        UIController.instance.ObjectInfo(_npc, transform);
-    }
-
-    private void OnMouseExit()
-    {
-        UIController.instance.ObjectInfo(_npc, transform, false);
     }
 }

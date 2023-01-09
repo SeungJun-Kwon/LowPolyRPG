@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class MonsterAI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MonsterAI : MonoBehaviour
 {
     [SerializeField] public NormalMonster _monster;
     [SerializeField] ParticleSystem _hitEffect;
@@ -52,6 +50,10 @@ public class MonsterAI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             _monsterHPGo = Instantiate(Resources.Load("Prefabs/UI/MonsterHPBar"), transform) as GameObject;
             _monsterHPGo.TryGetComponent(out _monsterHPBar);
         }
+
+        GameObject objectNameGo = Instantiate(Resources.Load("Prefabs/UI/ObjectName"), transform) as GameObject;
+        objectNameGo.TryGetComponent(out ObjectName objectName);
+        objectName.SetText(_monster);
     }
 
     private void Start()
@@ -209,15 +211,5 @@ public class MonsterAI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             PlayerManager _playerManager = PlayerController.instance.PlayerManager;
             Damaged(_playerManager._playerMinPower, _playerManager._playerMaxPower, 1, other.transform);
         }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        UIController.instance.ObjectInfo(_monster, transform);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        UIController.instance.ObjectInfo(_monster, transform, false);
     }
 }

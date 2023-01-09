@@ -9,6 +9,7 @@ public class MonsterHPBar : MonoBehaviour
     public Image _fill;
 
     RectTransform _rectTransform;
+    Transform _camera;
 
     private void Awake()
     {
@@ -17,22 +18,12 @@ public class MonsterHPBar : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(UpdateCor());
+        _camera = CameraController.instance.transform;
     }
 
-    private void OnDisable()
+    private void LateUpdate()
     {
-        StopCoroutine(UpdateCor());
-    }
-
-    IEnumerator UpdateCor()
-    {
-        while(true)
-        {
-            transform.LookAt(transform.position + CameraController.instance.transform.rotation * Vector3.back, CameraController.instance.transform.rotation * Vector3.down);
-
-            yield return null;
-        }
+        transform.rotation = _camera.transform.rotation;
     }
 
     public void SetTransform(Vector3 size)

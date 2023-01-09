@@ -94,10 +94,6 @@ public class UIController : MonoBehaviour
         }
     }
 
-    [Header("Object Info")]
-    [SerializeField] GameObject _objectInfoPanel;
-    ObjectInfoForMouse _objectInfoForMouse;
-
     [HideInInspector] GameObject _npcDialogue;
 
     [HideInInspector] public GameObject _playerDeathUI;
@@ -127,8 +123,6 @@ public class UIController : MonoBehaviour
 
         _playerDeathUI = PlayUI.transform.Find("PlayerDeathUI").gameObject;
         _npcDialogue = PlayUI.transform.Find("NPCDialogue").gameObject;
-        _objectInfoPanel = PlayUI.transform.Find("ObjectInfo").gameObject;
-        _objectInfoPanel.TryGetComponent(out _objectInfoForMouse);
         _playerInfoPanel.TryGetComponent(out _playerInfo);
         _bossHPBarPanel.TryGetComponent(out _bossHPBar);
 
@@ -228,32 +222,6 @@ public class UIController : MonoBehaviour
         if(trigger)
             _bossHPBar.GetBossInformation(monster, bossAI);
         _bossHPBarPanel.SetActive(trigger);
-    }
-
-    public void ObjectInfo(NPC npc, Transform target, bool active = true)
-    {
-        if(!active)
-        {
-            _objectInfoPanel.SetActive(false);
-            return;
-        }
-
-        _objectInfoForMouse.SetInfo(npc, target);
-        if(!_objectInfoPanel.activeSelf)
-            _objectInfoPanel.SetActive(active);
-    }
-
-    public void ObjectInfo(Monster monster, Transform target, bool active = true)
-    {
-        if (!active)
-        {
-            _objectInfoPanel.SetActive(false);
-            return;
-        }
-
-        _objectInfoForMouse.SetInfo(monster, target);
-        if (!_objectInfoPanel.activeSelf)
-            _objectInfoPanel.SetActive(active);
     }
 
     public void UsePotion(KeyAction action)
