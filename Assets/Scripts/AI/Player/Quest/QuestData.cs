@@ -8,7 +8,6 @@ public class QuestData
     [HideInInspector] public Quest _quest;
     [HideInInspector] public UnityEvent OnQuestComplete = new UnityEvent();
 
-    public bool _canAccept;
     bool _canComplete;
     public bool CanComplete
     {
@@ -27,7 +26,6 @@ public class QuestData
     public QuestData(Quest quest)
     {
         _quest = quest;
-        _canAccept = _quest.CanAccept();
         CanComplete = false;
     }
 }

@@ -7,8 +7,6 @@ using UnityEngine.Events;
 
 public class QuestManager : MonoBehaviour
 {
-    PlayerManager _playerManager;
-
     List<QuestData> _currentQuest = new List<QuestData>();
     List<QuestData> _completedQuest = new List<QuestData>();
 

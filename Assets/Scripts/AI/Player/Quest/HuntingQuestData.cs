@@ -22,7 +22,8 @@ public class HuntingQuestData : QuestData
         if (_currentNumberOfHunts < quest._numberOfHunts)
         {
             _currentNumberOfHunts++;
-            UIController.instance.NoticeArea.GetMessage(quest._targetMonster.name + " " + _currentNumberOfHunts + "/" + quest._numberOfHunts);
+            UIController.instance.NoticeArea.GetMessage(quest._targetMonster.name + " "
+                + _currentNumberOfHunts + "/" + quest._numberOfHunts);
             if (_currentNumberOfHunts == quest._numberOfHunts)
                 CanComplete = true;
         }
