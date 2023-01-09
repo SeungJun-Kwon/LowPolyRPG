@@ -35,9 +35,9 @@ public class MonsterHPBar : MonoBehaviour
         }
     }
 
-    public void SetTransform(Collider col)
+    public void SetTransform(Vector3 size)
     {
-        _rectTransform.localPosition = new Vector3(0f, col.bounds.size.y + 0.5f, 0f);
-        _rectTransform.localScale = new Vector3(col.bounds.size.x * 1f, col.bounds.size.y * 0.2f);
+        _rectTransform.localPosition = new Vector3(0f, size.y + 0.5f, 0f);
+        _rectTransform.localScale = new Vector3(size.x, size.y * 0.2f);
     }
 }

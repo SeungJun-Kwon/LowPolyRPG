@@ -71,7 +71,7 @@ public class MonsterAI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         _navMesh.acceleration = _monsterMoveSpeed;
         _navMesh.stoppingDistance = _monsterRange;
         _navMesh.angularSpeed = 1000f;
-        _monsterHPBar.SetTransform(_boxColl);
+        _monsterHPBar.SetTransform(_boxColl.size);
     }
 
     private void OnEnable()
