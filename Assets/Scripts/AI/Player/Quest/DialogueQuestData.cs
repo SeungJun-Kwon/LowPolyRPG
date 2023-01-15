@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DialogueQuestData : QuestData
 {
+    public new DialogueQuest _quest;
     public int _currentIndex;
 
     public DialogueQuestData(DialogueQuest quest) : base(quest)

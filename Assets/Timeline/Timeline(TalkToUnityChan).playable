@@ -99,6 +99,28 @@ MonoBehaviour:
   m_Clips: []
   m_Markers:
     m_Objects: []
+--- !u!114 &-3202317691528150574
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be6171d98dd1ac458a6f0a4d5502562, type: 3}
+  m_Name: MoveAsset
+  m_EditorClassIdentifier: 
+  _startLocation:
+    exposedName: 88c43357134821d4b83c732bf2ca5924
+    defaultValue: {fileID: 0}
+  _endLocation:
+    exposedName: db955519d2f3d074ebd378b0857380f2
+    defaultValue: {fileID: 0}
+  _lookRotation:
+    exposedName: ce5de4490a370344cb6a252040b554ac
+    defaultValue: {fileID: 0}
+  _speed: 1
 --- !u!114 &-3003261329734625001
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,28 +179,6 @@ MonoBehaviour:
   m_Retroactive: 0
   m_EmitOnce: 0
   m_Asset: {fileID: 11400000, guid: 22df83ce06e7c9c4d9892e599ad11674, type: 2}
---- !u!114 &-1562447764673213306
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5be6171d98dd1ac458a6f0a4d5502562, type: 3}
-  m_Name: TestAsset
-  m_EditorClassIdentifier: 
-  _startLocation:
-    exposedName: 957cca2831646be41b81d7da23693630
-    defaultValue: {fileID: 0}
-  _endLocation:
-    exposedName: 078cb684f688a43448359470c11e0cb1
-    defaultValue: {fileID: 0}
-  _lookRotation:
-    exposedName: 68bb4689f6265bd428ddfc04166f34dd
-    defaultValue: {fileID: 0}
-  _speed: 1
 --- !u!114 &-1388571290622793600
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -374,7 +374,7 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: -1562447764673213306}
+    m_Asset: {fileID: -3202317691528150574}
     m_Duration: 3.3333333333333335
     m_TimeScale: 1
     m_ParentTrack: {fileID: 1629983157417539628}
@@ -439,7 +439,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: TestAsset
+    m_DisplayName: MoveAsset
   m_Markers:
     m_Objects: []
 --- !u!114 &1846467257180529465

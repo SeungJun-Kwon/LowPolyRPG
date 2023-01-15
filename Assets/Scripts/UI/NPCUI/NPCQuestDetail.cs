@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,9 +48,8 @@ public class NPCQuestDetail : MonoBehaviour
             Debug.Log("!!!Check Quest Type!!!");
             return;
         }
-        PlayerController.instance.QuestManager.AcceptQuest(questData);
         questData.OnQuestComplete.AddListener(_npcDialogue._npcAI.CheckQuestState);
-        _npcDialogue._npcAI.CheckQuestState();
+        PlayerController.instance.QuestManager.AcceptQuest(questData);
         _npcDialogue.SetState((int)NPCDialogueState.INIT);
     }
 
@@ -57,9 +57,14 @@ public class NPCQuestDetail : MonoBehaviour
     {
         QuestManager questManager = PlayerController.instance.QuestManager;
         questManager.CompleteQuest(_quest, _npcDialogue._npcAI.CheckQuestState);
-        _npcDialogue._npcAI.CheckQuestState();
         _npcDialogue.gameObject.SetActive(false);
-        if(_quest._isTimeline)
-            TimelineController.instance.PlayFromTimeline(_quest._playableDirector, _quest._timeline);
+        try
+        {
+            if (_quest._isTimeline)
+                TimelineController.instance.PlayFromTimeline(_quest._playableDirector, _quest._timeline);
+        }catch(ArgumentNullException e)
+        {
+            Debug.Log(e.Message);
+        }
     }
 }

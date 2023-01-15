@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class TestAsset : PlayableAsset
+public class MoveAsset : PlayableAsset
 {
-    public TestBehavior _template;
+    public MoveBehavior _template;
     public ExposedReference<Transform> _startLocation;
     public ExposedReference<Transform> _endLocation;
     public ExposedReference<Transform> _lookRotation;
@@ -17,8 +17,8 @@ public class TestAsset : PlayableAsset
 
     public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
     {
-        var playable = ScriptPlayable<TestBehavior>.Create(graph, _template);
-        TestBehavior clone = playable.GetBehaviour();
+        var playable = ScriptPlayable<MoveBehavior>.Create(graph, _template);
+        MoveBehavior clone = playable.GetBehaviour();
         clone._startLocation = _startLocation.Resolve(graph.GetResolver());
         clone._endLocation = _endLocation.Resolve(graph.GetResolver());
         clone._lookRotation = _lookRotation.Resolve(graph.GetResolver());

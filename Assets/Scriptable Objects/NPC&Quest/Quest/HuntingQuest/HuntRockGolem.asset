@@ -15,7 +15,7 @@ MonoBehaviour:
   _questId: 104
   _title: "\uACE8\uB818\uC744 \uBB3C\uB9AC\uCE58\uC790"
   _type: 1
-  _startNPC: {fileID: 11400000, guid: fc3e4754585ffda4182eb20383216fc8, type: 2}
+  _startNPC: {fileID: 11400000, guid: ee20d962dd90b034688baa49873a91a4, type: 2}
   _desc: "\uC131\uC744 \uCC28\uC9C0\uD558\uACE0 \uC788\uB294 \uACE8\uB818\uC744 \uBB3C\uB9AC\uCE58\uC790"
   _dialogues:
   - "\uC800\uAE30 \uBCF4\uC774\uB294 \uC131\uC5D0 \uC544\uC8FC \uB2E8\uB2E8\uD55C

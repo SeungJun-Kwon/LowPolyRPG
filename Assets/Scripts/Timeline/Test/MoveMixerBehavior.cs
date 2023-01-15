@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class TestMixerBehavior : PlayableBehaviour
+public class MoveMixerBehavior : PlayableBehaviour
 {
     bool _firstHappened;
     Transform _lookAt;
@@ -22,8 +22,8 @@ public class TestMixerBehavior : PlayableBehaviour
 
         for (int i = 0; i < inputCount; i++)
         {
-            ScriptPlayable<TestBehavior> inputPlayable = (ScriptPlayable<TestBehavior>)playable.GetInput(i);
-            TestBehavior input = inputPlayable.GetBehaviour();
+            ScriptPlayable<MoveBehavior> inputPlayable = (ScriptPlayable<MoveBehavior>)playable.GetInput(i);
+            MoveBehavior input = inputPlayable.GetBehaviour();
 
             if (!input._endLocation)
                 continue;
@@ -42,8 +42,8 @@ public class TestMixerBehavior : PlayableBehaviour
 
             if (playable.GetInputWeight(_index) == 1f)
             {
-                ScriptPlayable<TestBehavior> inputPlayableIndex = (ScriptPlayable<TestBehavior>)playable.GetInput(_index);
-                TestBehavior inputIndex = inputPlayableIndex.GetBehaviour();
+                ScriptPlayable<MoveBehavior> inputPlayableIndex = (ScriptPlayable<MoveBehavior>)playable.GetInput(_index);
+                MoveBehavior inputIndex = inputPlayableIndex.GetBehaviour();
                 Quaternion endRotation = Quaternion.LookRotation(inputIndex._lookRotation.position - trackBinding.position);
                 desiredRotation = Quaternion.Slerp(trackBinding.rotation, endRotation, Time.deltaTime * input._speed);
             }
@@ -51,8 +51,8 @@ public class TestMixerBehavior : PlayableBehaviour
             {
                 if (_index < inputCount - 1)
                 {
-                    ScriptPlayable<TestBehavior> inputPlayableIndex = (ScriptPlayable<TestBehavior>)playable.GetInput(_index + 1);
-                    TestBehavior inputIndex = inputPlayableIndex.GetBehaviour();
+                    ScriptPlayable<MoveBehavior> inputPlayableIndex = (ScriptPlayable<MoveBehavior>)playable.GetInput(_index + 1);
+                    MoveBehavior inputIndex = inputPlayableIndex.GetBehaviour();
                     Quaternion endRotation = Quaternion.LookRotation(inputIndex._lookRotation.position - trackBinding.position);
                     desiredRotation = Quaternion.Slerp(trackBinding.rotation, endRotation, Time.deltaTime * input._speed);
                 }

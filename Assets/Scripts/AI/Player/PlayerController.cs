@@ -147,74 +147,71 @@ public class PlayerController : MonoBehaviour
         {
             if (_navMeshAgent.enabled)
                 _animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude / _maxSpeed);
-            if (_stateManager.IsCanMove())
+            if (_stateManager.IsCanMove() && !_stateManager.IsAttacking())
             {
-                if (!_stateManager.IsAttacking())
+                if (EventSystem.current.currentSelectedGameObject == null)
                 {
-                    if (EventSystem.current.currentSelectedGameObject == null)
+                    if (Input.GetKey(_attack))
                     {
-                        if (Input.GetKey(_attack))
+                        StopAllCoroutines();
+                        LookMousePosition();
+                        StartCoroutine(OnAttack(_playerManager._attackSpeed, "OnSwordAttack"));
+                        _attackEvent.Invoke();
+                    }
+                    else if (Input.GetKey(_move))
+                    {
+                        int layer = 1 << LayerMask.NameToLayer("Ground");
+                        RaycastHit hit;
+                        if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit, 100f, layer))
                         {
-                            StopAllCoroutines();
-                            LookMousePosition();
-                            StartCoroutine(OnAttack(_playerManager._attackSpeed, "OnSwordAttack"));
-                            _attackEvent.Invoke();
-                        }
-                        else if (Input.GetKey(_move))
-                        {
-                            int layer = 1 << LayerMask.NameToLayer("Ground");
-                            RaycastHit hit;
-                            if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit, 100f, layer))
+                            if ((hit.point - transform.position).magnitude > 0.5f)
                             {
-                                if ((hit.point - transform.position).magnitude > 0.5f)
-                                {
-                                    _myState = State.MOVE;
-                                    SetDestination(hit.point);
-                                }
+                                _myState = State.MOVE;
+                                SetDestination(hit.point);
                             }
                         }
-                        else if (Input.anyKeyDown)
+                    }
+                    else if (Input.anyKeyDown)
+                    {
+                        string keyName = Input.inputString;
+                        if (keyName.Length < 1)
+                            return;
+                        if (keyName[0] >= '0' && keyName[0] <= '9')
+                            keyName = "Alpha" + keyName;
+                        else
+                            keyName = keyName.ToUpper();
+                        KeyAction keyAction = PlayerKeySetting.GetKeyAction(keyName);
+
+                        if (keyAction == KeyAction.SKILL)
                         {
-                            string keyName = Input.inputString;
-                            if (keyName.Length < 1)
+                            if (_skillManager.GetSkillActivition(keyName) == SkillActivition.PASSIVE)
                                 return;
-                            if (keyName[0] >= '0' && keyName[0] <= '9')
-                                keyName = "Alpha" + keyName;
-                            else
-                                keyName = keyName.ToUpper();
-                            KeyAction keyAction = PlayerKeySetting.GetKeyAction(keyName);
 
-                            if (keyAction == KeyAction.SKILL)
+                            if (_skillManager.IsReady(keyName))
                             {
-                                if (_skillManager.GetSkillActivition(keyName) == SkillActivition.PASSIVE)
-                                    return;
-
-                                if (_skillManager.IsReady(keyName))
+                                LookMousePosition();
+                                Skill skill = _skillManager.GetSkill(keyName);
+                                SkillType type = _skillManager.GetSkillType(keyName);
+                                switch (type)
                                 {
-                                    LookMousePosition();
-                                    Skill skill = _skillManager.GetSkill(keyName);
-                                    SkillType type = _skillManager.GetSkillType(keyName);
-                                    switch (type)
-                                    {
-                                        case SkillType.INSTANT:
-                                            StartCoroutine(OnAttack(skill._skillDelay, skill._skillTrigger));
-                                            break;
-                                        case SkillType.CASTING:
-                                            OnCasting(skill._skillTrigger);
-                                            break;
-                                        case SkillType.KEYDOWN:
-                                            StartCoroutine(OnKeyDown(keyName, skill._skillDuration, skill._skillTrigger));
-                                            break;
-                                        case SkillType.BUFF:
-                                            StartCoroutine(OnAction(skill._skillDelay, skill._skillTrigger));
-                                            break;
-                                    }
-                                    _skillManager.Use(keyName);
+                                    case SkillType.INSTANT:
+                                        StartCoroutine(OnAttack(skill._skillDelay, skill._skillTrigger));
+                                        break;
+                                    case SkillType.CASTING:
+                                        OnCasting(skill._skillTrigger);
+                                        break;
+                                    case SkillType.KEYDOWN:
+                                        StartCoroutine(OnKeyDown(keyName, skill._skillDuration, skill._skillTrigger));
+                                        break;
+                                    case SkillType.BUFF:
+                                        StartCoroutine(OnAction(skill._skillDelay, skill._skillTrigger));
+                                        break;
                                 }
+                                _skillManager.Use(keyName);
                             }
-                            else if(keyAction == KeyAction.HEALTHPOTION || keyAction == KeyAction.MANAPOTION)
-                                UIController.instance.UsePotion(keyAction);
                         }
+                        else if (keyAction == KeyAction.HEALTHPOTION || keyAction == KeyAction.MANAPOTION)
+                            UIController.instance.UsePotion(keyAction);
                     }
                 }
             }

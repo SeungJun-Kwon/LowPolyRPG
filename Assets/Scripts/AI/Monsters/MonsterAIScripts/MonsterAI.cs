@@ -84,7 +84,10 @@ public class MonsterAI : MonoBehaviour
     protected virtual void StatusInit()
     {
         if (!_navMesh.enabled)
+        {
             _navMesh.enabled = true;
+            _navMesh.isStopped = false;
+        }
         _animator.ResetTrigger("Attack");
         _monsterHP = _monster._monsterHP;
         _monsterHPBar._fill.fillAmount = 1f;
@@ -177,7 +180,8 @@ public class MonsterAI : MonoBehaviour
     {
         _animator.SetTrigger("Dead");
         _isDead = true;
-        _navMesh.enabled = false;
+        _navMesh.isStopped = true;
+        //_navMesh.enabled = false;
         SoundManager.instance.SFXPlay(_monster._deadSound);
 
         PlayerManager playerManager = PlayerController.instance.PlayerManager;

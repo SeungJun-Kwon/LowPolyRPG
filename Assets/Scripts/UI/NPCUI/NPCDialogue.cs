@@ -77,7 +77,6 @@ public class NPCDialogue : BaseUI
             }
             SetState(0);
             _questDialogue = null;
-            _npcAI.CheckQuestState();
             return;
         }
         SetContentText(_questDialogue[_questDialogueCount]);

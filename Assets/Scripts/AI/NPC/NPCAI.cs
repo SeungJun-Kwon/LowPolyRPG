@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,6 +14,7 @@ public class NPCAI : MonoBehaviour
     GameObject _actionUI;
     GameObject _dialogueUI;
     BoxCollider _boxCollider;
+    QuestManager _questManager;
 
     KeyCode _action;
 
@@ -87,19 +89,27 @@ public class NPCAI : MonoBehaviour
     {
         _actionUI = UIController.instance.PlayUI.transform.Find("DoConversation").gameObject;
         _dialogueUI = UIController.instance.PlayUI.transform.Find("NPCDialogue").gameObject;
-
+        _questManager = PlayerController.instance.QuestManager;
         _action = PlayerController.instance.PlayerKeySetting._action;
 
         StartCoroutine(UpdateCor());
 
         _textMeshPro.rectTransform.localPosition = new Vector3(0, _boxCollider.bounds.size.y + 1f, 0);
-        CheckQuestState();
     }
 
     IEnumerator UpdateCor()
     {
+        float count = 0f;
+
         while(true)
         {
+            count += Time.deltaTime;
+            if(count > 1f)
+            {
+                CheckQuestState();
+                count = 0f;
+            }
+
             if (_isAroundPlayer && !_isAction)
             {
                 if (Input.GetKey(_action))
@@ -114,9 +124,7 @@ public class NPCAI : MonoBehaviour
 
     public void CheckQuestState()
     {
-        QuestManager questManager = PlayerController.instance.QuestManager;
-        List<QuestData> playerCurrentQuests = questManager.GetCurrentQuestData(_npc);
-        List<Quest> playerCompletedQuests = questManager.GetCompletedQuest(_npc);
+        List<QuestData> playerCurrentQuests = _questManager.GetCurrentQuestData(_npc);
         QuestState = 0;
 
         foreach (var quest in playerCurrentQuests)
@@ -129,9 +137,21 @@ public class NPCAI : MonoBehaviour
         }
         foreach (var quest in _npc._quests)
         {
-            if (questManager.CurrentQuestContain(quest))
-                continue;
-            if (!questManager.CompletedQuestContain(quest) && quest.CanAccept())
+            if (_questManager.CurrentQuestContain(quest))
+            {
+                if(quest._type != Quest.Type.DIALOGUE)
+                    continue;
+
+                DialogueQuestData dqd = _questManager.GetQuest(quest) as DialogueQuestData;
+                if (dqd._currentIndex < dqd._quest._targetNPC.Length)
+                {
+                    if (_npc == dqd._quest._targetNPC[dqd._currentIndex])
+                        QuestState = 3;
+                    else
+                        QuestState = 2;
+                }
+            }
+            else if (!_questManager.CompletedQuestContain(quest) && quest.CanAccept())
             {
                 QuestState = 1;
                 return;

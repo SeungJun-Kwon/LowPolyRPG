@@ -54,8 +54,17 @@ public class QuestManager : MonoBehaviour
         List<QuestData> result = new List<QuestData>();
 
         foreach (QuestData item in _currentQuest)
+        {
             if (item._quest._startNPC == npc)
                 result.Add(item);
+            else if(item._quest._type == Quest.Type.DIALOGUE)
+            {
+                DialogueQuestData dqd = item as DialogueQuestData;
+                for (int i = 0; i < dqd._quest._targetNPC.Length; i++)
+                    if (npc == dqd._quest._targetNPC[i])
+                        result.Add(item);
+            }
+        }
 
         result.Sort((x, y) => x._quest._questId.CompareTo(y._quest._questId));
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HuntingQuestData : QuestData
 {
+    public new HuntingQuest _quest;
     public int _currentNumberOfHunts;
 
     public HuntingQuestData(HuntingQuest quest) : base(quest)

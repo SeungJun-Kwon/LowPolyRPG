@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class TestBehavior : PlayableBehaviour
+public class MoveBehavior : PlayableBehaviour
 {
     public Transform _startLocation;
     public Transform _endLocation;

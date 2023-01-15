@@ -25,7 +25,7 @@ MonoBehaviour:
   _skillIconImage: {fileID: 21300000, guid: 0d4bdcfaf41b1794c9f7c954b5d2f2bc, type: 3}
   _skillUseSound: {fileID: 8300000, guid: ef14649d30b296248bad0e7f1ac39902, type: 3}
   _skillHitSound: {fileID: 8300000, guid: e83e0e08d2437a449b6ed0179cb79ebf, type: 3}
-  _requireMP: 0
+  _requireMP: 30
   _skillNumberOfAttack: 1
   _skillNumberOfEnemy: 5
   _skillDamageMultiplier: 0.5

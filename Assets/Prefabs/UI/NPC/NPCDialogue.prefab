@@ -1691,6 +1691,7 @@ MonoBehaviour:
   _npcQuestList: {fileID: 0}
   _npcQuestDetail: {fileID: 0}
   _npc: {fileID: 0}
+  _npcAI: {fileID: 0}
   _selectedQuest: {fileID: 0}
   _questDialogue: []
   _questDialogueCount: 0
