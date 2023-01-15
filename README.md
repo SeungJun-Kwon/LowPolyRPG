@@ -40,6 +40,16 @@ NavMeshAgent와 간단한 상태 패턴을 통해 플레이어 조작을 구현�
 
 퀘스트는 대화, 사냥 퀘스트 두 가지로 구현했다.
 
+**[퀘스트 구상도]**
+
+<img src = "https://user-images.githubusercontent.com/80217301/212541796-73da36ec-cc66-499a-844d-409c2e1a67ac.png"
+width = 300px>
+
+**[퀘스트  흐름도]**
+
+<img src = "https://user-images.githubusercontent.com/80217301/212541823-5408237a-9902-4097-91e6-d5f0a3175266.png"
+width = 300px>
+
 **[구동 화면]**
 
 ![NPC](https://user-images.githubusercontent.com/80217301/212357760-42430250-d4ae-48e7-8541-e29db45a1935.gif)
