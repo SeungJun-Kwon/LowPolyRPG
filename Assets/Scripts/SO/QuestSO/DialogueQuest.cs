@@ -16,8 +16,9 @@ public class DialogueQuest : Quest
     [Header("각 NPC 별 대화\n※ 반드시 targetNPC와 개수가 같아야 함 ※")]
     [SerializeField] public List<NPCDialogue> _npcDialogue = new List<NPCDialogue>();
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         this._type = Type.DIALOGUE;
     }
 }

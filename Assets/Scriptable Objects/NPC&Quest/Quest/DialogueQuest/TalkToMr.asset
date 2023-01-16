@@ -32,6 +32,7 @@ MonoBehaviour:
   _isTimeline: 1
   _playableDirector: {fileID: 0}
   _timeline: {fileID: 11400000, guid: a89dae5197db2334c9d759eb81c349c7, type: 2}
+  _timelineName: TalkToMr
   _targetNPC:
   - {fileID: 11400000, guid: fc3e4754585ffda4182eb20383216fc8, type: 2}
   _npcDialogue:

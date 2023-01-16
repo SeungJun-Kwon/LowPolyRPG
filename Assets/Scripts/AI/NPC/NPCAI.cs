@@ -83,6 +83,10 @@ public class NPCAI : MonoBehaviour
         }
 
         _textMeshPro = Instantiate<TextMeshPro>(_textMeshPro, transform);
+
+        GameObject objectNameGo = Instantiate(Resources.Load("Prefabs/UI/ObjectName"), transform) as GameObject;
+        objectNameGo.TryGetComponent(out ObjectName objectName);
+        objectName.SetText(_npc);
     }
 
     private void Start()

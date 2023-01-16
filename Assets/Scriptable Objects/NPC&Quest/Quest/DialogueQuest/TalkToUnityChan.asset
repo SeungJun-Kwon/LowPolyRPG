@@ -29,7 +29,8 @@ MonoBehaviour:
   _precednetQuest: {fileID: 11400000, guid: bfb6d185fc536fd4da71f2f9b598e0b0, type: 2}
   _isTimeline: 1
   _playableDirector: {fileID: 0}
-  _timeline: {fileID: 0}
+  _timeline: {fileID: 11400000, guid: e02e9b7a56853aa4f8d1f9550cec7363, type: 2}
+  _timelineName: TalkToUnityChan
   _targetNPC:
   - {fileID: 11400000, guid: ee20d962dd90b034688baa49873a91a4, type: 2}
   _npcDialogue:

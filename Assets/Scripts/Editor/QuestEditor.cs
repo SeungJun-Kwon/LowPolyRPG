@@ -28,6 +28,7 @@ public class QuestEditor : Editor
             EditorGUILayout.Space();
             _quest._playableDirector = (PlayableDirector)EditorGUILayout.ObjectField("Playable Director", _quest._playableDirector, typeof(PlayableDirector), true);
             _quest._timeline = (TimelineAsset)EditorGUILayout.ObjectField("Timeline", _quest._timeline, typeof(TimelineAsset), true);
+            _quest._timelineName = EditorGUILayout.TextField("Timeline Name", _quest._timelineName);
         }
     }
 }

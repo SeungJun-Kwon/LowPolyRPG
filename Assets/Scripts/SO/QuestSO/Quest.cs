@@ -30,6 +30,16 @@ public class Quest : ScriptableObject
     public PlayableDirector _playableDirector;
     [HideInInspector]
     public TimelineAsset _timeline;
+    [HideInInspector]
+    public string _timelineName;
+
+    protected virtual void Awake()
+    {
+        if (_isTimeline)
+        {
+            _timeline = Resources.Load("Timeline/Timeline(" + _timelineName + ")") as TimelineAsset;
+        }
+    }
 
     public bool CanAccept()
     {
